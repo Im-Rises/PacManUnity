@@ -2,18 +2,15 @@ using UnityEngine;
 
 public class HighScoreHandler : MonoBehaviour
 {
-    private string highScoreKey = "highScore";
+    private const string HighScoreKey = "highScore";
 
     public void SetHighScore(int score)
     {
-        if (score > PlayerPrefs.GetInt(highScoreKey, 0))
-        {
-            PlayerPrefs.SetInt(highScoreKey, score);
-        }
+        if (score > PlayerPrefs.GetInt(HighScoreKey, 0)) PlayerPrefs.SetInt(HighScoreKey, score);
     }
 
     public int GetHighScore()
     {
-        return PlayerPrefs.GetInt(highScoreKey,0);
+        return PlayerPrefs.GetInt(HighScoreKey, 0);
     }
 }
