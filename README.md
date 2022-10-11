@@ -93,8 +93,10 @@ Placeholder
 ## GitHub Actions
 
 [![Lint Code Base](https://github.com/Im-Rises/PacMan3D/actions/workflows/super-linter.yml/badge.svg?branch=main)](https://github.com/Im-Rises/PacMan3D/actions/workflows/super-linter.yml)
+[![pages-build-deployment](https://github.com/Im-Rises/PacManUnity/actions/workflows/pages/pages-build-deployment/badge.svg?branch=web-version)](https://github.com/Im-Rises/PacManUnity/actions/workflows/pages/pages-build-deployment)
 
 Lint Code Base: Script to check the code quality for different languages.
+pages-build-deployment:
 
 ## Documentations
 
