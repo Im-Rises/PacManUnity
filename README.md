@@ -9,6 +9,9 @@
 
 Pac-Man 3D game made in Unity.
 
+> **Note**
+> This project is a work in progress.
+
 ## Images
 
 Placeholder
@@ -29,80 +32,62 @@ Placeholder
 
 ## Project Architecture
 
-Placeholder
+### Dependencies
 
-<!--
+- [Unity](https://unity.com/)
+
+### Project Structure
+
 ~~~
 PhysicalEngine
 ├── .github
-|  ├── labels.yml
+|  ├── labeler.yml
 |  ├── release.yml
 │  ├── workflows
-│  │   |── cmake.yml
-│  │   |── codeql.yml
-│  │   |── cpp-cmake-publish.yml
-│  │   |── dependency-review.yml
 │  │   |── greetings.yml
 │  │   |── label.yml
 │  │   |── stale.yml
-├── dependencies
-|  ├── glad
-|  ├── glfw
-|  ├── glfwglm
-|  ├── imgui
-|  ├── stb
-├── PhysicalEngine
-|  ├── Integrable
+│  │   |── super-linter.yml
+├── Assets
+|  ├── Assets
 │  │   |── *
-|  ├── Integrator
+├── Krita
+|  ├── Assets
 │  │   |── *
-|  ├── Particule
+├── ProjectSettings
+|  ├── Assets
 │  │   |── *
-|  ├── Scene
-│  │   |── *
-|  ├── CMakeLists.txt
-|  ├── InputManager.cpp
-|  ├── InputManager.h
-|  ├── main.cpp
-|  ├── PhysicalEngine.cpp
-|  ├── PhysicalEngine.h
-├── test
-|  ├── TestParticule
-│  │   |── *
-|  ├── CMakeLists.txt
-|  ├── integratorTest.cpp
-|  ├── particuleTest.cpp
-├── .clang-format
 ├── .editorconfig
 ├── .gitattributes
 ├── .gitignore
-├── CMakelists.txt
-├── CMakePresets.json
-├── CMakeSettings.json
-├── imgui.ini
 ├── README.md
 ~~~
--->
-
-## Dependencies
 
 ## How to build
+
+### PC version
+
+Placeholder
+
+### WebGl version
 
 Placeholder
 
 ## GitHub Actions
 
-[![Lint Code Base](https://github.com/Im-Rises/PacMan3D/actions/workflows/super-linter.yml/badge.svg?branch=main)](https://github.com/Im-Rises/PacMan3D/actions/workflows/super-linter.yml)
+[![Lint Code Base](https://github.com/Im-Rises/PacManUnity/actions/workflows/super-linter.yml/badge.svg?branch=main)](https://github.com/Im-Rises/PacManUnity/actions/workflows/super-linter.yml)
 [![pages-build-deployment](https://github.com/Im-Rises/PacManUnity/actions/workflows/pages/pages-build-deployment/badge.svg?branch=web-version)](https://github.com/Im-Rises/PacManUnity/actions/workflows/pages/pages-build-deployment)
 
-Lint Code Base: Script to check the code quality for different languages.
-pages-build-deployment:
+- Lint Code Base: Script to check the code quality for different languages.
+- pages-build-deployment: Script to build the project and deploy it to GitHub Pages.
 
 ## Documentations
 
+Unity:
+<https://unity.com/>
+
 Super Linter action:
 <https://github.com/github/super-linter>
-
 
 ## Authors
 
