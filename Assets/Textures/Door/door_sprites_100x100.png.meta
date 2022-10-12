@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: be23b9873f223b545b88d02adb4d6985
+guid: 3a2e32f81f8ceb8409e04ebfe40d9c4f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,13 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: collectibles_sprites_128x128_0
+      name: door_sprites_100x100_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 128
-        height: 128
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 27bdfc997513cfb469bf43d6eaf2dcff
-      internalID: 1650098957
+      spriteID: 572de327e87864648ad6e88ccdcc46ab
+      internalID: 358262083
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: collectibles_sprites_128x128_1
+      name: door_sprites_100x100_1
       rect:
         serializedVersion: 2
-        x: 128
+        x: 100
         y: 0
-        width: 128
-        height: 128
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4f9eaaaf7cd159488cef64eef0e98a9
-      internalID: -825228192
+      spriteID: f68b401a072f0784e8a9fe07e9727a8d
+      internalID: -1053537285
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: collectibles_sprites_128x128_2
+      name: door_sprites_100x100_2
       rect:
         serializedVersion: 2
-        x: 256
+        x: 200
         y: 0
-        width: 128
-        height: 128
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,8 +173,92 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 39c68c247dc306c4cab279f647046a48
-      internalID: -573814296
+      spriteID: a623574f860d1fe43a2e870d796037e4
+      internalID: -175253318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: door_sprites_100x100_3
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52a02354527e3524faabe2598914ec1a
+      internalID: 1833826055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: door_sprites_100x100_4
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76c7e0f03c23b9c4283baa5233372b5e
+      internalID: 1731754465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: door_sprites_100x100_5
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c8b577d0fb8dc447a2801093c8369e1
+      internalID: -1062992752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: door_sprites_100x100_6
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 871614bf73d645d499eb8cc55740ab75
+      internalID: -42146489
       vertices: []
       indices: 
       edges: []
@@ -190,9 +274,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      collectibles_sprites_128x128_1: -825228192
-      collectibles_sprites_128x128_2: -573814296
-      collectibles_sprites_128x128_0: 1650098957
+      door_sprites_100x100_6: -42146489
+      door_sprites_100x100_1: -1053537285
+      door_sprites_100x100_5: -1062992752
+      door_sprites_100x100_3: 1833826055
+      door_sprites_100x100_0: 358262083
+      door_sprites_100x100_2: -175253318
+      door_sprites_100x100_4: 1731754465
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
