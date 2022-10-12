@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 975777153946758504}
   - component: {fileID: 5213335955460777217}
   - component: {fileID: 1572318285527559253}
+  - component: {fileID: 2593082357038616140}
   m_Layer: 0
   m_Name: CollectiblePower
   m_TagString: Untagged
@@ -95,9 +96,21 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.35
+--- !u!114 &2593082357038616140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8047620148579301998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f612025d7232c4745bf97d1d3078ac0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

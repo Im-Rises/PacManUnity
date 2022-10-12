@@ -1,12 +1,25 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+namespace Player
 {
-    private void Start()
+    public class PlayerController : MonoBehaviour
     {
-    }
+        public float speed = 5f;
+        private Vector3 _direction;
 
-    private void Update()
-    {
+        private void Start()
+        {
+        }
+
+        private void FixedUpdate()
+        {
+            transform.Translate(_direction * (speed * Time.deltaTime));
+        }
+
+        private void OnMove(InputValue value)
+        {
+            _direction = value.Get<Vector2>();
+        }
     }
 }

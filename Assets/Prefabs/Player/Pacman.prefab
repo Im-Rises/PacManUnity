@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2508186285830894821}
   - component: {fileID: 5425102568122655161}
   - component: {fileID: 4211632283018769819}
+  - component: {fileID: 4173349384236131186}
   m_Layer: 0
   m_Name: Pacman
   m_TagString: Untagged
@@ -123,7 +124,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -175,3 +176,15 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4173349384236131186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3059046657380163144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40eb904c38017c24e9503555a182bcfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
