@@ -11,6 +11,11 @@ namespace Player
         public Transform PivotTransform;
         private Vector3 _direction;
 
+        public void Reset()
+        {
+            PivotTransform.rotation = Quaternion.identity;
+        }
+
         private void FixedUpdate()
         {
             transform.Translate(_direction * (speed * Time.deltaTime));
