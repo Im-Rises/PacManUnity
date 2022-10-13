@@ -6,7 +6,6 @@ public class Teleporter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Teleporting");
         other.GetComponent<Transform>().position = target.GetComponent<Transform>().position;
     }
 }
