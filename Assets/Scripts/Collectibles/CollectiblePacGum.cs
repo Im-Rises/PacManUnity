@@ -9,11 +9,10 @@ namespace Collectibles
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.CompareTag("Player"))
-                if (collision.gameObject.CompareTag("Player"))
-                {
-                    ScoreHandler.instance.AddScore(points);
-                    Destroy(gameObject);
-                }
+            {
+                ScoreHandler.instance.AddScore(points);
+                Destroy(gameObject);
+            }
         }
     }
 }
