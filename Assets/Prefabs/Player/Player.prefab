@@ -132,7 +132,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f76d351b9b0467540a3eb4de92e360c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  life: 3
   anim: {fileID: 7437765649036700503}
+  gameOverText: {fileID: 0}
+  heartTexture: {fileID: 0}
+  heartsParent: {fileID: 0}
+  hearthOffset: 1.5
 --- !u!1 &3774446905948458912
 GameObject:
   m_ObjectHideFlags: 0

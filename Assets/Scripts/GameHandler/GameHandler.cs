@@ -1,22 +1,26 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameHandler : MonoBehaviour
+namespace GameHandler
 {
-    private int state = 0;
-    private Time time;
-    public static GameHandler instance { get; private set; }
-
-    private void Awake()
+    public class GameHandler : MonoBehaviour
     {
-        if (instance != null && instance != this)
-            Destroy(this);
-        else
-            instance = this;
-    }
+        // private Time time;
+        // private int state { get; set; }
 
-    public void ReloadScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        private static GameHandler Instance { get; set; }
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+                Destroy(this);
+            else
+                Instance = this;
+        }
+
+        public void ReloadScene()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }

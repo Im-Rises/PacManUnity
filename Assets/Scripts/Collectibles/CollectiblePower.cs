@@ -10,7 +10,7 @@ namespace Collectibles
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                ScoreHandler.instance.AddScore(points);
+                ScoreHandler.ScoreHandler.Instance.AddScore(points);
                 Destroy(gameObject);
             }
         }

@@ -89,6 +89,12 @@ Unity:
 Super Linter action:
 <https://github.com/github/super-linter>
 
+PacMan movement:
+<https://gameinternals.com/understanding-pac-man-ghost-behavior>
+
+Audio files:
+<https://www.classicgaming.cc/classics/pac-man/sounds>
+
 ## Authors
 
 Quentin MOREL:
