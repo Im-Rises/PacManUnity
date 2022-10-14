@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectiblePower : MonoBehaviour
+namespace Collectibles
 {
-    // Start is called before the first frame update
-    void Start()
+    public class CollectiblePower : MonoBehaviour
     {
-        
-    }
+        public int points = 100;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                ScoreHandler.instance.AddScore(points);
+                Destroy(gameObject);
+            }
+        }
     }
 }
