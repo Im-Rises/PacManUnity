@@ -1,4 +1,3 @@
-using Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -39,7 +38,7 @@ public class PlayerLife : MonoBehaviour
 
     private void Respawn()
     {
-        GetComponent<PlayerController>().Reset();
+        // GetComponent<PlayerController>().Reset();
         anim.SetBool("isDead", false);
         transform.position = respawnPoint;
         GetComponent<PlayerInput>().enabled = true;

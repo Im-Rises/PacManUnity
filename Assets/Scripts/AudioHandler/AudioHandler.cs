@@ -19,10 +19,10 @@ namespace AudioHandler
 
         public void PlayAudioPacGumClip(AudioClip clip)
         {
-            // _audioSourcePacGum.clip = clip;
+            _audioSourcePacGum.clip = clip;
             // if (_audioSourcePacGum.isPlaying)
-            //     _audioSourcePacGum.loop = true;
-            // _audioSourcePacGum.Play();
+            // _audioSourcePacGum.loop = true;
+            _audioSourcePacGum.Play();
         }
     }
 }
