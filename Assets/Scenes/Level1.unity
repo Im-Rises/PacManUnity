@@ -22254,7 +22254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3059046657380163147, guid: f05022444497d1b4d99bf0ac818eddcf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.5
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 3059046657380163147, guid: f05022444497d1b4d99bf0ac818eddcf, type: 3}
       propertyPath: m_LocalPosition.y
@@ -22296,6 +22296,14 @@ PrefabInstance:
       propertyPath: speed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4173349384236131186, guid: f05022444497d1b4d99bf0ac818eddcf, type: 3}
+      propertyPath: tilemap
+      value: 
+      objectReference: {fileID: 505021198}
+    - target: {fileID: 4173349384236131186, guid: f05022444497d1b4d99bf0ac818eddcf, type: 3}
+      propertyPath: _tilemap
+      value: 
+      objectReference: {fileID: 505021198}
     - target: {fileID: 5186810535939215753, guid: f05022444497d1b4d99bf0ac818eddcf, type: 3}
       propertyPath: life
       value: 3
@@ -22574,6 +22582,10 @@ PrefabInstance:
     - target: {fileID: 6280111001161052548, guid: bfaf629bb944ff2469eb1226ffb09be1, type: 3}
       propertyPath: m_Name
       value: Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 6280111001161052548, guid: bfaf629bb944ff2469eb1226ffb09be1, type: 3}
+      propertyPath: m_TagString
+      value: WallsBorders
       objectReference: {fileID: 0}
     - target: {fileID: 6280111002132371766, guid: bfaf629bb944ff2469eb1226ffb09be1, type: 3}
       propertyPath: m_Enabled
