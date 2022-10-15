@@ -117,9 +117,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  spriteRenderer: {fileID: 4935545661644288703}
-  animator: {fileID: 3956314420859180031}
-  PivotTransform: {fileID: 6249696482089027904}
+  colliderTag: WallsBorders
+  rear: {fileID: 0}
 --- !u!114 &5186810535939215753
 MonoBehaviour:
   m_ObjectHideFlags: 0

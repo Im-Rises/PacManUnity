@@ -1,8 +1,9 @@
 # My ignored files and folders:
 
-.idea/
+*.idea/
 [tT]rash/
 documentations/
+*.kra~
 
 # Created by https://www.toptal.com/developers/gitignore/api/unity
 # Edit at https://www.toptal.com/developers/gitignore?templates=unity
