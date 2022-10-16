@@ -259,7 +259,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0029829144, y: 0.047725886}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -270,7 +270,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.662197, y: 1.6920257}
+  m_Size: {x: 1.6, y: 1.6}
   m_EdgeRadius: 0
 --- !u!114 &400334680995070693
 MonoBehaviour:
@@ -285,11 +285,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  waypoints:
-  - {fileID: 0}
+  scatterModeWaypoints: []
   eyesSpriteRenderer: {fileID: 4252187140666899497}
   eyesSpriteArray:
   - {fileID: -1117862435, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
   - {fileID: -347165455, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
   - {fileID: -1719605120, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
   - {fileID: -896198695, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
+  originalDirection: {x: -1, y: 0}
+  initPositionOffset: 0.5
+  tilemap: {fileID: 0}
+  chaseModeTarget: {fileID: 0}

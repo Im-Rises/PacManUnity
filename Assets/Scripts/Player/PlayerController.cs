@@ -34,18 +34,19 @@ namespace Player
 
         private void FixedUpdate()
         {
-            var position = transform.position;
+            // Move the player
+            var position = (Vector2)transform.position;
             var positionVector = Vector2.MoveTowards(position, Destination, speed * Time.deltaTime);
             _rigidbody2D.MovePosition(positionVector);
 
-            var isCentered = (Vector2)position == Destination;
-
+            // Check if the player is centered in the tile
+            var isCentered = position == Destination;
             if (!isCentered) return;
 
             // if is at the middle of a tile, has input and there is no wall in the direction of the input
             if (_lastInput != Vector2.zero && !DetectWallBorder(_lastInput))
             {
-                Destination = (Vector2)transform.position + _lastInput;
+                Destination = position + _lastInput;
                 _lastDirection = _lastInput;
                 animator.SetBool(IsMoving, true);
                 RotateRenderer();
@@ -53,7 +54,7 @@ namespace Player
             // if is at the middle of a tile and there is no wall in the current direction then continue in the same direction
             else if (!DetectWallBorder(_lastDirection))
             {
-                Destination = (Vector2)transform.position + _lastDirection;
+                Destination = position + _lastDirection;
                 animator.SetBool(IsMoving, true);
             }
             else
@@ -68,9 +69,9 @@ namespace Player
             transform.rotation = Quaternion.Euler(0, 0, angle);
         }
 
-        private bool DetectWallBorder(Vector3 dir)
+        private bool DetectWallBorder(Vector2 dir)
         {
-            var pos = transform.position;
+            var pos = (Vector2)transform.position;
             var cellPosition = tilemap.WorldToCell(pos + dir);
             var linecast = Physics2D.Linecast(pos + dir, pos);
             return tilemap.HasTile(cellPosition) || linecast.collider.CompareTag(tilemap.tag);
