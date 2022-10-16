@@ -60,18 +60,8 @@ namespace Ghosts
         private void ChaseMode()
         {
             var position = (Vector2)transform.position;
-            // var positionVector = Vector2.MoveTowards(position, _nextTileDestination, speed * Time.deltaTime);
-            // _rigidbody2D.MovePosition(positionVector);
-
-
-            Debug.Log("Up tile " + (position + Vector2.up) +
-                      (DetectWallBorder(position + Vector2.up) ? " Wall" : "Empty"));
-            Debug.Log("Right tile " + (position + Vector2.right) +
-                      (DetectWallBorder(position + Vector2.right) ? " Wall" : "Empty"));
-            Debug.Log("Left tile " + (position + Vector2.left) +
-                      (DetectWallBorder(position + Vector2.left) ? " Wall" : "Empty"));
-            Debug.Log("Down tile " + (position + Vector2.down) +
-                      (DetectWallBorder(position + Vector2.down) ? " Wall" : "Empty"));
+            var positionVector = Vector2.MoveTowards(position, _nextTileDestination, speed * Time.deltaTime);
+            _rigidbody2D.MovePosition(positionVector);
 
 
             var isCentered = position == _nextTileDestination;
@@ -85,37 +75,54 @@ namespace Ghosts
             var left = Vector2.left;
             var right = Vector2.right;
 
-            if (!DetectWallBorder(position + up))
+            if (!DetectWallBorder(up))
                 possibleDirections[possibleDirectionsCount++] = up;
-            if (!DetectWallBorder(position + down))
+            if (!DetectWallBorder(down))
                 possibleDirections[possibleDirectionsCount++] = down;
-            if (!DetectWallBorder(position + left))
+            if (!DetectWallBorder(left))
                 possibleDirections[possibleDirectionsCount++] = left;
-            if (!DetectWallBorder(position + right))
+            if (!DetectWallBorder(right))
                 possibleDirections[possibleDirectionsCount++] = right;
 
-            var shortestDistance = float.MaxValue;
-            var shortestDirection = Vector2.zero;
-
-            // Debug.Log(possibleDirectionsCount + " " + possibleDirections[0] + " " + possibleDirections[1] + " " +
-            //           possibleDirections[2] + " " + possibleDirections[3]);
-            // Debug.Log("Up tile " + " Position: " + (position + up) +
-            //           (DetectWallBorder(position + up) ? " Wall" : "Empty"));
-
-            for (var i = 0; i < possibleDirectionsCount; i++)
+            if (possibleDirectionsCount > 2)
             {
-                var direction = possibleDirections[i];
-                var distance = Vector2.Distance(chaseModeTarget.transform.position, position + direction);
+                var shortestDistance = float.MaxValue;
+                var shortestDirection = Vector2.zero;
 
-                if (distance < shortestDistance)
+                for (var i = 0; i < possibleDirectionsCount; i++)
                 {
-                    shortestDistance = distance;
-                    shortestDirection = direction;
-                }
-            }
+                    var direction = possibleDirections[i];
+                    var distance = Vector2.Distance(chaseModeTarget.transform.position, position + direction);
 
-            _direction = shortestDirection;
-            _nextTileDestination = position + _direction;
+                    if (distance < shortestDistance)
+                    {
+                        shortestDistance = distance;
+                        shortestDirection = direction;
+                    }
+                }
+
+                _direction = shortestDirection;
+                _nextTileDestination = position + _direction;
+            }
+            else if (possibleDirectionsCount == 2)
+            {
+                if (possibleDirections[0] == _direction * -1)
+                    _direction = possibleDirections[1];
+                else
+                    _direction = possibleDirections[0];
+
+                _nextTileDestination = position + _direction;
+            }
+            else if (possibleDirectionsCount == 1)
+            {
+                _direction = possibleDirections[0];
+                _nextTileDestination = position + _direction;
+            }
+            else
+            {
+                _direction = _direction * -1;
+                _nextTileDestination = position + _direction;
+            }
         }
 
         private void FrightenedMode()
@@ -157,11 +164,9 @@ namespace Ghosts
         private bool DetectWallBorder(Vector2 dir)
         {
             var pos = (Vector2)transform.position;
-            var cellPosition = tilemap.WorldToCell(pos + dir);
-            // var linecast = Physics2D.Linecast(pos + dir, pos);
-            // Debug.Log(tilemap.HasTile(cellPosition));
-            return tilemap.HasTile(cellPosition);
-            // return tilemap.HasTile(cellPosition) || linecast.collider.CompareTag(tilemap.tag);
+            var cellPosition = tilemap.WorldToCell(pos + dir); // Detect a wall or border with using grid's tiles
+            var linecast = Physics2D.Linecast(pos + dir, pos); // Detect a wall or border using linecast and tags
+            return tilemap.HasTile(cellPosition) || linecast.collider.CompareTag(tilemap.tag);
         }
     }
 }

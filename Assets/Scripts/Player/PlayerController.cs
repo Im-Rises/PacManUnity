@@ -72,8 +72,8 @@ namespace Player
         private bool DetectWallBorder(Vector2 dir)
         {
             var pos = (Vector2)transform.position;
-            var cellPosition = tilemap.WorldToCell(pos + dir);
-            var linecast = Physics2D.Linecast(pos + dir, pos);
+            var cellPosition = tilemap.WorldToCell(pos + dir); // Detect a wall or border with using grid's tiles
+            var linecast = Physics2D.Linecast(pos + dir, pos); // Detect a wall or border using linecast and tags
             return tilemap.HasTile(cellPosition) || linecast.collider.CompareTag(tilemap.tag);
         }
 
