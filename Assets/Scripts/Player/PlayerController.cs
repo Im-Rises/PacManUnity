@@ -6,6 +6,7 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
+        private static readonly int IsMoving = Animator.StringToHash("isMoving");
         public float speed = 10f;
 
         public Tilemap tilemap;
@@ -46,18 +47,18 @@ namespace Player
             {
                 Destination = (Vector2)transform.position + _lastInput;
                 _lastDirection = _lastInput;
-                animator.SetBool("isMoving", true);
+                animator.SetBool(IsMoving, true);
                 RotateRenderer();
             }
             // if is at the middle of a tile and there is no wall in the current direction then continue in the same direction
             else if (!DetectWallBorder(_lastDirection))
             {
                 Destination = (Vector2)transform.position + _lastDirection;
-                animator.SetBool("isMoving", true);
+                animator.SetBool(IsMoving, true);
             }
             else
             {
-                animator.SetBool("isMoving", false);
+                animator.SetBool(IsMoving, false);
             }
         }
 

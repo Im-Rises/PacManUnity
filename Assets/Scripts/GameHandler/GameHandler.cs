@@ -5,8 +5,10 @@ namespace GameHandler
 {
     public class GameHandler : MonoBehaviour
     {
+        // private int[] _timeToChangeMode = { 7, 20, 7, 20, 5, 20, 5 };
+
         // private Time time;
-        // private int state { get; set; }
+        private int State { get; set; } = 0;
 
         private static GameHandler Instance { get; set; }
 
@@ -17,6 +19,7 @@ namespace GameHandler
             else
                 Instance = this;
         }
+
 
         public void ReloadScene()
         {

@@ -103,7 +103,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.8
+  m_Radius: 0.7
 --- !u!114 &4173349384236131186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   tilemap: {fileID: 0}
-  _orignalDirection: {x: -1, y: 0}
+  originalDirection: {x: -1, y: 0}
   initPositionOffset: 0.5
   animator: {fileID: 4272663106708886674}
 --- !u!114 &5186810535939215753
@@ -137,8 +137,9 @@ MonoBehaviour:
   anim: {fileID: 4272663106708886674}
   gameOverText: {fileID: 0}
   heartTexture: {fileID: 0}
+  heartSpriteScale: {x: 2, y: 2, z: 0}
   heartsParent: {fileID: 0}
-  hearthOffset: 1.5
+  heartOffset: 2
 --- !u!1 &7613977286577477918
 GameObject:
   m_ObjectHideFlags: 0

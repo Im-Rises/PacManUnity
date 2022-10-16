@@ -1,26 +1,30 @@
 using UnityEngine;
 
-public class OpenCloseDoor : MonoBehaviour
+namespace Door
 {
-    public Animator anim;
-    public bool open;
-    private Collider2D col;
-
-    private void Start()
+    public class OpenCloseDoor : MonoBehaviour
     {
-        anim.SetBool("isOpen", open);
-        col = GetComponent<Collider2D>();
-    }
+        private static readonly int IsOpen = Animator.StringToHash("isOpen");
+        public Animator anim;
+        public bool open;
+        private Collider2D _col;
 
-    private void OpenDoor()
-    {
-        anim.SetBool("isOpen", true);
-        col.enabled = false;
-    }
+        private void Start()
+        {
+            anim.SetBool(IsOpen, open);
+            _col = GetComponent<Collider2D>();
+        }
 
-    private void CloseDoor()
-    {
-        anim.SetBool("isOpen", false);
-        col.enabled = true;
+        private void OpenDoor()
+        {
+            anim.SetBool(IsOpen, true);
+            _col.enabled = false;
+        }
+
+        private void CloseDoor()
+        {
+            anim.SetBool(IsOpen, false);
+            _col.enabled = true;
+        }
     }
 }

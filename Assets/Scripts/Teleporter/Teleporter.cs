@@ -1,21 +1,24 @@
 using Player;
 using UnityEngine;
 
-public class Teleporter : MonoBehaviour
+namespace Teleporter
 {
-    public GameObject target;
-    public string playerTag = "Player";
-    public string enemyTag = "Enemy";
-
-    private void OnTriggerEnter2D(Collider2D other)
+    public class Teleporter : MonoBehaviour
     {
-        other.GetComponent<Transform>().position = target.GetComponent<Transform>().position;
+        public GameObject target;
+        public string playerTag = "Player";
+        public string enemyTag = "Enemy";
 
-        if (other.gameObject.CompareTag(playerTag))
-            other.gameObject.GetComponent<PlayerController>().Destination =
-                target.GetComponent<Transform>().position;
-        // else if (other.gameObject.CompareTag(enemyTag))
-        //     other.gameObject.GetComponent<EnemyController>().Destination =
-        //         target.GetComponent<Transform>().position;
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            other.GetComponent<Transform>().position = target.GetComponent<Transform>().position;
+
+            if (other.gameObject.CompareTag(playerTag))
+                other.gameObject.GetComponent<PlayerController>().Destination =
+                    target.GetComponent<Transform>().position;
+            // else if (other.gameObject.CompareTag(enemyTag))
+            //     other.gameObject.GetComponent<EnemyController>().Destination =
+            //         target.GetComponent<Transform>().position;
+        }
     }
 }
