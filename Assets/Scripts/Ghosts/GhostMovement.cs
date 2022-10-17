@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Player;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -7,48 +8,55 @@ namespace Ghosts
 {
     public class GhostMovement : MonoBehaviour
     {
-        public float speed = 4f;
-        public Transform[] scatterModeWaypoints;
+        public float runSpeed = 4f;
+        public float frightenedSpeed = 1f;
+        public float eatenSpeed = 20f;
         public SpriteRenderer eyesSpriteRenderer;
         public Sprite[] eyesSpriteArray;
-        public Vector2 originalDirection = new(-1, 0);
-        public float initPositionOffset = 0.5f;
+        public SpriteRenderer bodyRenderer;
         public Tilemap tilemap;
-
+        public GameObject ghostHome;
+        public GameObject scatterModeTarget;
         public GameObject chaseModeTarget;
-        private readonly GhostGlobal.GhostMode _ghostMode = GhostGlobal.GhostMode.Chase;
+        public GameObject ghostHomeEntry;
         private Vector2 _direction;
+
+        private GhostGlobal.GhostMode _ghostMode;
+        private bool _isInGhostHouse;
         private Vector2 _nextTileDestination;
         private Rigidbody2D _rigidbody2D;
-        private int _scatterModePosition;
+        private float InitPositionOffset { get; } = 0.5f;
+        private Vector2 OriginalDirection { get; } = new(-1, 0);
 
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
-            _nextTileDestination = (Vector2)transform.position + originalDirection * initPositionOffset;
+            _nextTileDestination = (Vector2)transform.position + OriginalDirection * InitPositionOffset;
         }
 
         private void FixedUpdate()
         {
+            _ghostMode = (GhostGlobal.GhostMode)GameHandler.GameHandler.Instance.State;
+
             switch (_ghostMode)
             {
                 case GhostGlobal.GhostMode.Scatter:
-                    ScatterMode();
+                    Chase(scatterModeTarget, runSpeed);
+                    UpdateRunAnimation();
                     break;
                 case GhostGlobal.GhostMode.Chase:
-                    ChaseMode();
+                    Chase(chaseModeTarget, runSpeed);
+                    UpdateRunAnimation();
                     break;
                 case GhostGlobal.GhostMode.Frightened:
-                    FrightenedMode();
+                    Frightened();
                     break;
                 case GhostGlobal.GhostMode.Eaten:
-                    EatenMode();
+                    Eaten();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            UpdateAnimation();
         }
 
         private void OnTriggerEnter2D(Collider2D co)
@@ -57,108 +65,122 @@ namespace Ghosts
                 co.GetComponent<PlayerLife>().Die();
         }
 
-        private void ChaseMode()
+        private void Chase(GameObject target, float speed)
         {
             var position = (Vector2)transform.position;
-            var positionVector = Vector2.MoveTowards(position, _nextTileDestination, speed * Time.deltaTime);
-            _rigidbody2D.MovePosition(positionVector);
 
+            // Move ghost
+            MoveGhost(position, speed);
 
+            // Check if ghost reached next tile
             var isCentered = position == _nextTileDestination;
             if (!isCentered) return;
 
-            var possibleDirections = new Vector2[4];
-            var possibleDirectionsCount = 0;
-
+            // Check where the ghost can go
             var up = Vector2.up;
             var down = Vector2.down;
             var left = Vector2.left;
             var right = Vector2.right;
 
+            var possibleDirections = new List<Vector2>();
+
             if (!DetectWallBorder(up))
-                possibleDirections[possibleDirectionsCount++] = up;
+                possibleDirections.Add(up);
             if (!DetectWallBorder(down))
-                possibleDirections[possibleDirectionsCount++] = down;
+                possibleDirections.Add(down);
             if (!DetectWallBorder(left))
-                possibleDirections[possibleDirectionsCount++] = left;
+                possibleDirections.Add(left);
             if (!DetectWallBorder(right))
-                possibleDirections[possibleDirectionsCount++] = right;
+                possibleDirections.Add(right);
 
-            if (possibleDirectionsCount > 2)
+            // if two or more possible directions then delete the opposite direction (preventing the ghost from going back)
+            if (possibleDirections.Count > 1)
+                for (var i = 0; i < possibleDirections.Count; i++)
+                    if (possibleDirections[i] == -_direction)
+                        possibleDirections.RemoveAt(i);
+
+
+            // Calculate the shortest distance to the target
+            var shortestDistance = float.MaxValue;
+            var shortestDirection = Vector2.zero;
+
+            foreach (var direction in possibleDirections)
             {
-                var shortestDistance = float.MaxValue;
-                var shortestDirection = Vector2.zero;
+                var distance = Vector2.Distance(target.transform.position, position + direction);
 
-                for (var i = 0; i < possibleDirectionsCount; i++)
+                if (!(distance < shortestDistance)) continue;
+
+                shortestDistance = distance;
+                shortestDirection = direction;
+            }
+
+            _direction = shortestDirection;
+            _nextTileDestination = position + _direction;
+        }
+
+        private void Frightened()
+        {
+            eyesSpriteRenderer.sprite = eyesSpriteArray[4];
+            Chase(scatterModeTarget, frightenedSpeed);
+        }
+
+        private void Eaten()
+        {
+            if (!_isInGhostHouse)
+            {
+                bodyRenderer.enabled = false;
+                Chase(ghostHome, eatenSpeed);
+                _isInGhostHouse = ghostHome.transform.position == transform.position;
+                UpdateFrightenedAnimation();
+            }
+            else
+            {
+                Chase(ghostHomeEntry, eatenSpeed);
+                if (ghostHomeEntry.transform.position == transform.position)
                 {
-                    var direction = possibleDirections[i];
-                    var distance = Vector2.Distance(chaseModeTarget.transform.position, position + direction);
-
-                    if (distance < shortestDistance)
-                    {
-                        shortestDistance = distance;
-                        shortestDirection = direction;
-                    }
+                    _isInGhostHouse = false;
+                    _ghostMode = GhostGlobal.GhostMode.Scatter;
+                    bodyRenderer.enabled = true;
                 }
 
-                _direction = shortestDirection;
-                _nextTileDestination = position + _direction;
-            }
-            else if (possibleDirectionsCount == 2)
-            {
-                if (possibleDirections[0] == _direction * -1)
-                    _direction = possibleDirections[1];
-                else
-                    _direction = possibleDirections[0];
-
-                _nextTileDestination = position + _direction;
-            }
-            else if (possibleDirectionsCount == 1)
-            {
-                _direction = possibleDirections[0];
-                _nextTileDestination = position + _direction;
-            }
-            else
-            {
-                _direction = _direction * -1;
-                _nextTileDestination = position + _direction;
+                UpdateRunAnimation();
             }
         }
 
-        private void FrightenedMode()
+        private void UpdateRunAnimation()
         {
-        }
-
-        private void EatenMode()
-        {
-        }
-
-        private void ScatterMode()
-        {
-            if (transform.position != scatterModeWaypoints[_scatterModePosition].position)
+            eyesSpriteRenderer.sprite = _direction.y switch
             {
-                var p = Vector2.MoveTowards(transform.position,
-                    scatterModeWaypoints[_scatterModePosition].position,
-                    speed * Time.deltaTime);
-                _rigidbody2D.MovePosition(p);
-            }
-            else
-            {
-                _scatterModePosition = (_scatterModePosition + 1) % scatterModeWaypoints.Length;
-            }
+                > 0 => eyesSpriteArray[2],
+                < 0 => eyesSpriteArray[3],
+                _ => _direction.x switch
+                {
+                    > 0 => eyesSpriteArray[0],
+                    < 0 => eyesSpriteArray[1],
+                    _ => eyesSpriteRenderer.sprite
+                }
+            };
         }
 
-        private void UpdateAnimation()
+        private void UpdateFrightenedAnimation()
         {
-            // var dir = scatterModeWaypoints[_scatterModePosition].position - transform.position;
-            // if (dir.x > 0)
-            //     eyesSpriteRenderer.sprite = eyesSpriteArray[0];
-            // if (dir.x < 0)
-            //     eyesSpriteRenderer.sprite = eyesSpriteArray[1];
-            // if (dir.y > 0)
-            //     eyesSpriteRenderer.sprite = eyesSpriteArray[2];
-            // if (dir.y < 0)
-            //     eyesSpriteRenderer.sprite = eyesSpriteArray[3];
+            eyesSpriteRenderer.sprite = _direction.y switch
+            {
+                > 0 => eyesSpriteArray[5],
+                < 0 => eyesSpriteArray[6],
+                _ => _direction.x switch
+                {
+                    > 0 => eyesSpriteArray[7],
+                    < 0 => eyesSpriteArray[8],
+                    _ => eyesSpriteRenderer.sprite
+                }
+            };
+        }
+
+        private void MoveGhost(Vector2 position, float speed)
+        {
+            var positionVector = Vector2.MoveTowards(position, _nextTileDestination, speed * Time.deltaTime);
+            _rigidbody2D.MovePosition(positionVector);
         }
 
         private bool DetectWallBorder(Vector2 dir)

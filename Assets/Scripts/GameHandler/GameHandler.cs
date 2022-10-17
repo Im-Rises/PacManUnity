@@ -8,9 +8,10 @@ namespace GameHandler
         // private int[] _timeToChangeMode = { 7, 20, 7, 20, 5, 20, 5 };
 
         // private Time time;
-        private int State { get; set; } = 0;
+        // public int State { get; set; } = 0;
+        public int State;
 
-        private static GameHandler Instance { get; set; }
+        public static GameHandler Instance { get; set; }
 
         private void Awake()
         {

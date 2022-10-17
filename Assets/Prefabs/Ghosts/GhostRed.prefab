@@ -284,15 +284,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8973b41a1bb736849b1654d11551287d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  scatterModeWaypoints: []
+  runSpeed: 4
+  frightenedSpeed: 10
   eyesSpriteRenderer: {fileID: 4252187140666899497}
   eyesSpriteArray:
   - {fileID: -1117862435, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
   - {fileID: -347165455, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
   - {fileID: -1719605120, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
   - {fileID: -896198695, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
-  originalDirection: {x: -1, y: 0}
-  initPositionOffset: 0.5
+  - {fileID: 1868171518, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
+  - {fileID: 210275415, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
+  - {fileID: 1066952239, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
+  - {fileID: 1402713078, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
+  - {fileID: -475289182, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}
+  bodyRenderer: {fileID: 4252187140388820770}
   tilemap: {fileID: 0}
+  ghostHome: {fileID: 0}
+  scatterModeTarget: {fileID: 0}
   chaseModeTarget: {fileID: 0}
+  ghostHomeEntry: {fileID: 0}

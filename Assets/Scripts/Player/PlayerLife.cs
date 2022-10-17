@@ -44,7 +44,9 @@ namespace Player
 
         private void Respawn()
         {
-            // GetComponent<PlayerController>().Reset();
+            GetComponent<PlayerController>().Destination = _respawnPoint +
+                                                           GetComponent<PlayerController>().initPositionOffset *
+                                                           GetComponent<PlayerController>().originalDirection;
             anim.SetBool(IsDead, false);
             transform.position = _respawnPoint;
             GetComponent<PlayerInput>().enabled = true;
