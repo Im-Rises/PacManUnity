@@ -8,11 +8,10 @@ namespace Collectibles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                ScoreHandler.ScoreHandler.Instance.AddScore(points);
-                Destroy(gameObject);
-            }
+            if (!collision.gameObject.CompareTag("Player")) return;
+            ScoreHandler.ScoreHandler.Instance.AddScore(points);
+            GameHandler.GameHandler.Instance.SetGhostsEaten();
+            Destroy(gameObject);
         }
     }
 }

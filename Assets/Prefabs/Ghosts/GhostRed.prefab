@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 400334680995070693}
   m_Layer: 0
   m_Name: GhostRed
-  m_TagString: Untagged
+  m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -286,6 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 4
   frightenedSpeed: 10
+  eatenSpeed: 20
   eyesSpriteRenderer: {fileID: 4252187140666899497}
   eyesSpriteArray:
   - {fileID: -1117862435, guid: 5565c0b5e34adb547b04ee4343eee991, type: 3}

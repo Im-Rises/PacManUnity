@@ -19,26 +19,24 @@ namespace Ghosts
         public GameObject scatterModeTarget;
         public GameObject chaseModeTarget;
         public GameObject ghostHomeEntry;
-        private Vector2 _direction;
+        public float initPositionOffset = 0.5f;
+        public Vector2 originalDirection = new(-1, 0);
 
-        private GhostGlobal.GhostMode _ghostMode;
+        private Vector2 _direction;
         private bool _isInGhostHouse;
         private Vector2 _nextTileDestination;
         private Rigidbody2D _rigidbody2D;
-        private float InitPositionOffset { get; } = 0.5f;
-        private Vector2 OriginalDirection { get; } = new(-1, 0);
+        public GhostGlobal.GhostMode GhostMode { get; set; }
 
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
-            _nextTileDestination = (Vector2)transform.position + OriginalDirection * InitPositionOffset;
+            _nextTileDestination = (Vector2)transform.position + originalDirection * initPositionOffset;
         }
 
         private void FixedUpdate()
         {
-            _ghostMode = (GhostGlobal.GhostMode)GameHandler.GameHandler.Instance.State;
-
-            switch (_ghostMode)
+            switch (GhostMode)
             {
                 case GhostGlobal.GhostMode.Scatter:
                     Chase(scatterModeTarget, runSpeed);
@@ -61,8 +59,26 @@ namespace Ghosts
 
         private void OnTriggerEnter2D(Collider2D co)
         {
-            if (co.name == "Player")
-                co.GetComponent<PlayerLife>().Die();
+            if (co.gameObject.CompareTag("Player"))
+            {
+                if (GhostMode == GhostGlobal.GhostMode.Frightened)
+                {
+                    GhostMode = GhostGlobal.GhostMode.Eaten;
+                    if (GameHandler.GameHandler.Instance.GhostEatenCount > 3)
+                        co.gameObject.GetComponent<PlayerLife>().life += 1;
+                    else
+                        ScoreHandler.ScoreHandler.Instance.AddScore(200 * GameHandler.GameHandler.Instance
+                            .GhostEatenCount);
+                }
+                else if (GhostMode == GhostGlobal.GhostMode.Eaten)
+                {
+                    // Do nothing
+                }
+                else
+                {
+                    co.gameObject.GetComponent<PlayerLife>().Die();
+                }
+            }
         }
 
         private void Chase(GameObject target, float speed)
@@ -139,7 +155,7 @@ namespace Ghosts
                 if (ghostHomeEntry.transform.position == transform.position)
                 {
                     _isInGhostHouse = false;
-                    _ghostMode = GhostGlobal.GhostMode.Scatter;
+                    GhostMode = GhostGlobal.GhostMode.Scatter;
                     bodyRenderer.enabled = true;
                 }
 
@@ -189,6 +205,11 @@ namespace Ghosts
             var cellPosition = tilemap.WorldToCell(pos + dir); // Detect a wall or border with using grid's tiles
             var linecast = Physics2D.Linecast(pos + dir, pos); // Detect a wall or border using linecast and tags
             return tilemap.HasTile(cellPosition) || linecast.collider.CompareTag(tilemap.tag);
+        }
+
+        public void ChangeMode(int mode)
+        {
+            GhostMode = (GhostGlobal.GhostMode)mode;
         }
     }
 }
