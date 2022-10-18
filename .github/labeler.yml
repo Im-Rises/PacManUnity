@@ -8,7 +8,7 @@ github-actions:
   - '.github/**/*.yml'
 
 assets:
-  - 'PacManUnity/Assets/**/*'
+  - 'Assets/**/*'
 
 project-settings:
   - '.editorconfig'
