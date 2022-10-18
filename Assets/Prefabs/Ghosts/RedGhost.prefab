@@ -200,9 +200,9 @@ GameObject:
   - component: {fileID: 4252187140733711169}
   - component: {fileID: 8113737774621528019}
   - component: {fileID: 6343554027876874588}
-  - component: {fileID: 400334680995070693}
+  - component: {fileID: 504055882933671957}
   m_Layer: 0
-  m_Name: GhostRed
+  m_Name: RedGhost
   m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272,7 +272,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.6, y: 1.6}
   m_EdgeRadius: 0
---- !u!114 &400334680995070693
+--- !u!114 &504055882933671957
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -281,11 +281,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4252187140733711170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8973b41a1bb736849b1654d11551287d, type: 3}
+  m_Script: {fileID: 11500000, guid: e662ec2f6ab210c4199f140a422a9b8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   runSpeed: 4
-  frightenedSpeed: 10
+  frightenedSpeed: 1
   eatenSpeed: 20
   eyesSpriteRenderer: {fileID: 4252187140666899497}
   eyesSpriteArray:
@@ -302,5 +302,7 @@ MonoBehaviour:
   tilemap: {fileID: 0}
   ghostHome: {fileID: 0}
   scatterModeTarget: {fileID: 0}
-  chaseModeTarget: {fileID: 0}
   ghostHomeEntry: {fileID: 0}
+  chaseModeTarget: {fileID: 0}
+  initPositionOffset: 0.5
+  originalDirection: {x: -1, y: 0}

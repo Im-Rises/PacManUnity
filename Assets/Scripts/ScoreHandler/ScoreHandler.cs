@@ -40,11 +40,9 @@ namespace ScoreHandler
 
         private void SetHighScore()
         {
-            if (_score > PlayerPrefs.GetInt(HighScoreKey))
-            {
-                PlayerPrefs.SetInt(HighScoreKey, _score);
-                highScoreText.SetText("High Score: " + _score);
-            }
+            if (_score <= PlayerPrefs.GetInt(HighScoreKey)) return;
+            PlayerPrefs.SetInt(HighScoreKey, _score);
+            highScoreText.SetText("High Score: " + _score);
         }
     }
 }
