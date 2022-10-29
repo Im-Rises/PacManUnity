@@ -16,9 +16,10 @@ namespace Collectibles
         {
             if (!collision.gameObject.CompareTag("Player")) return;
             ScoreHandler.ScoreHandler.Instance.AddScore(points);
-            AudioHandler.AudioHandler.Instance.PlayAudioPacGumClip(_audioSource.clip);
-            if (TryGetComponent(out SpriteRenderer sprite)) sprite.enabled = false;
-            Destroy(gameObject, 1f);
+            // AudioHandler.AudioHandler.Instance.PlayAudioPacGumClip(_audioSource.clip);
+            // if (TryGetComponent(out SpriteRenderer sprite)) sprite.enabled = false;
+            // Destroy(gameObject, 1f);
+            Destroy(gameObject, 0f);
         }
     }
 }

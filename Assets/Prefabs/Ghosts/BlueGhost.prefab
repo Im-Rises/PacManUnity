@@ -67,7 +67,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -98,6 +98,10 @@ MonoBehaviour:
   runSpeed: 4
   frightenedSpeed: 1
   eatenSpeed: 20
+  tilemap: {fileID: 0}
+  chaseModeTarget: {fileID: 0}
+  scatterModeTarget: {fileID: 0}
+  ghostHomeEntry: {fileID: 0}
   eyesSpriteRenderer: {fileID: 688537740304923800}
   eyesSpriteArray:
   - {fileID: 1433141631, guid: 89a8c6a49ed866742b3d3c82d6675ef0, type: 3}
@@ -110,14 +114,8 @@ MonoBehaviour:
   - {fileID: -1710265292, guid: 89a8c6a49ed866742b3d3c82d6675ef0, type: 3}
   - {fileID: -635487689, guid: 89a8c6a49ed866742b3d3c82d6675ef0, type: 3}
   bodyRenderer: {fileID: 688537740057711896}
-  tilemap: {fileID: 0}
-  ghostHome: {fileID: 0}
-  scatterModeTarget: {fileID: 0}
-  ghostHomeEntry: {fileID: 0}
-  chaseModeTarget: {fileID: 0}
-  initPositionOffset: 0.5
-  originalDirection: {x: -1, y: 0}
-  IsInGhostHouse: 1
+  initDirection: {x: -1, y: 0}
+  redGhost: {fileID: 0}
 --- !u!1 &688537740057711901
 GameObject:
   m_ObjectHideFlags: 0

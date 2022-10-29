@@ -1,15 +1,16 @@
+using UnityEngine;
+
 namespace Ghosts
 {
     public class BlueGhostAiMovement : GhostAiMovement
     {
-        // Start is called before the first frame update
-        private void Start()
-        {
-        }
+        public GameObject redGhost;
 
-        // Update is called once per frame
-        private void Update()
+        protected override void Chase()
         {
+            var targetPos = chaseModeTarget.transform.position;
+            Vector2 directionVector = targetPos - redGhost.transform.position;
+            ChaseTarget((Vector2)targetPos + directionVector, runSpeed);
         }
     }
 }

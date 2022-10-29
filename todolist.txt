@@ -1,0 +1,2 @@
+- Correct offsetted position of the ghost
+- Implement Ghost mode switching

@@ -2,13 +2,9 @@ namespace Ghosts
 {
     public class PinkGhostAiMovement : GhostAiMovement
     {
-        private void Start()
+        protected override void Chase()
         {
-        }
-
-        // Update is called once per frame
-        private void Update()
-        {
+            ChaseTarget(chaseModeTarget, runSpeed);
         }
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -6268979128805892177}
   - component: {fileID: -755005615145856597}
   m_Layer: 0
-  m_Name: YellowGhost
+  m_Name: OrangeGhost
   m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -98,6 +98,10 @@ MonoBehaviour:
   runSpeed: 4
   frightenedSpeed: 1
   eatenSpeed: 20
+  tilemap: {fileID: 0}
+  chaseModeTarget: {fileID: 0}
+  scatterModeTarget: {fileID: 0}
+  ghostHomeEntry: {fileID: 0}
   eyesSpriteRenderer: {fileID: 4648297893094173343}
   eyesSpriteArray:
   - {fileID: 2088771708, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
@@ -110,14 +114,7 @@ MonoBehaviour:
   - {fileID: 398924304, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
   - {fileID: -467363287, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
   bodyRenderer: {fileID: 4648297893019300410}
-  tilemap: {fileID: 0}
-  ghostHome: {fileID: 0}
-  scatterModeTarget: {fileID: 0}
-  ghostHomeEntry: {fileID: 0}
-  chaseModeTarget: {fileID: 0}
-  initPositionOffset: 0.5
-  originalDirection: {x: -1, y: 0}
-  IsInGhostHouse: 1
+  initDirection: {x: -1, y: 0}
 --- !u!1 &4648297893019300391
 GameObject:
   m_ObjectHideFlags: 0

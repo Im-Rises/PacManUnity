@@ -20,13 +20,13 @@ namespace Player
         private Rigidbody2D _rigidbody2D;
         private Vector2 _spawnPosition;
 
-        public Vector2 Destination { get; set; }
+        private Vector2 _destination;
 
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             var position = transform.position;
-            Destination = (Vector2)position + originalDirection * initPositionOffset;
+            _destination = (Vector2)position + originalDirection * initPositionOffset;
             _spawnPosition = position;
             _lastDirection = originalDirection;
             RotateRenderer();
@@ -36,17 +36,17 @@ namespace Player
         {
             // Move the player
             var position = (Vector2)transform.position;
-            var positionVector = Vector2.MoveTowards(position, Destination, speed * Time.deltaTime);
+            var positionVector = Vector2.MoveTowards(position, _destination, speed * Time.deltaTime);
             _rigidbody2D.MovePosition(positionVector);
 
             // Check if the player is centered in the tile
-            var isCentered = position == Destination;
+            var isCentered = position == _destination;
             if (!isCentered) return;
 
             // if is at the middle of a tile, has input and there is no wall in the direction of the input
             if (_lastInput != Vector2.zero && !DetectWallBorder(_lastInput))
             {
-                Destination = position + _lastInput;
+                _destination = position + _lastInput;
                 _lastDirection = _lastInput;
                 animator.SetBool(IsMoving, true);
                 RotateRenderer();
@@ -54,7 +54,7 @@ namespace Player
             // if is at the middle of a tile and there is no wall in the current direction then continue in the same direction
             else if (!DetectWallBorder(_lastDirection))
             {
-                Destination = position + _lastDirection;
+                _destination = position + _lastDirection;
                 animator.SetBool(IsMoving, true);
             }
             else
@@ -85,6 +85,11 @@ namespace Player
 
             if (_inputDirection != Vector2.zero)
                 _lastInput = _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
+        }
+
+        public void SetDestination(Vector2 destination)
+        {
+            _destination = destination;
         }
     }
 }
