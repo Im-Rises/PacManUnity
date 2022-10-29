@@ -4,26 +4,32 @@ using UnityEngine;
 
 namespace GameHandler
 {
-    public enum GameGhostsMode
-    {
-        Chase,
-        Scatter
-    }
+    // public enum GameGhostsMode
+    // {
+    //     Chase,
+    //     Scatter
+    // }
 
     public class GameHandler : MonoBehaviour
     {
         // Singleton
         public static GameHandler Instance { get; private set; }
 
+        // Current Game Mode
+        public GhostMode GameGhostsMode { get; private set; }
+
         // Ghosts
         private GhostAiMovement[] _ghosts;
 
-        // Timers for modes
-        public uint[] ghostsModeTimes = { 10, 7, 20, 7, 20, 5, 20, 5 };
-        private GameGhostsMode _gameGhostsMode;
+
+        // Timer for scatter and chase
+        public uint[] ghostsModeTimes = { 15, 10, 25, 10, 25, 10, 25, 5 };
         private int _ghostsModeTimesIndex;
-        private float _frightenTimer;
         private float _switcherModeTimer;
+
+        // Timer for ghost frightened
+        public uint frightenedTime = 10;
+        private float _frightenTimer;
         private bool _switcherModeTimerPaused;
 
         // Door animator
@@ -57,11 +63,12 @@ namespace GameHandler
         {
             if (!_switcherModeTimerPaused)
             {
+                // If the index is out of bounds, we are in the last mode, which is chase mode.
                 if (_ghostsModeTimesIndex >= ghostsModeTimes.Length)
                 {
-                    // If the index is out of bounds, we are in the last mode, which is chase mode.
-                    if (_gameGhostsMode != GameGhostsMode.Chase) // If we are not in chase mode, switch to chase mode.
+                    if (GameGhostsMode != GhostMode.Chase)
                     {
+                        // If we are not in chase mode, switch to chase mode.
                         SwitchingChaseMode();
                         PrintCurrentMode();
                     }
@@ -69,6 +76,7 @@ namespace GameHandler
                     return;
                 }
 
+                // Update the timer and check if it's time to switch mode.
                 _switcherModeTimer += Time.deltaTime;
                 if (_switcherModeTimer >= ghostsModeTimes[_ghostsModeTimesIndex])
                 {
@@ -76,19 +84,24 @@ namespace GameHandler
                     _switcherModeTimer = 0;
                     UpdateGhostsMode();
                 }
+
+                // Update the current mode text.
+                PrintCurrentMode();
             }
             else
             {
+                // Update the timer and check if it's time to end the frighten mode.
                 _frightenTimer += Time.deltaTime;
                 if (_frightenTimer >= 7)
                 {
                     _frightenTimer = 0;
                     _switcherModeTimerPaused = false;
                     ghostHouseDoor.SetBool(IsOpen, false);
+                    UpdateGhostsMode();
                 }
-            }
 
-            PrintCurrentMode();
+                PrintFrightenMode();
+            }
         }
 
         #endregion
@@ -103,22 +116,24 @@ namespace GameHandler
                 SwitchingScatterMode();
         }
 
-        public void SwitchingChaseMode()
+        private void SwitchingChaseMode()
         {
-            _gameGhostsMode = GameGhostsMode.Chase;
+            GameGhostsMode = GhostMode.Chase;
             foreach (var ghost in _ghosts)
                 ghost.SetGhostMode(GhostMode.Chase);
         }
 
-        public void SwitchingScatterMode()
+        private void SwitchingScatterMode()
         {
-            _gameGhostsMode = GameGhostsMode.Scatter;
+            GameGhostsMode = GhostMode.Scatter;
             foreach (var ghost in _ghosts)
                 ghost.SetGhostMode(GhostMode.Scatter);
         }
 
         public void SwitchingFrightenedMode()
         {
+            // Not changing the game mode for eaten ghosts to be able to switch back to the normal current mode.
+            // GameGhostsMode = GhostMode.Frightened;
             _switcherModeTimerPaused = true;
             foreach (var ghost in _ghosts) ghost.SetGhostMode(GhostMode.Frightened);
             ghostHouseDoor.SetBool(IsOpen, true);
@@ -126,12 +141,7 @@ namespace GameHandler
 
         #endregion
 
-        #region Other
-
-        public GameGhostsMode GetGameGhostsMode()
-        {
-            return _gameGhostsMode;
-        }
+        #region Print text for current mode
 
         private void PrintCurrentMode()
         {
@@ -142,7 +152,12 @@ namespace GameHandler
             }
 
             currentModeText.text =
-                $"{_gameGhostsMode} for {ghostsModeTimes[_ghostsModeTimesIndex] - _switcherModeTimer:F2}s";
+                $"{GameGhostsMode} for {ghostsModeTimes[_ghostsModeTimesIndex] - _switcherModeTimer:F2}s";
+        }
+
+        private void PrintFrightenMode()
+        {
+            currentModeText.text = $"Frighten for {frightenedTime - _frightenTimer:F2}s";
         }
 
         #endregion

@@ -106,7 +106,7 @@ namespace Ghosts
                     UpdateEatenAnimation();
                     break;
                 default:
-                    Debug.LogError("Invalid Ghost Mode at 'SetGhostMode'");
+                    // Debug.LogError("Invalid Ghost Mode at 'SetGhostMode'");
                     throw new ArgumentOutOfRangeException();
             }
 
@@ -178,7 +178,7 @@ namespace Ghosts
                 // If ghost is in ghost home, move it to the ghost home exit and change ghost mode
                 ChaseTarget(ghostHomeEntry, runSpeed);
                 if (transform.position == ghostHomeEntry.transform.position) _isInGhostHome = true;
-                _ghostMode = GameHandler.GameHandler.Instance.GetGameGhostsMode();
+                _ghostMode = GameHandler.GameHandler.Instance.GameGhostsMode;
             }
         }
 

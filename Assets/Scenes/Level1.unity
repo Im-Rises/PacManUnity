@@ -11460,8 +11460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7340687eb38684a85b7f40d5cfc910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ghostsModeTimes: 020000000200000002000000
-  ghostHouseDoor: {fileID: 901776710}
+  ghostsModeTimes: 0a00000007000000140000000700000014000000050000001400000005000000
+  ghostHouseDoor: {fileID: 901776712}
   currentModeText: {fileID: 717308384}
 --- !u!114 &690380358
 MonoBehaviour:
@@ -13088,9 +13088,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2025662619132619578, guid: eb40f3693a309a54e9487c2b3e45fc92, type: 3}
   m_PrefabInstance: {fileID: 898054127}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &901776710 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6280111002132371760, guid: bfaf629bb944ff2469eb1226ffb09be1, type: 3}
+--- !u!95 &901776712 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6280111002132371767, guid: bfaf629bb944ff2469eb1226ffb09be1, type: 3}
   m_PrefabInstance: {fileID: 6280111002750674427}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &923774900
