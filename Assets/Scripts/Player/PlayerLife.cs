@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Player
 {
@@ -15,7 +16,7 @@ namespace Player
         public Sprite heartTexture;
         public Vector3 heartSpriteScale = new(1f, 1f);
 
-        // Lifes
+        // Lives
         public int life = 3;
 
         // Hearts display properties
@@ -67,25 +68,21 @@ namespace Player
             // _hearts[life].SetActive(false);
         }
 
-        public void Die()
+        public void Kill()
         {
-            // life--;
-            // GetComponent<PlayerInput>().enabled = false;
-            // anim.SetBool(IsDead, true);
-            // if (life <= 0)
-            // {
-            //     gameOverText.enabled = true;
-            //     Invoke(nameof(ReloadScene), 4f);
-            // }
-            // else
-            // {
-            //     Invoke(nameof(Respawn), 2f);
-            // }
-        }
+            life--;
+            GetComponent<PlayerInput>().enabled = false;
+            anim.SetBool(IsDead, true);
 
-        public void ReloadScene()
-        {
-            // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (life <= 0)
+            {
+                gameOverText.enabled = true;
+                // Invoke(nameof(ReloadScene), 4f);
+            }
+            else
+            {
+                // Invoke(nameof(Respawn), 2f);
+            }
         }
     }
 }

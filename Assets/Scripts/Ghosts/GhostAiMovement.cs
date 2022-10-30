@@ -371,9 +371,8 @@ namespace Ghosts
             if (other.CompareTag("Player"))
                 if (_ghostMode is GhostMode.Frightened or GhostMode.Eaten)
                     SetGhostMode(GhostMode.Eaten);
-            // else
-            //     // If ghost is not eaten, then kill the player
-            //     GameHandler.GameHandler.Instance.KillPlayer();
+                else
+                    GameHandler.GameHandler.Instance.KillPlayer();
         }
 
         public void SetNextTileDestination(Vector2 nextTileDestination)

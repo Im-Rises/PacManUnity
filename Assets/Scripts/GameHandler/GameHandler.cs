@@ -1,6 +1,8 @@
 using Ghosts;
+using Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GameHandler
 {
@@ -145,12 +147,16 @@ namespace GameHandler
 
         private void PrintCurrentMode()
         {
-            if (_ghostsModeTimesIndex >= ghostsModeTimes.Length)
+            // If we are in the last mode, which is chase mode.
+            // or if the last mode in the array is chase mode then we are in final chase mode.
+            if (_ghostsModeTimesIndex >= ghostsModeTimes.Length ||
+                (_ghostsModeTimesIndex == ghostsModeTimes.Length - 1 && GameGhostsMode == GhostMode.Chase))
             {
                 currentModeText.text = "Chase";
                 return;
             }
 
+            // Print the current mode.
             currentModeText.text =
                 $"{GameGhostsMode} for {ghostsModeTimes[_ghostsModeTimesIndex] - _switcherModeTimer:F2}s";
         }
@@ -158,6 +164,37 @@ namespace GameHandler
         private void PrintFrightenMode()
         {
             currentModeText.text = $"Frighten for {frightenedTime - _frightenTimer:F2}s";
+        }
+
+        #endregion
+
+        #region Reset functions
+
+        public void RestartGame()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        public void KillPlayer()
+        {
+            FindObjectOfType<PlayerLife>().Kill();
+
+            // Reset the ghosts positions
+            // foreach (var ghost in _ghosts) ghost.Reset();
+
+            // Reset the player position
+            // FindObjectOfType<PlayerMovement>().Reset();
+        }
+
+        public void ResetGame()
+        {
+            // Reset();
+            // _ghostsModeTimesIndex = 0;
+            // _switcherModeTimer = 0;
+            // _frightenTimer = 0;
+            // _switcherModeTimerPaused = false;
+            // ghostHouseDoor.SetBool(IsOpen, false);
+            // UpdateGhostsMode();
         }
 
         #endregion
