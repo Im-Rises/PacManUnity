@@ -6,7 +6,7 @@ namespace Player
 {
     public class PlayerLife : MonoBehaviour
     {
-        private static readonly int IsDead = Animator.StringToHash("isDead");
+        private static readonly int IsDead = Animator.StringToHash(AnimationsConstants.PlayerIsDead);
 
         // UI elements
         public TextMeshProUGUI gameOverText;
@@ -68,11 +68,18 @@ namespace Player
             // _hearts[life].SetActive(false);
         }
 
+        // private void DecreaseLife()
+        // {
+        //     life--;
+        //     anim.SetBool(IsDead, false);
+        //     _hearts[life].SetActive(false);
+        // }
+
         public void Kill()
         {
             life--;
-            GetComponent<PlayerInput>().enabled = false;
-            anim.SetBool(IsDead, true);
+            anim.SetBool(IsDead, false);
+            _hearts[life].SetActive(false);
 
             if (life <= 0)
             {

@@ -36,7 +36,7 @@ namespace GameHandler
 
         // Door animator
         public Animator ghostHouseDoor;
-        private static readonly int IsOpen = Animator.StringToHash("isOpen");
+        private static readonly int IsOpen = Animator.StringToHash(AnimationsConstants.DoorIsOpen);
 
         // Current Ghost mode text
         public TextMeshProUGUI currentModeText;

@@ -41,11 +41,10 @@ namespace Ghosts
         // Ghost current mode
         private GhostMode _ghostMode;
         private bool _hasChangedMode;
-        private Vector2 _nextTileDestination;
+        public Vector2 NextTileDestination { get; set; }
 
         // Components
         private Rigidbody2D _rigidbody2D;
-
 
         // Ghost home
         private bool _isInGhostHome;
@@ -57,7 +56,7 @@ namespace Ghosts
 
             // Set initial direction
             _direction = initDirection;
-            _nextTileDestination = (Vector2)transform.position + initDirection;
+            NextTileDestination = (Vector2)transform.position + initDirection;
         }
 
         private void FixedUpdate()
@@ -135,7 +134,7 @@ namespace Ghosts
             MoveGhost(position, frightenedSpeed);
 
             // Check if ghost reached next tile
-            var isCentered = position == _nextTileDestination;
+            var isCentered = position == NextTileDestination;
             if (!isCentered)
                 return;
 
@@ -162,7 +161,7 @@ namespace Ghosts
                 _direction = randomDirection;
             }
 
-            _nextTileDestination = position + _direction;
+            NextTileDestination = position + _direction;
         }
 
         private void Eaten()
@@ -201,7 +200,7 @@ namespace Ghosts
             MoveGhost(position, speed);
 
             // Check if ghost reached next tile
-            var isCentered = position == _nextTileDestination;
+            var isCentered = position == NextTileDestination;
             if (!isCentered)
                 return;
 
@@ -291,7 +290,7 @@ namespace Ghosts
             }
 
             _direction = shortestDirection;
-            _nextTileDestination = position + _direction;
+            NextTileDestination = position + _direction;
         }
 
         #endregion
@@ -300,7 +299,7 @@ namespace Ghosts
 
         private void MoveGhost(Vector2 position, float speed)
         {
-            var positionVector = Vector2.MoveTowards(position, _nextTileDestination, speed * Time.deltaTime);
+            var positionVector = Vector2.MoveTowards(position, NextTileDestination, speed * Time.deltaTime);
             _rigidbody2D.MovePosition(positionVector);
         }
 
@@ -368,16 +367,16 @@ namespace Ghosts
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Player"))
+            if (other.CompareTag(TagsConstants.PLAYER_TAG))
                 if (_ghostMode is GhostMode.Frightened or GhostMode.Eaten)
                     SetGhostMode(GhostMode.Eaten);
                 else
                     GameHandler.GameHandler.Instance.KillPlayer();
         }
 
-        public void SetNextTileDestination(Vector2 nextTileDestination)
-        {
-            _nextTileDestination = nextTileDestination;
-        }
+        // public void SetNextTileDestination(Vector2 nextTileDestination)
+        // {
+        //     _nextTileDestination = nextTileDestination;
+        // }
     }
 }

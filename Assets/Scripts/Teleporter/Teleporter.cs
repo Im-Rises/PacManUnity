@@ -12,11 +12,11 @@ namespace Teleporter
         {
             other.GetComponent<Transform>().position = target.GetComponent<Transform>().position;
 
-            if (other.gameObject.CompareTag("Player"))
-                other.gameObject.GetComponent<PlayerController>().SetDestination(target.transform.position);
-            else if (other.gameObject.CompareTag("Ghost"))
+            if (other.gameObject.CompareTag(TagsConstants.PLAYER_TAG))
+                other.gameObject.GetComponent<PlayerController>().NextDestination = target.transform.position;
+            else if (other.gameObject.CompareTag(TagsConstants.ENEMY_TAG))
                 other.gameObject.GetComponent<GhostAiMovement>()
-                    .SetNextTileDestination(target.transform.position);
+                    .NextTileDestination = target.transform.position;
         }
     }
 }

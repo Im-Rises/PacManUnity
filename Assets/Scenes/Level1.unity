@@ -22653,6 +22653,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 540258870}
     - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
+      propertyPath: initDirection.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: scatterModeTarget
       value: 
       objectReference: {fileID: 1694292485}
