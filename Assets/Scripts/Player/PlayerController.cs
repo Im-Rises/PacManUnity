@@ -6,7 +6,7 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-        private static readonly int IsMoving = Animator.StringToHash(AnimationsConstants.PlayerIsMoving);
+        private static readonly int IsMoving = Animator.StringToHash("isMoving");
         public float speed = 10f;
 
         public Tilemap tilemap;
@@ -36,13 +36,12 @@ namespace Player
         {
             // Move the player
             var position = (Vector2)transform.position;
-
             var positionVector = Vector2.MoveTowards(position, NextDestination, speed * Time.deltaTime);
             _rigidbody2D.MovePosition(positionVector);
 
             // Check if the player is centered in the tile
-            var isAtDestination = position == NextDestination;
-            if (!isAtDestination) return;
+            var isCentered = position == NextDestination;
+            if (!isCentered) return;
 
             // if is at the middle of a tile, has input and there is no wall in the direction of the input
             if (_lastInput != Vector2.zero && !DetectWallBorder(_lastInput))
@@ -73,50 +72,10 @@ namespace Player
         private bool DetectWallBorder(Vector2 dir)
         {
             var pos = (Vector2)transform.position;
-            var posDir = pos + dir;
-
-            // If at the center of a tile check if there is a wall in the direction of the input
-            var cellPosition = tilemap.WorldToCell(posDir); // Detect a wall or border with using grid's tiles
-            var linecast = Physics2D.Linecast(posDir, pos); // Detect a wall or border using linecast and tags
+            var cellPosition = tilemap.WorldToCell(pos + dir); // Detect a wall or border with using grid's tiles
+            var linecast = Physics2D.Linecast(pos + dir, pos); // Detect a wall or border using linecast and tags
             return tilemap.HasTile(cellPosition) || linecast.collider.CompareTag(tilemap.tag);
-
-
-            // var pos = (Vector2)transform.position;
-            // var posDir = pos + dir;
-            //
-            // if (dir.x != 0)
-            // {
-            //     if (pos.x % 1 == 0 && pos.y % 1 == 0)
-            //     {
-            //         // If at the center of a tile check if there is a wall in the direction of the input
-            //         return hasTile(posDir);
-            //     }
-            //
-            //     // If is between two tiles check two tiles in the direction of the input
-            //     Vector2 posDir2 = posDir + dir;
-            //     return hasTile(posDir) || hasTile(posDir2);
-            // }
-            //
-            // if (dir.y != 0)
-            // {
-            //     if (pos.x % 1 == 0 && pos.y % 1 == 0)
-            //     {
-            //         return hasTile(posDir);
-            //     }
-            //
-            //     // If is between two tiles check two tiles in the direction of the input
-            //     Vector2 posDir2 = posDir + dir;
-            //     return hasTile(posDir) || hasTile(posDir2);
-            // }
-            //
-            // return true;
         }
-
-        // private bool hasTile(Vector2 pos)
-        // {
-        //     var cellPosition = tilemap.WorldToCell(pos);
-        //     return tilemap.HasTile(cellPosition);
-        // }
 
         private void OnMove(InputValue value)
         {
