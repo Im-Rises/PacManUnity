@@ -367,7 +367,7 @@ namespace Ghosts
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag(TagsConstants.PLAYER_TAG))
+            if (other.CompareTag(TagsConstants.PlayerTag))
                 if (_ghostMode is GhostMode.Frightened or GhostMode.Eaten)
                     SetGhostMode(GhostMode.Eaten);
                 else

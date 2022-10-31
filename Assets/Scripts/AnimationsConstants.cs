@@ -1,4 +1,4 @@
-public class AnimationsConstants
+public static class AnimationsConstants
 {
     // Player animations
     public const string PlayerIsMoving = "isMoving";

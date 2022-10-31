@@ -11,7 +11,7 @@ namespace Player
 
         // Animator
         public Animator animator;
-        private static readonly int IsMoving = Animator.StringToHash("isMoving");
+        private static readonly int IsMoving = Animator.StringToHash(AnimationsConstants.PlayerIsMoving);
 
         // Rigidbody
         private Rigidbody2D _rigidbody2D;
