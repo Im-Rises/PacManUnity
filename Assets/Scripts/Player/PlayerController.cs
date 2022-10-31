@@ -6,20 +6,28 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-        private static readonly int IsMoving = Animator.StringToHash("isMoving");
+        // Player speed
         public float speed = 10f;
 
-        public Tilemap tilemap;
-        public Vector2 originalDirection = new(-1, 0);
-
+        // Animator
         public Animator animator;
+        private static readonly int IsMoving = Animator.StringToHash("isMoving");
 
-
-        private Vector2 _inputDirection;
-        private Vector2 _lastDirection;
-        private Vector2 _lastInput;
+        // Rigidbody
         private Rigidbody2D _rigidbody2D;
+
+        // Tilemap
+        public Tilemap tilemap;
+
+        // Init spawn position and direction
+        public Vector2 originalDirection = new(-1, 0);
         private Vector2 _spawnPosition;
+
+        // Player direction
+        private Vector2 _inputDirection;
+        private Vector2 _lastInputDirection;
+        private Vector2 _lastDirection;
+
 
         public Vector2 NextDestination { get; set; }
 
@@ -41,24 +49,23 @@ namespace Player
             _rigidbody2D.MovePosition(positionVector);
 
             // Check if the player is centered in the tile
-            var isAtDestination = position == NextDestination;
-            if (!isAtDestination) return;
+            var isCentered = position == NextDestination;
+            if (!isCentered) return;
 
-            // check if it is possible to go in the direction of the last input
-            if (_lastInput != Vector2.zero && !DetectWallBorderLastInput(_lastInput))
+            // if is at the middle of a tile, has input and there is no wall in the direction of the input
+            if (_lastInputDirection != Vector2.zero && !DetectWallBorder(_lastInputDirection))
             {
-                NextDestination = position + _lastInput / 2;
+                NextDestination = position + _lastInputDirection;
+                _lastDirection = _lastInputDirection;
                 animator.SetBool(IsMoving, true);
-                _lastDirection = _lastInput;
                 RotateRenderer();
             }
-            // if there is no wall in the current direction then continue in the same direction
+            // if is at the middle of a tile and there is no wall in the current direction then continue in the same direction
             else if (!DetectWallBorder(_lastDirection))
             {
-                NextDestination = position + _lastDirection / 2;
+                NextDestination = position + _lastDirection;
                 animator.SetBool(IsMoving, true);
             }
-            // Stop pacman because there is a wall in the current direction
             else
             {
                 animator.SetBool(IsMoving, false);
@@ -75,47 +82,8 @@ namespace Player
         {
             var pos = (Vector2)transform.position;
             var cellPosition = tilemap.WorldToCell(pos + dir); // Detect a wall or border with using grid's tiles
-            // var linecast = Physics2D.Linecast(pos + dir, pos); // Detect a wall or border using linecast and tags
-            return tilemap.HasTile(cellPosition);// || linecast.collider.CompareTag(tilemap.tag);
-        }
-
-        private bool DetectWallBorderLastInput(Vector2 dir)
-        {
-            var pos = (Vector2)transform.position;
-            var posDir = pos + dir;
-
-            if (dir.x != 0)
-            {
-                if (pos.y % 1 == 0)
-                {
-                    // if the player is centered in a tile check the tile in the direction of the input
-                    return DetectWallBorder(dir);
-                }
-                else
-                {
-                    // if the player is not centered in a tile check two tiles in the direction of the input
-                    var tile1 = tilemap.WorldToCell(posDir + Vector2.down / 2);
-                    var tile2 = tilemap.WorldToCell(posDir + Vector2.up / 2);
-                    return tilemap.HasTile(tile1) || tilemap.HasTile(tile2);
-                }
-            }
-            else if (dir.y != 0)
-            {
-                if (pos.x % 1 == 0)
-                {
-                    // if the player is centered in a tile check the tile in the direction of the input
-                    return DetectWallBorder(dir);
-                }
-                else
-                {
-                    // if the player is not centered in a tile check two tiles in the direction of the input
-                    var tile1 = tilemap.WorldToCell(posDir + Vector2.left / 2);
-                    var tile2 = tilemap.WorldToCell(posDir + Vector2.right / 2);
-                    return tilemap.HasTile(tile1) || tilemap.HasTile(tile2);
-                }
-            }
-
-            return false;
+            var linecast = Physics2D.Linecast(pos + dir, pos); // Detect a wall or border using linecast and tags
+            return tilemap.HasTile(cellPosition) || linecast.collider.CompareTag(tilemap.tag);
         }
 
         private void OnMove(InputValue value)
@@ -125,7 +93,8 @@ namespace Player
             if (_inputDirection.x != 0) _inputDirection.y = 0; // Create a priority for x movement
 
             if (_inputDirection != Vector2.zero)
-                _lastInput = _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
+                _lastInputDirection =
+                    _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
         }
     }
 }
