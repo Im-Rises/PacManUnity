@@ -33,11 +33,16 @@ namespace Player
 
         private void Start()
         {
-            _rigidbody2D = GetComponent<Rigidbody2D>();
             var position = transform.position;
-            NextDestination = (Vector2)position + originalDirection * 0.5f;
+            _rigidbody2D = GetComponent<Rigidbody2D>();
             _spawnPosition = position;
             _lastDirection = originalDirection;
+
+            if (transform.position.x % 1 != 0 || transform.position.y % 1 != 0)
+                NextDestination = (Vector2)position + originalDirection * 0.5f;
+            else
+                NextDestination = (Vector2)position + originalDirection;
+
             RotateRenderer();
         }
 

@@ -94,7 +94,7 @@ namespace GameHandler
             {
                 // Update the timer and check if it's time to end the frighten mode.
                 _frightenTimer += Time.deltaTime;
-                if (_frightenTimer >= 7)
+                if (_frightenTimer >= frightenedTime)
                 {
                     _frightenTimer = 0;
                     _switcherModeTimerPaused = false;

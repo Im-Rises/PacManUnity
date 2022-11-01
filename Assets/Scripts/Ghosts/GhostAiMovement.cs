@@ -46,8 +46,12 @@ namespace Ghosts
         // Components
         private Rigidbody2D _rigidbody2D;
 
-        // Ghost home
-        private bool _isInGhostHome;
+        // // Ghost home
+        // private bool _isInGhostHome;
+        public Transform[] homeWayPoints;
+        private bool _ghostHomeReached;
+        private int _currentHomeWayPointIndex;
+        private bool _isLeavingGhostHome;
 
         private void Start()
         {
@@ -65,9 +69,11 @@ namespace Ghosts
             {
                 case GhostMode.Scatter:
                     Scatter();
+                    UpdateRunAnimation();
                     break;
                 case GhostMode.Chase:
                     Chase();
+                    UpdateRunAnimation();
                     break;
                 case GhostMode.Frightened:
                     Frightened();
@@ -83,8 +89,8 @@ namespace Ghosts
 
         public void SetGhostMode(GhostMode ghostMode)
         {
-            if (_ghostMode == GhostMode.Eaten)
-                return; // If ghost is eaten, it can't change mode until it reaches the ghost home
+            if (_ghostMode == GhostMode.Eaten && !_isLeavingGhostHome)
+                return; // If ghost is eaten, it can't change mode until it reaches the ghost home (except if it's leaving the ghost home)
 
             _ghostMode = ghostMode;
 
@@ -166,19 +172,74 @@ namespace Ghosts
 
         private void Eaten()
         {
-            if (!_isInGhostHome)
+            var pos = transform.position;
+            var waypoint = homeWayPoints[0].position;
+
+            // Check if ghost has reached the ghost home
+            if (!_ghostHomeReached)
             {
-                // If ghost is not in ghost home, move it to the ghost home
-                ChaseTarget(ghostHomeEntry, eatenSpeed);
-                if (transform.position == ghostHomeEntry.transform.position) _isInGhostHome = true;
+                if (Vector2.Distance(pos, waypoint) > 1f)
+                {
+                    ChaseTarget(ghostHomeEntry, eatenSpeed);
+                }
+                else
+                {
+                    _ghostHomeReached = true;
+                    bodyRenderer.enabled = true;
+                    UpdateRunAnimation();
+                }
+
+                // UpdateEatenAnimation();
+            }
+            // if the ghost has reached the ghost home
+            else
+            {
+                // Follow the ghost home waypoints
+                if (!_isLeavingGhostHome)
+                {
+                    _isLeavingGhostHome = FollowPath(eatenSpeed);
+                }
+                else
+                {
+                    // Reverse the ghost home waypoints
+                    var hasLeavedHouse = FollowPath(runSpeed, true);
+
+                    // If the ghost has left the ghost home, then set the ghost mode to the current Game Ghost Mode
+                    if (hasLeavedHouse)
+                    {
+                        SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode);
+                        _ghostHomeReached = false;
+                        _isLeavingGhostHome = false;
+                        _currentHomeWayPointIndex = 0;
+                    }
+                }
+            }
+        }
+
+        private bool FollowPath(float speed, bool reverse = false)
+        {
+            if (transform.position != homeWayPoints[_currentHomeWayPointIndex].position)
+            {
+                var p = Vector2.MoveTowards(transform.position,
+                    homeWayPoints[_currentHomeWayPointIndex].position,
+                    speed * Time.deltaTime);
+                _rigidbody2D.MovePosition(p);
+                UpdateFollowPathAnimation();
             }
             else
             {
-                // If ghost is in ghost home, move it to the ghost home exit and change ghost mode
-                ChaseTarget(ghostHomeEntry, runSpeed);
-                if (transform.position == ghostHomeEntry.transform.position) _isInGhostHome = true;
-                _ghostMode = GameHandler.GameHandler.Instance.GameGhostsMode;
+                switch (reverse)
+                {
+                    case false when _currentHomeWayPointIndex == homeWayPoints.Length - 1:
+                    case true when _currentHomeWayPointIndex == 0:
+                        return true;
+                    default:
+                        _currentHomeWayPointIndex += reverse ? -1 : 1;
+                        break;
+                }
             }
+
+            return false;
         }
 
         #endregion
@@ -206,11 +267,10 @@ namespace Ghosts
 
             List<Vector2> possibleDirections;
             // Check where the ghost can go
-            if (_ghostMode == GhostMode.Eaten)
-                possibleDirections = FindPossibleDirectionsWithoutDoor();
-            else
-                possibleDirections = FindPossibleDirections();
-
+            // possibleDirections = _ghostMode == GhostMode.Eaten
+            //     ? FindPossibleDirectionsWithoutDoor()
+            //     : FindPossibleDirections();
+            possibleDirections = FindPossibleDirections();
 
             // if two or more possible directions then delete the opposite direction (preventing the ghost from going back)
             if (possibleDirections.Count > 1)
@@ -221,11 +281,16 @@ namespace Ghosts
             // Calculate the shortest distance to the target
             CalculateNextTileDestination(possibleDirections, position, targetPos);
 
-            // TODO: Code here or not ?
-            if (_ghostMode is GhostMode.Chase or GhostMode.Scatter)
-                UpdateRunAnimation();
-            else if (_ghostMode == GhostMode.Eaten)
-                UpdateEatenAnimation();
+            // Update animation each tile
+            switch (_ghostMode)
+            {
+                case GhostMode.Chase or GhostMode.Scatter:
+                    UpdateRunAnimation();
+                    break;
+                case GhostMode.Eaten:
+                    UpdateEatenAnimation();
+                    break;
+            }
         }
 
         #endregion
@@ -252,27 +317,27 @@ namespace Ghosts
             return possibleDirections;
         }
 
-        private List<Vector2> FindPossibleDirectionsWithoutDoor()
-        {
-            var up = Vector2.up;
-            var down = Vector2.down;
-            var left = Vector2.left;
-            var right = Vector2.right;
-
-            var pos = transform.position;
-
-            var possibleDirections = new List<Vector2>();
-            if (!DetectWalls(up, pos))
-                possibleDirections.Add(up);
-            if (!DetectWalls(down, pos))
-                possibleDirections.Add(down);
-            if (!DetectWalls(left, pos))
-                possibleDirections.Add(left);
-            if (!DetectWalls(right, pos))
-                possibleDirections.Add(right);
-
-            return possibleDirections;
-        }
+        // private List<Vector2> FindPossibleDirectionsWithoutDoor()
+        // {
+        //     var up = Vector2.up;
+        //     var down = Vector2.down;
+        //     var left = Vector2.left;
+        //     var right = Vector2.right;
+        //
+        //     var pos = transform.position;
+        //
+        //     var possibleDirections = new List<Vector2>();
+        //     if (!DetectWalls(up, pos))
+        //         possibleDirections.Add(up);
+        //     if (!DetectWalls(down, pos))
+        //         possibleDirections.Add(down);
+        //     if (!DetectWalls(left, pos))
+        //         possibleDirections.Add(left);
+        //     if (!DetectWalls(right, pos))
+        //         possibleDirections.Add(right);
+        //
+        //     return possibleDirections;
+        // }
 
         private void CalculateNextTileDestination(List<Vector2> possibleDirections, Vector2 position, Vector2 targetPos)
         {
@@ -363,6 +428,22 @@ namespace Ghosts
             };
         }
 
+        private void UpdateFollowPathAnimation()
+        {
+            Vector2 dir = homeWayPoints[_currentHomeWayPointIndex].position - transform.position;
+            eyesSpriteRenderer.sprite = dir.y switch
+            {
+                > 0 => eyesSpriteArray[2],
+                < 0 => eyesSpriteArray[3],
+                _ => dir.x switch
+                {
+                    > 0 => eyesSpriteArray[0],
+                    < 0 => eyesSpriteArray[1],
+                    _ => eyesSpriteRenderer.sprite
+                }
+            };
+        }
+
         #endregion
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -373,10 +454,5 @@ namespace Ghosts
                 else
                     GameHandler.GameHandler.Instance.KillPlayer();
         }
-
-        // public void SetNextTileDestination(Vector2 nextTileDestination)
-        // {
-        //     _nextTileDestination = nextTileDestination;
-        // }
     }
 }
