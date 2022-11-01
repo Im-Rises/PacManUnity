@@ -6,6 +6,11 @@ using Random = UnityEngine.Random;
 
 namespace Ghosts
 {
+    /*
+     * TODO:
+     * - Ghost sometimes are entering the house after leaving it
+     * - Spawn ghosts in the house as their init position
+     */
     public enum GhostMode
     {
         Chase,
@@ -46,8 +51,8 @@ namespace Ghosts
         // Components
         private Rigidbody2D _rigidbody2D;
 
-        // // Ghost home
-        // private bool _isInGhostHome;
+        // Ghost home
+        public bool isInGhostHome;
         public Transform[] homeWayPoints;
         private bool _ghostHomeReached;
         private int _currentHomeWayPointIndex;
@@ -61,6 +66,14 @@ namespace Ghosts
             // Set initial direction
             _direction = initDirection;
             NextTileDestination = (Vector2)transform.position + initDirection;
+
+            // Set ghost in house
+            // if (isInGhostHome){
+            // _ghostMode = GhostMode.Eaten;
+            // _ghostHomeReached = true;
+            // _isLeavingGhostHome = true;
+            // _currentHomeWayPointIndex= homeWayPoints.Length - 1;
+            // }
         }
 
         private void FixedUpdate()
@@ -69,11 +82,9 @@ namespace Ghosts
             {
                 case GhostMode.Scatter:
                     Scatter();
-                    UpdateRunAnimation();
                     break;
                 case GhostMode.Chase:
                     Chase();
-                    UpdateRunAnimation();
                     break;
                 case GhostMode.Frightened:
                     Frightened();
@@ -265,12 +276,7 @@ namespace Ghosts
             if (!isCentered)
                 return;
 
-            List<Vector2> possibleDirections;
-            // Check where the ghost can go
-            // possibleDirections = _ghostMode == GhostMode.Eaten
-            //     ? FindPossibleDirectionsWithoutDoor()
-            //     : FindPossibleDirections();
-            possibleDirections = FindPossibleDirections();
+            var possibleDirections = FindPossibleDirections();
 
             // if two or more possible directions then delete the opposite direction (preventing the ghost from going back)
             if (possibleDirections.Count > 1)
@@ -305,39 +311,17 @@ namespace Ghosts
             var right = Vector2.right;
 
             var possibleDirections = new List<Vector2>();
-            if (!DetectWallsAndDoor(up))
+            if (!DetectWallsAndDoors(up))
                 possibleDirections.Add(up);
-            if (!DetectWallsAndDoor(down))
+            if (!DetectWallsAndDoors(down))
                 possibleDirections.Add(down);
-            if (!DetectWallsAndDoor(left))
+            if (!DetectWallsAndDoors(left))
                 possibleDirections.Add(left);
-            if (!DetectWallsAndDoor(right))
+            if (!DetectWallsAndDoors(right))
                 possibleDirections.Add(right);
 
             return possibleDirections;
         }
-
-        // private List<Vector2> FindPossibleDirectionsWithoutDoor()
-        // {
-        //     var up = Vector2.up;
-        //     var down = Vector2.down;
-        //     var left = Vector2.left;
-        //     var right = Vector2.right;
-        //
-        //     var pos = transform.position;
-        //
-        //     var possibleDirections = new List<Vector2>();
-        //     if (!DetectWalls(up, pos))
-        //         possibleDirections.Add(up);
-        //     if (!DetectWalls(down, pos))
-        //         possibleDirections.Add(down);
-        //     if (!DetectWalls(left, pos))
-        //         possibleDirections.Add(left);
-        //     if (!DetectWalls(right, pos))
-        //         possibleDirections.Add(right);
-        //
-        //     return possibleDirections;
-        // }
 
         private void CalculateNextTileDestination(List<Vector2> possibleDirections, Vector2 position, Vector2 targetPos)
         {
@@ -368,7 +352,7 @@ namespace Ghosts
             _rigidbody2D.MovePosition(positionVector);
         }
 
-        private bool DetectWallsAndDoor(Vector2 dir)
+        private bool DetectWallsAndDoors(Vector2 dir)
         {
             var pos = (Vector2)transform.position;
             return DetectWalls(dir, pos) || DetectDoor(dir, pos);
