@@ -10,7 +10,7 @@ namespace DebugPacMan
 
         private void FixedUpdate()
         {
-            Debug.Log("Wall Borders: " + transform.position);
+            Debug.Log("---Wall Borders: " + transform.position + "---");
             Debug.Log("Wall Detected Up: " + DetectWallsAndDoors(Vector2.up));
             Debug.Log("Wall Detected Down: " + DetectWallsAndDoors(Vector2.down));
             Debug.Log("Wall Detected Left: " + DetectWallsAndDoors(Vector2.left));

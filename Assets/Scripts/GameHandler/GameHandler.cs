@@ -58,7 +58,7 @@ namespace GameHandler
         private void Start()
         {
             _ghosts = FindObjectsOfType<GhostAiMovement>();
-            UpdateGhostsMode();
+            // UpdateGhostsMode();
         }
 
         private void Update()
@@ -135,7 +135,6 @@ namespace GameHandler
         public void SwitchingFrightenedMode()
         {
             // Not changing the game mode for eaten ghosts to be able to switch back to the normal current mode.
-            // GameGhostsMode = GhostMode.Frightened;
             _switcherModeTimerPaused = true;
             foreach (var ghost in _ghosts) ghost.SetGhostMode(GhostMode.Frightened);
             ghostHouseDoor.SetBool(IsOpen, true);

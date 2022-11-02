@@ -6,17 +6,13 @@ using Random = UnityEngine.Random;
 
 namespace Ghosts
 {
-    /*
-     * TODO:
-     * - Ghost sometimes are entering the house after leaving it
-     * - Spawn ghosts in the house as their init position
-     */
     public enum GhostMode
     {
         Chase,
         Scatter,
         Frightened,
-        Eaten
+        Eaten,
+        LeavingHouse
     }
 
     public abstract class GhostAiMovement : MonoBehaviour
@@ -52,11 +48,11 @@ namespace Ghosts
         private Rigidbody2D _rigidbody2D;
 
         // Ghost home
-        public bool isInGhostHome;
-        public Transform[] homeWayPoints;
+        public bool isInGhostHouse;
         private bool _ghostHomeReached;
-        private int _currentHomeWayPointIndex;
-        private bool _isLeavingGhostHome;
+        public Transform[] enterHomeWayPoints;
+        public Transform[] exitHomeWayPoints;
+        private int _currentWayPointIndex;
 
         private void Start()
         {
@@ -67,13 +63,8 @@ namespace Ghosts
             _direction = initDirection;
             NextTileDestination = (Vector2)transform.position + initDirection;
 
-            // Set ghost in house
-            // if (isInGhostHome){
-            // _ghostMode = GhostMode.Eaten;
-            // _ghostHomeReached = true;
-            // _isLeavingGhostHome = true;
-            // _currentHomeWayPointIndex= homeWayPoints.Length - 1;
-            // }
+            // Set initial mode
+            if (isInGhostHouse) _ghostMode = GhostMode.LeavingHouse;
         }
 
         private void FixedUpdate()
@@ -92,16 +83,19 @@ namespace Ghosts
                 case GhostMode.Eaten:
                     Eaten();
                     break;
+                case GhostMode.LeavingHouse:
+                    LeavingHouse();
+                    break;
                 default:
-                    Debug.LogError("Invalid Ghost Mode at 'FixedUpdate'");
+                    // Debug.LogError("Invalid Ghost Mode at 'FixedUpdate'");
                     break;
             }
         }
 
-        public void SetGhostMode(GhostMode ghostMode)
+        public void SetGhostMode(GhostMode ghostMode, bool forceChange = false)
         {
-            if (_ghostMode == GhostMode.Eaten && !_isLeavingGhostHome)
-                return; // If ghost is eaten, it can't change mode until it reaches the ghost home (except if it's leaving the ghost home)
+            if (_ghostMode is GhostMode.Eaten or GhostMode.LeavingHouse && forceChange is false)
+                return; // If ghost is eaten or is leaving home, it can't change mode.
 
             _ghostMode = ghostMode;
 
@@ -109,17 +103,17 @@ namespace Ghosts
             {
                 case GhostMode.Scatter:
                 case GhostMode.Chase:
-                    bodyRenderer.enabled = true;
                     UpdateRunAnimation();
                     break;
                 case GhostMode.Frightened:
-                    bodyRenderer.enabled = true;
-                    eyesSpriteRenderer.sprite = eyesSpriteArray[4];
                     UpdateFrightenedAnimation();
                     break;
                 case GhostMode.Eaten:
                     bodyRenderer.enabled = false;
                     UpdateEatenAnimation();
+                    break;
+                case GhostMode.LeavingHouse:
+                    bodyRenderer.enabled = true;
                     break;
                 default:
                     // Debug.LogError("Invalid Ghost Mode at 'SetGhostMode'");
@@ -130,8 +124,6 @@ namespace Ghosts
         }
 
         #region Ghost Modes
-
-        // Ghost movement methods
 
         protected virtual void Chase()
         {
@@ -183,81 +175,56 @@ namespace Ghosts
 
         private void Eaten()
         {
-            var pos = transform.position;
-            var waypoint = homeWayPoints[0].position;
-
-            // Check if ghost has reached the ghost home
             if (!_ghostHomeReached)
             {
-                if (Vector2.Distance(pos, waypoint) > 1f)
-                {
-                    ChaseTarget(ghostHomeEntry, eatenSpeed);
-                }
-                else
-                {
+                ChaseTarget((Vector2)enterHomeWayPoints[0].transform.position, eatenSpeed);
+                if (Vector2.Distance(transform.position, enterHomeWayPoints[0].transform.position) <= 0.5f)
                     _ghostHomeReached = true;
-                    bodyRenderer.enabled = true;
-                    UpdateRunAnimation();
-                }
 
-                // UpdateEatenAnimation();
+                UpdateEatenAnimation();
+                return;
             }
-            // if the ghost has reached the ghost home
-            else
+            else if (FollowPath(enterHomeWayPoints, ref _currentWayPointIndex, eatenSpeed))
             {
-                // Follow the ghost home waypoints
-                if (!_isLeavingGhostHome)
-                {
-                    _isLeavingGhostHome = FollowPath(eatenSpeed);
-                }
-                else
-                {
-                    // Reverse the ghost home waypoints
-                    var hasLeavedHouse = FollowPath(runSpeed, true);
-
-                    // If the ghost has left the ghost home, then set the ghost mode to the current Game Ghost Mode
-                    if (hasLeavedHouse)
-                    {
-                        SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode);
-                        _ghostHomeReached = false;
-                        _isLeavingGhostHome = false;
-                        _currentHomeWayPointIndex = 0;
-                    }
-                }
+                _ghostHomeReached = false;
+                SetGhostMode(GhostMode.LeavingHouse, true);
             }
+
+            UpdateFollowPathEatenAnimation(enterHomeWayPoints, _currentWayPointIndex);
         }
 
-        private bool FollowPath(float speed, bool reverse = false)
+        private void LeavingHouse()
         {
-            if (transform.position != homeWayPoints[_currentHomeWayPointIndex].position)
-            {
-                var p = Vector2.MoveTowards(transform.position,
-                    homeWayPoints[_currentHomeWayPointIndex].position,
-                    speed * Time.deltaTime);
-                _rigidbody2D.MovePosition(p);
-                UpdateFollowPathAnimation();
-            }
-            else
-            {
-                switch (reverse)
-                {
-                    case false when _currentHomeWayPointIndex == homeWayPoints.Length - 1:
-                    case true when _currentHomeWayPointIndex == 0:
-                        return true;
-                    default:
-                        _currentHomeWayPointIndex += reverse ? -1 : 1;
-                        break;
-                }
-            }
-
-            return false;
+            UpdateFollowPathRunAnimation(enterHomeWayPoints, _currentWayPointIndex);
+            if (FollowPath(exitHomeWayPoints, ref _currentWayPointIndex, runSpeed))
+                SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode, true);
         }
 
         #endregion
 
         #region Chase target function
 
-        // Chase sub-functions
+        private bool FollowPath(Transform[] waypoints, ref int currentWaypoint, float speed)
+        {
+            if (transform.position != waypoints[currentWaypoint].position)
+            {
+                var p = Vector2.MoveTowards(transform.position,
+                    waypoints[currentWaypoint].position,
+                    speed * Time.deltaTime);
+                _rigidbody2D.MovePosition(p);
+            }
+            else
+            {
+                currentWaypoint++;
+                if (currentWaypoint >= waypoints.Length)
+                {
+                    _currentWayPointIndex = 0;
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         protected void ChaseTarget(GameObject target, float speed)
         {
@@ -360,15 +327,13 @@ namespace Ghosts
 
         private bool DetectWalls(Vector2 dir, Vector2 pos)
         {
-            // Detect a wall or border using grid's tiles
             var cellPosition = tilemap.WorldToCell(pos + dir);
             return tilemap.HasTile(cellPosition);
         }
 
         private bool DetectDoor(Vector2 dir, Vector2 pos)
         {
-            // Detect the door using linecast and tags
-            var linecast = Physics2D.Linecast(pos + dir, pos);
+            var linecast = Physics2D.Linecast(pos + dir * 1.2f, pos); // offset the linecast to detect the door
             return linecast.collider.CompareTag(tilemap.tag);
         }
 
@@ -376,7 +341,11 @@ namespace Ghosts
 
         #region Animations functions
 
-        // Animations methods
+        private void UpdateFrightenedAnimation()
+        {
+            eyesSpriteRenderer.sprite = eyesSpriteArray[4];
+        }
+
         private void UpdateRunAnimation()
         {
             eyesSpriteRenderer.sprite = _direction.y switch
@@ -390,11 +359,6 @@ namespace Ghosts
                     _ => eyesSpriteRenderer.sprite
                 }
             };
-        }
-
-        private void UpdateFrightenedAnimation()
-        {
-            eyesSpriteRenderer.sprite = eyesSpriteArray[4];
         }
 
         private void UpdateEatenAnimation()
@@ -412,23 +376,41 @@ namespace Ghosts
             };
         }
 
-        private void UpdateFollowPathAnimation()
+        private void UpdateFollowPathRunAnimation(Transform[] waypoints, int currentWaypoint)
         {
-            Vector2 dir = homeWayPoints[_currentHomeWayPointIndex].position - transform.position;
+            // Vector2 dir = waypoints[currentWaypoint].position - transform.position;
+            // eyesSpriteRenderer.sprite = dir.y switch
+            // {
+            //     > 0 => eyesSpriteArray[2],
+            //     < 0 => eyesSpriteArray[3],
+            //     _ => dir.x switch
+            //     {
+            //         > 0 => eyesSpriteArray[0],
+            //         < 0 => eyesSpriteArray[1],
+            //         _ => eyesSpriteRenderer.sprite
+            //     }
+            // };
+        }
+
+        private void UpdateFollowPathEatenAnimation(Transform[] waypoints, int currentWaypoint)
+        {
+            Vector2 dir = waypoints[currentWaypoint].position - transform.position;
             eyesSpriteRenderer.sprite = dir.y switch
             {
-                > 0 => eyesSpriteArray[2],
-                < 0 => eyesSpriteArray[3],
+                > 0 => eyesSpriteArray[7],
+                < 0 => eyesSpriteArray[8],
                 _ => dir.x switch
                 {
-                    > 0 => eyesSpriteArray[0],
-                    < 0 => eyesSpriteArray[1],
+                    > 0 => eyesSpriteArray[5],
+                    < 0 => eyesSpriteArray[6],
                     _ => eyesSpriteRenderer.sprite
                 }
             };
         }
 
         #endregion
+
+        #region On trigger functions
 
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -438,5 +420,7 @@ namespace Ghosts
                 else
                     GameHandler.GameHandler.Instance.KillPlayer();
         }
+
+        #endregion
     }
 }
