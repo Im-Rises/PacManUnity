@@ -95,6 +95,9 @@ PacMan movement:
 Audio files:
 <https://www.classicgaming.cc/classics/pac-man/sounds>
 
+Pac-Man switch mode times:  
+<https://www.gamedeveloper.com/design/the-pac-man-dossier>
+
 ## Authors
 
 Quentin MOREL:

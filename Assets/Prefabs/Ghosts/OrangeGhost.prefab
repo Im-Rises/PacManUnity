@@ -9,8 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4648297892822861142}
+  - component: {fileID: -7046663891085173743}
+  - component: {fileID: -6268979128805892177}
+  - component: {fileID: -755005615145856597}
   m_Layer: 0
-  m_Name: GhostYellow
+  m_Name: OrangeGhost
   m_TagString: Ghost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,6 +36,87 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &-7046663891085173743
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4648297892822861141}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!61 &-6268979128805892177
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4648297892822861141}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.6, y: 1.6}
+  m_EdgeRadius: 0
+--- !u!114 &-755005615145856597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4648297892822861141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc5b5b9472ccc44d869743bd91292d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runSpeed: 8
+  frightenedSpeed: 2
+  eatenSpeed: 20
+  tilemap: {fileID: 0}
+  chaseModeTarget: {fileID: 0}
+  scatterModeTarget: {fileID: 0}
+  eyesSpriteRenderer: {fileID: 4648297893094173343}
+  eyesSpriteArray:
+  - {fileID: 2088771708, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
+  - {fileID: 848420279, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
+  - {fileID: -139739707, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
+  - {fileID: 1100489764, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
+  - {fileID: 1916399952, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
+  - {fileID: -717992960, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
+  - {fileID: -484398838, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
+  - {fileID: 398924304, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
+  - {fileID: -467363287, guid: 47450b6c388040643ae4dc50899e94d2, type: 3}
+  bodyRenderer: {fileID: 4648297893019300410}
+  initDirection: {x: 0.5, y: 0}
+  isInGhostHouse: 1
+  enterHomeWayPoints: []
+  exitHomeWayPoints: []
 --- !u!1 &4648297893019300391
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
@@ -6,29 +8,44 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-        private static readonly int IsMoving = Animator.StringToHash("isMoving");
+        // Player speed
         public float speed = 10f;
 
-        public Tilemap tilemap;
-        public Vector2 originalDirection = new(-1, 0);
-        public float initPositionOffset = 0.5f;
-
+        // Animator
         public Animator animator;
-        private Vector2 _inputDirection;
-        private Vector2 _lastDirection;
-        private Vector2 _lastInput;
+        private static readonly int IsMoving = Animator.StringToHash(AnimationsConstants.PlayerIsMoving);
+
+        // Rigidbody
         private Rigidbody2D _rigidbody2D;
+
+        // Tilemap
+        public Tilemap tilemap;
+
+        // Init spawn position and direction
+        // public Vector2 originalDirection = new(-1, 0);
+        public Vector2 initDirection = Vector2.left / 2;
         private Vector2 _spawnPosition;
 
-        public Vector2 Destination { get; set; }
+        // Player direction
+        private Vector2 _inputDirection;
+        private Vector2 _lastInputDirection;
+        private Vector2 _lastDirection;
+
+
+        public Vector2 NextDestination { get; set; }
 
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             var position = transform.position;
-            Destination = (Vector2)position + originalDirection * initPositionOffset;
             _spawnPosition = position;
-            _lastDirection = originalDirection;
+            _lastDirection = initDirection.normalized;
+
+            // if (transform.position.x % 1 != 0 || transform.position.y % 1 != 0)
+            //     NextDestination = (Vector2)position + originalDirection * 0.5f;
+            // else
+            //     NextDestination = (Vector2)position + originalDirection;
+
             RotateRenderer();
         }
 
@@ -36,25 +53,25 @@ namespace Player
         {
             // Move the player
             var position = (Vector2)transform.position;
-            var positionVector = Vector2.MoveTowards(position, Destination, speed * Time.deltaTime);
+            var positionVector = Vector2.MoveTowards(position, NextDestination, speed * Time.deltaTime);
             _rigidbody2D.MovePosition(positionVector);
 
             // Check if the player is centered in the tile
-            var isCentered = position == Destination;
+            var isCentered = position == NextDestination;
             if (!isCentered) return;
 
             // if is at the middle of a tile, has input and there is no wall in the direction of the input
-            if (_lastInput != Vector2.zero && !DetectWallBorder(_lastInput))
+            if (_lastInputDirection != Vector2.zero && !DetectWallBorder(_lastInputDirection))
             {
-                Destination = position + _lastInput;
-                _lastDirection = _lastInput;
+                NextDestination = position + _lastInputDirection;
+                _lastDirection = _lastInputDirection;
                 animator.SetBool(IsMoving, true);
                 RotateRenderer();
             }
             // if is at the middle of a tile and there is no wall in the current direction then continue in the same direction
             else if (!DetectWallBorder(_lastDirection))
             {
-                Destination = position + _lastDirection;
+                NextDestination = position + _lastDirection;
                 animator.SetBool(IsMoving, true);
             }
             else
@@ -71,10 +88,12 @@ namespace Player
 
         private bool DetectWallBorder(Vector2 dir)
         {
+            // Detect a tile in the direction of the dir vector parameter
             var pos = (Vector2)transform.position;
-            var cellPosition = tilemap.WorldToCell(pos + dir); // Detect a wall or border with using grid's tiles
-            var linecast = Physics2D.Linecast(pos + dir, pos); // Detect a wall or border using linecast and tags
-            return tilemap.HasTile(cellPosition) || linecast.collider.CompareTag(tilemap.tag);
+            var cellPosition = tilemap.WorldToCell(pos + dir);
+            // Detect a door in the direction of the dir vector parameter using linecast
+            var linecast = Physics2D.LinecastAll(pos + dir, pos);
+            return linecast.Any(t => t.collider.CompareTag(tilemap.tag)) || tilemap.HasTile(cellPosition);
         }
 
         private void OnMove(InputValue value)
@@ -84,7 +103,24 @@ namespace Player
             if (_inputDirection.x != 0) _inputDirection.y = 0; // Create a priority for x movement
 
             if (_inputDirection != Vector2.zero)
-                _lastInput = _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
+                _lastInputDirection =
+                    _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
+        }
+
+        public void Reset()
+        {
+            transform.position = _spawnPosition;
+            NextDestination = _spawnPosition + initDirection;
+            _lastInputDirection = initDirection.normalized;
+            _lastDirection = initDirection.normalized;
+            RotateRenderer();
+        }
+
+        public void Immobilize()
+        {
+            _lastInputDirection = Vector2.zero;
+            _lastDirection = Vector2.zero;
+            NextDestination = transform.position;
         }
     }
 }

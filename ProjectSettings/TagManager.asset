@@ -6,6 +6,8 @@ TagManager:
   tags:
   - WallsBorders
   - Ghost
+  - Door
+  - PacGum
   layers:
   - Default
   - TransparentFX

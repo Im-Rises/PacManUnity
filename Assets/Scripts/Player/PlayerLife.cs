@@ -1,32 +1,40 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 namespace Player
 {
     public class PlayerLife : MonoBehaviour
     {
-        private static readonly int IsDead = Animator.StringToHash("isDead");
-        [Header("Player Life")] public int life = 3;
+        private static readonly int IsDead = Animator.StringToHash(AnimationsConstants.PlayerIsDead);
 
-        [Header("Animation")] public Animator anim;
-
-        [Header("Text UI")] public TextMeshProUGUI gameOverText;
-
-        [Header("Point of life")] public Sprite heartTexture;
-
+        // Animations and sprites
+        public Animator anim;
+        public Sprite heartTexture;
         public Vector3 heartSpriteScale = new(1f, 1f);
+
+        // Lives
+        public int life = 3;
+
+        // Hearts display properties
         public GameObject heartsParent;
         public float heartOffset = 1.5f;
         private GameObject[] _hearts;
-        private Vector2 _respawnPoint;
 
+        // Respawn coordinates
+        private Vector2 _respawnPoint;
 
         private void Start()
         {
+            // Set respawn point
             _respawnPoint = transform.position;
-            gameOverText.enabled = false;
+
+            // Create hearts UI sprites
+            GenerateHearts();
+        }
+
+        private void GenerateHearts()
+        {
             _hearts = new GameObject[life];
 
             for (var i = 0; i < life; i++)
@@ -44,34 +52,22 @@ namespace Player
 
         private void Respawn()
         {
-            GetComponent<PlayerController>().Destination = _respawnPoint +
-                                                           GetComponent<PlayerController>().initPositionOffset *
-                                                           GetComponent<PlayerController>().originalDirection;
-            anim.SetBool(IsDead, false);
-            transform.position = _respawnPoint;
-            GetComponent<PlayerInput>().enabled = true;
-            _hearts[life].SetActive(false);
         }
 
-        public void Die()
+        public bool Kill()
         {
             life--;
+            _hearts[life].SetActive(false);
             GetComponent<PlayerInput>().enabled = false;
             anim.SetBool(IsDead, true);
-            if (life <= 0)
-            {
-                gameOverText.enabled = true;
-                Invoke(nameof(ReloadScene), 4f);
-            }
-            else
-            {
-                Invoke(nameof(Respawn), 2f);
-            }
+            Invoke(nameof(DisableGameObject), 2f);
+            return life <= 0;
         }
 
-        public void ReloadScene()
+        private void DisableGameObject()
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            gameObject.SetActive(false);
+            // gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 }

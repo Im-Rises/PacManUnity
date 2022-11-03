@@ -8,9 +8,9 @@ namespace Collectibles
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (!collision.gameObject.CompareTag("Player")) return;
+            if (!collision.gameObject.CompareTag(TagsConstants.PlayerTag)) return;
             ScoreHandler.ScoreHandler.Instance.AddScore(points);
-            GameHandler.GameHandler.Instance.SetGhostsEaten();
+            GameHandler.GameHandler.Instance.SwitchingFrightenedMode();
             Destroy(gameObject);
         }
     }

@@ -22,7 +22,7 @@ namespace AudioHandler
             _audioSourcePacGum.clip = clip;
             // if (_audioSourcePacGum.isPlaying)
             // _audioSourcePacGum.loop = true;
-            _audioSourcePacGum.Play();
+            // _audioSourcePacGum.Play();
         }
     }
 }
