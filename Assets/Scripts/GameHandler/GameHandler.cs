@@ -6,12 +6,6 @@ using UnityEngine.SceneManagement;
 
 namespace GameHandler
 {
-    // public enum GameGhostsMode
-    // {
-    //     Chase,
-    //     Scatter
-    // }
-
     public class GameHandler : MonoBehaviour
     {
         // Singleton
@@ -25,7 +19,7 @@ namespace GameHandler
 
 
         // Timer for scatter and chase
-        public uint[] ghostsModeTimes = { 15, 10, 25, 10, 25, 10, 25, 5 };
+        public uint[] ghostsModeTimes = { 7, 20, 7, 20, 5, 20, 5 };
         private int _ghostsModeTimesIndex;
         private float _switcherModeTimer;
 
@@ -58,7 +52,7 @@ namespace GameHandler
         private void Start()
         {
             _ghosts = FindObjectsOfType<GhostAiMovement>();
-            // UpdateGhostsMode();
+            UpdateGhostsMode();
         }
 
         private void Update()
@@ -112,7 +106,7 @@ namespace GameHandler
 
         private void UpdateGhostsMode()
         {
-            if (_ghostsModeTimesIndex % 2 == 0)
+            if (_ghostsModeTimesIndex % 2 != 0)
                 SwitchingChaseMode();
             else
                 SwitchingScatterMode();
@@ -135,6 +129,9 @@ namespace GameHandler
         public void SwitchingFrightenedMode()
         {
             // Not changing the game mode for eaten ghosts to be able to switch back to the normal current mode.
+            if (_switcherModeTimerPaused)
+                _frightenTimer = 0;// Reset the timer if the ghosts are already in frightened mode.
+
             _switcherModeTimerPaused = true;
             foreach (var ghost in _ghosts) ghost.SetGhostMode(GhostMode.Frightened);
             ghostHouseDoor.SetBool(IsOpen, true);

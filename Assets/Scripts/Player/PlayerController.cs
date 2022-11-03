@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
@@ -85,10 +86,12 @@ namespace Player
 
         private bool DetectWallBorder(Vector2 dir)
         {
+            // Detect a tile in the direction of the dir vector parameter
             var pos = (Vector2)transform.position;
-            var cellPosition = tilemap.WorldToCell(pos + dir); // Detect a wall or border with using grid's tiles
-            var linecast = Physics2D.Linecast(pos + dir, pos); // Detect a wall or border using linecast and tags
-            return tilemap.HasTile(cellPosition) || linecast.collider.CompareTag(tilemap.tag);
+            var cellPosition = tilemap.WorldToCell(pos + dir);
+            // Detect a door in the direction of the dir vector parameter using linecast
+            var linecast = Physics2D.LinecastAll(pos + dir, pos);
+            return linecast.Any(t => t.collider.CompareTag(tilemap.tag)) || tilemap.HasTile(cellPosition);
         }
 
         private void OnMove(InputValue value)

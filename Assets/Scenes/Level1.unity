@@ -2411,7 +2411,7 @@ PrefabInstance:
       objectReference: {fileID: 850121867}
     - target: {fileID: 504055882933671957, guid: cb4111b42c752d34ebd44ed8fed432f7, type: 3}
       propertyPath: initDirection.x
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 504055882933671957, guid: cb4111b42c752d34ebd44ed8fed432f7, type: 3}
       propertyPath: scatterModeTarget
@@ -2483,7 +2483,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4252187140733711169, guid: cb4111b42c752d34ebd44ed8fed432f7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4252187140733711169, guid: cb4111b42c752d34ebd44ed8fed432f7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -13685,6 +13685,7 @@ GameObject:
   m_Component:
   - component: {fileID: 972150387}
   - component: {fileID: 972150388}
+  - component: {fileID: 972150389}
   m_Layer: 0
   m_Name: Door
   m_TagString: WallsBorders
@@ -13718,10 +13719,10 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.25}
+  m_Offset: {x: 0, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -13732,8 +13733,29 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 0.5}
+  m_Size: {x: 2, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &972150389
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972150386}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &975661562
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16720,7 +16742,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1333058482}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -23409,11 +23431,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 688537739956441777, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 688537739956441777, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 688537739956441777, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -23456,12 +23478,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 841970279}
     - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
+      propertyPath: runSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
+      propertyPath: eatenSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: ghostHomeEntry
       value: 
       objectReference: {fileID: 972150386}
     - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: isInGhostHouse
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: calculateTarget
@@ -23473,7 +23507,7 @@ PrefabInstance:
       objectReference: {fileID: 540258870}
     - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: initDirection.x
-      value: 1
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: ghostHomeReached
@@ -23783,6 +23817,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 505021198}
     - target: {fileID: -755005615145856597, guid: b72db9f1f4c931a47a147f3eaa3f5e1d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -755005615145856597, guid: b72db9f1f4c931a47a147f3eaa3f5e1d, type: 3}
       propertyPath: eatenSpeed
       value: 20
       objectReference: {fileID: 0}
@@ -23798,6 +23836,10 @@ PrefabInstance:
       propertyPath: chaseModeTarget
       value: 
       objectReference: {fileID: 850121867}
+    - target: {fileID: -755005615145856597, guid: b72db9f1f4c931a47a147f3eaa3f5e1d, type: 3}
+      propertyPath: initDirection.x
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: -755005615145856597, guid: b72db9f1f4c931a47a147f3eaa3f5e1d, type: 3}
       propertyPath: ghostHomeReached
       value: 0
@@ -23896,7 +23938,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4648297892822861141, guid: b72db9f1f4c931a47a147f3eaa3f5e1d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4648297892822861142, guid: b72db9f1f4c931a47a147f3eaa3f5e1d, type: 3}
       propertyPath: m_RootOrder
@@ -23985,11 +24027,11 @@ PrefabInstance:
       objectReference: {fileID: 257281164}
     - target: {fileID: -2416994706806613377, guid: a42f36b1b53f41743ac31ee49625d214, type: 3}
       propertyPath: initDirection.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -2416994706806613377, guid: a42f36b1b53f41743ac31ee49625d214, type: 3}
       propertyPath: initDirection.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2416994706806613377, guid: a42f36b1b53f41743ac31ee49625d214, type: 3}
       propertyPath: ghostHomeReached
@@ -24117,7 +24159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7080298398632852826, guid: a42f36b1b53f41743ac31ee49625d214, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a42f36b1b53f41743ac31ee49625d214, type: 3}

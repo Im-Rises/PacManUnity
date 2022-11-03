@@ -1,11 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 namespace Ghosts
 {
+    /*
+     * TODO:
+     * - Correct the ghost eyes when following a path (enter home and exit)
+     * - Correct the ghost spawning in the home when the game starts
+     * - Add to GameHandler the start counter (3 seconds) and the progressive activation of all AiGhostMovement from the ghosts
+     */
+
     public enum GhostMode
     {
         Chase,
@@ -28,7 +36,6 @@ namespace Ghosts
         // Ghost target variables
         public GameObject chaseModeTarget;
         public GameObject scatterModeTarget;
-        public GameObject ghostHomeEntry;
 
         // Sprites variables
         public SpriteRenderer eyesSpriteRenderer;
@@ -36,7 +43,7 @@ namespace Ghosts
         public SpriteRenderer bodyRenderer;
 
         // Ghost direction variables
-        public Vector2 initDirection = Vector2.left;
+        public Vector2 initDirection = Vector2.left / 2;
         private Vector2 _direction;
 
         // Ghost current mode
@@ -52,7 +59,7 @@ namespace Ghosts
         private bool _ghostHomeReached;
         public Transform[] enterHomeWayPoints;
         public Transform[] exitHomeWayPoints;
-        private int _currentWayPointIndex;
+        private int _currentWayPointDestinationIndex;
 
         private void Start()
         {
@@ -97,20 +104,29 @@ namespace Ghosts
             if (_ghostMode is GhostMode.Eaten or GhostMode.LeavingHouse && forceChange is false)
                 return; // If ghost is eaten or is leaving home, it can't change mode.
 
+            // If ghost is leaving home, it offset the position to the next tile
+            if (_ghostMode == GhostMode.LeavingHouse)
+            {
+                NextTileDestination = (Vector2)transform.position + initDirection;
+                _direction = initDirection.normalized;
+            }
+
+            // Change mode
             _ghostMode = ghostMode;
 
+            // Update sprite
             switch (_ghostMode)
             {
                 case GhostMode.Scatter:
                 case GhostMode.Chase:
-                    UpdateRunAnimation();
+                    UpdateNormalMoveRunAnimation();
                     break;
                 case GhostMode.Frightened:
                     UpdateFrightenedAnimation();
                     break;
                 case GhostMode.Eaten:
                     bodyRenderer.enabled = false;
-                    UpdateEatenAnimation();
+                    UpdateNormalMoveEatenAnimation();
                     break;
                 case GhostMode.LeavingHouse:
                     bodyRenderer.enabled = true;
@@ -177,34 +193,28 @@ namespace Ghosts
         {
             if (!_ghostHomeReached)
             {
-                ChaseTarget((Vector2)enterHomeWayPoints[0].transform.position, eatenSpeed);
+                ChaseTarget(enterHomeWayPoints[0].transform.position, eatenSpeed);
                 if (Vector2.Distance(transform.position, enterHomeWayPoints[0].transform.position) <= 0.5f)
                     _ghostHomeReached = true;
-
-                UpdateEatenAnimation();
-                return;
             }
-            else if (FollowPath(enterHomeWayPoints, ref _currentWayPointIndex, eatenSpeed))
+            else if (FollowPath(enterHomeWayPoints, ref _currentWayPointDestinationIndex, eatenSpeed, true))
             {
                 _ghostHomeReached = false;
                 SetGhostMode(GhostMode.LeavingHouse, true);
             }
-
-            UpdateFollowPathEatenAnimation(enterHomeWayPoints, _currentWayPointIndex);
         }
 
         private void LeavingHouse()
         {
-            UpdateFollowPathRunAnimation(enterHomeWayPoints, _currentWayPointIndex);
-            if (FollowPath(exitHomeWayPoints, ref _currentWayPointIndex, runSpeed))
+            if (FollowPath(exitHomeWayPoints, ref _currentWayPointDestinationIndex, runSpeed, false))
                 SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode, true);
         }
 
         #endregion
 
-        #region Chase target function
+        #region Chase target and Folllow Path Functions
 
-        private bool FollowPath(Transform[] waypoints, ref int currentWaypoint, float speed)
+        private bool FollowPath(Transform[] waypoints, ref int currentWaypoint, float speed, bool eaten)
         {
             if (transform.position != waypoints[currentWaypoint].position)
             {
@@ -216,10 +226,19 @@ namespace Ghosts
             else
             {
                 currentWaypoint++;
+
                 if (currentWaypoint >= waypoints.Length)
                 {
-                    _currentWayPointIndex = 0;
+                    _currentWayPointDestinationIndex = 0;
                     return true;
+                }
+                else if (_ghostMode == GhostMode.Eaten)
+                {
+                    UpdateFollowPathMoveEatenAnimation(enterHomeWayPoints, _currentWayPointDestinationIndex);
+                }
+                else if (_ghostMode == GhostMode.LeavingHouse)
+                {
+                    UpdateFollowPathMoveRunAnimation(exitHomeWayPoints, _currentWayPointDestinationIndex);
                 }
             }
 
@@ -247,9 +266,11 @@ namespace Ghosts
 
             // if two or more possible directions then delete the opposite direction (preventing the ghost from going back)
             if (possibleDirections.Count > 1)
-                for (var i = 0; i < possibleDirections.Count; i++)
-                    if (possibleDirections[i] == -_direction)
-                        possibleDirections.RemoveAt(i);
+                possibleDirections.Where(direction => direction == -_direction).ToList()
+                    .ForEach(direction => possibleDirections.Remove(direction));
+            // for (var i = 0; i < possibleDirections.Count; i++)
+            //     if (possibleDirections[i] == -_direction)
+            //         possibleDirections.RemoveAt(i);
 
             // Calculate the shortest distance to the target
             CalculateNextTileDestination(possibleDirections, position, targetPos);
@@ -258,17 +279,17 @@ namespace Ghosts
             switch (_ghostMode)
             {
                 case GhostMode.Chase or GhostMode.Scatter:
-                    UpdateRunAnimation();
+                    UpdateNormalMoveRunAnimation();
                     break;
                 case GhostMode.Eaten:
-                    UpdateEatenAnimation();
+                    UpdateNormalMoveEatenAnimation();
                     break;
             }
         }
 
         #endregion
 
-        #region Find possible directions
+        #region Find possible directions and movement sub-functions
 
         private List<Vector2> FindPossibleDirections()
         {
@@ -309,10 +330,6 @@ namespace Ghosts
             NextTileDestination = position + _direction;
         }
 
-        #endregion
-
-        #region Movements sub-functions
-
         private void MoveGhost(Vector2 position, float speed)
         {
             var positionVector = Vector2.MoveTowards(position, NextTileDestination, speed * Time.deltaTime);
@@ -322,19 +339,9 @@ namespace Ghosts
         private bool DetectWallsAndDoors(Vector2 dir)
         {
             var pos = (Vector2)transform.position;
-            return DetectWalls(dir, pos) || DetectDoor(dir, pos);
-        }
-
-        private bool DetectWalls(Vector2 dir, Vector2 pos)
-        {
             var cellPosition = tilemap.WorldToCell(pos + dir);
-            return tilemap.HasTile(cellPosition);
-        }
-
-        private bool DetectDoor(Vector2 dir, Vector2 pos)
-        {
-            var linecast = Physics2D.Linecast(pos + dir * 1.2f, pos); // offset the linecast to detect the door
-            return linecast.collider.CompareTag(tilemap.tag);
+            var linecast = Physics2D.LinecastAll(pos + dir, pos);
+            return linecast.Any(t => t.collider.CompareTag(tilemap.tag)) || tilemap.HasTile(cellPosition);
         }
 
         #endregion
@@ -346,13 +353,35 @@ namespace Ghosts
             eyesSpriteRenderer.sprite = eyesSpriteArray[4];
         }
 
-        private void UpdateRunAnimation()
+        private void UpdateNormalMoveRunAnimation()
         {
-            eyesSpriteRenderer.sprite = _direction.y switch
+            ChangeRunAnimationSprites(_direction);
+        }
+
+        private void UpdateNormalMoveEatenAnimation()
+        {
+            ChangeEatenAnimationSprites(_direction);
+        }
+
+        private void UpdateFollowPathMoveRunAnimation(Transform[] waypoints, int currentWaypoint)
+        {
+            Vector2 dir = waypoints[currentWaypoint].position - transform.position;
+            ChangeRunAnimationSprites(dir);
+        }
+
+        private void UpdateFollowPathMoveEatenAnimation(Transform[] waypoints, int currentWaypoint)
+        {
+            Vector2 dir = waypoints[currentWaypoint].position - transform.position;
+            ChangeEatenAnimationSprites(dir);
+        }
+
+        private void ChangeRunAnimationSprites(Vector2 dir)
+        {
+            eyesSpriteRenderer.sprite = dir.y switch
             {
                 > 0 => eyesSpriteArray[2],
                 < 0 => eyesSpriteArray[3],
-                _ => _direction.x switch
+                _ => dir.x switch
                 {
                     > 0 => eyesSpriteArray[0],
                     < 0 => eyesSpriteArray[1],
@@ -361,40 +390,8 @@ namespace Ghosts
             };
         }
 
-        private void UpdateEatenAnimation()
+        private void ChangeEatenAnimationSprites(Vector2 dir)
         {
-            eyesSpriteRenderer.sprite = _direction.y switch
-            {
-                > 0 => eyesSpriteArray[7],
-                < 0 => eyesSpriteArray[8],
-                _ => _direction.x switch
-                {
-                    > 0 => eyesSpriteArray[5],
-                    < 0 => eyesSpriteArray[6],
-                    _ => eyesSpriteRenderer.sprite
-                }
-            };
-        }
-
-        private void UpdateFollowPathRunAnimation(Transform[] waypoints, int currentWaypoint)
-        {
-            // Vector2 dir = waypoints[currentWaypoint].position - transform.position;
-            // eyesSpriteRenderer.sprite = dir.y switch
-            // {
-            //     > 0 => eyesSpriteArray[2],
-            //     < 0 => eyesSpriteArray[3],
-            //     _ => dir.x switch
-            //     {
-            //         > 0 => eyesSpriteArray[0],
-            //         < 0 => eyesSpriteArray[1],
-            //         _ => eyesSpriteRenderer.sprite
-            //     }
-            // };
-        }
-
-        private void UpdateFollowPathEatenAnimation(Transform[] waypoints, int currentWaypoint)
-        {
-            Vector2 dir = waypoints[currentWaypoint].position - transform.position;
             eyesSpriteRenderer.sprite = dir.y switch
             {
                 > 0 => eyesSpriteArray[7],
