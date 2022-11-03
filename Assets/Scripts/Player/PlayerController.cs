@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,7 +22,8 @@ namespace Player
         public Tilemap tilemap;
 
         // Init spawn position and direction
-        public Vector2 originalDirection = new(-1, 0);
+        // public Vector2 originalDirection = new(-1, 0);
+        public Vector2 initDirection = Vector2.left / 2;
         private Vector2 _spawnPosition;
 
         // Player direction
@@ -34,15 +36,15 @@ namespace Player
 
         private void Start()
         {
-            var position = transform.position;
             _rigidbody2D = GetComponent<Rigidbody2D>();
+            var position = transform.position;
             _spawnPosition = position;
-            _lastDirection = originalDirection;
+            _lastDirection = initDirection.normalized;
 
-            if (transform.position.x % 1 != 0 || transform.position.y % 1 != 0)
-                NextDestination = (Vector2)position + originalDirection * 0.5f;
-            else
-                NextDestination = (Vector2)position + originalDirection;
+            // if (transform.position.x % 1 != 0 || transform.position.y % 1 != 0)
+            //     NextDestination = (Vector2)position + originalDirection * 0.5f;
+            // else
+            //     NextDestination = (Vector2)position + originalDirection;
 
             RotateRenderer();
         }
@@ -103,6 +105,22 @@ namespace Player
             if (_inputDirection != Vector2.zero)
                 _lastInputDirection =
                     _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
+        }
+
+        public void Reset()
+        {
+            transform.position = _spawnPosition;
+            NextDestination = _spawnPosition + initDirection;
+            _lastInputDirection = initDirection.normalized;
+            _lastDirection = initDirection.normalized;
+            RotateRenderer();
+        }
+
+        public void Immobilize()
+        {
+            _lastInputDirection = Vector2.zero;
+            _lastDirection = Vector2.zero;
+            NextDestination = transform.position;
         }
     }
 }

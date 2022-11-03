@@ -9,9 +9,7 @@ namespace Ghosts
 {
     /*
      * TODO:
-     * - Correct the ghost eyes when following a path (enter home and exit)
-     * - Correct the ghost spawning in the home when the game starts
-     * - Add to GameHandler the start counter (3 seconds) and the progressive activation of all AiGhostMovement from the ghosts
+     * - Reimplement the reset of the game when player dies
      */
 
     public enum GhostMode
@@ -47,9 +45,9 @@ namespace Ghosts
         private Vector2 _direction;
 
         // Ghost current mode
+        public Vector2 NextTileDestination { get; set; }
         private GhostMode _ghostMode;
         private bool _hasChangedMode;
-        public Vector2 NextTileDestination { get; set; }
 
         // Components
         private Rigidbody2D _rigidbody2D;
@@ -61,14 +59,22 @@ namespace Ghosts
         public Transform[] exitHomeWayPoints;
         private int _currentWayPointDestinationIndex;
 
+        // Ghost spawn
+        private Vector3 _spawnPoint;
+
         private void Start()
         {
+            var pos = transform.position;
+
             // Get components
             _rigidbody2D = GetComponent<Rigidbody2D>();
 
+            // Set spawn point
+            _spawnPoint = pos;
+
             // Set initial direction
             _direction = initDirection;
-            NextTileDestination = (Vector2)transform.position + initDirection;
+            NextTileDestination = (Vector2)pos + initDirection;
 
             // Set initial mode
             if (isInGhostHouse) _ghostMode = GhostMode.LeavingHouse;
@@ -419,5 +425,13 @@ namespace Ghosts
         }
 
         #endregion
+
+        public void Reset()
+        {
+            transform.position = _spawnPoint;
+            if (isInGhostHouse) _ghostMode = GhostMode.LeavingHouse;
+
+            NextTileDestination = (Vector2)transform.position + initDirection;
+        }
     }
 }

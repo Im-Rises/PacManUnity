@@ -2,6 +2,7 @@ using Ghosts;
 using Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace GameHandler
@@ -17,6 +18,11 @@ namespace GameHandler
         // Ghosts
         private GhostAiMovement[] _ghosts;
 
+        // Player
+        private PlayerController _player;
+
+        // Pac-gum
+        private int _pacGumCount;
 
         // Timer for scatter and chase
         public uint[] ghostsModeTimes = { 7, 20, 7, 20, 5, 20, 5 };
@@ -35,6 +41,9 @@ namespace GameHandler
         // Current Ghost mode text
         public TextMeshProUGUI currentModeText;
 
+        // UI elements
+        public TextMeshProUGUI gameOverText;
+
         #region Awake Singleton
 
         private void Awake()
@@ -52,6 +61,8 @@ namespace GameHandler
         private void Start()
         {
             _ghosts = FindObjectsOfType<GhostAiMovement>();
+            _player = FindObjectOfType<PlayerController>();
+            _pacGumCount = GameObject.FindGameObjectsWithTag(TagsConstants.PacGumTag).Length;
             UpdateGhostsMode();
         }
 
@@ -130,7 +141,7 @@ namespace GameHandler
         {
             // Not changing the game mode for eaten ghosts to be able to switch back to the normal current mode.
             if (_switcherModeTimerPaused)
-                _frightenTimer = 0;// Reset the timer if the ghosts are already in frightened mode.
+                _frightenTimer = 0; // Reset the timer if the ghosts are already in frightened mode.
 
             _switcherModeTimerPaused = true;
             foreach (var ghost in _ghosts) ghost.SetGhostMode(GhostMode.Frightened);
@@ -166,31 +177,61 @@ namespace GameHandler
 
         #region Reset functions
 
+        public void KillPlayer()
+        {
+            // Reset the player destination
+            _player.Immobilize();
+
+            // Reset the ghost mode.
+            _ghostsModeTimesIndex = 0;
+            _switcherModeTimer = 0;
+
+            // Deactivate the ghosts
+            foreach (var ghost in _ghosts) ghost.gameObject.SetActive(false);
+
+            // Decrease the lives and handle the player death.
+            if (FindObjectOfType<PlayerLife>().Kill())
+            {
+                gameOverText.enabled = true;
+                // Restart the game after 3 seconds.
+                Invoke(nameof(RestartGame), 3);
+            }
+            else // If the player still has lives.
+            {
+                Invoke(nameof(ResetGhostsAndPlayer), 3);
+            }
+        }
+
+        private void ResetGhostsAndPlayer()
+        {
+            // Reset the ghosts
+            foreach (var ghost in _ghosts)
+            {
+                ghost.gameObject.SetActive(true);
+                ghost.Reset();
+            }
+
+            // Reset the player
+            _player.enabled = true;
+            _player.GetComponent<PlayerInput>().enabled = true;
+            _player.Reset();
+            _player.gameObject.SetActive(true);
+        }
+
         public void RestartGame()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-        public void KillPlayer()
+        public void DecrementPacGumNumber()
         {
-            FindObjectOfType<PlayerLife>().Kill();
-
-            // Reset the ghosts positions
-            // foreach (var ghost in _ghosts) ghost.Reset();
-
-            // Reset the player position
-            // FindObjectOfType<PlayerMovement>().Reset();
+            _pacGumCount--;
+            if (_pacGumCount <= 0) NextLevel();
         }
 
-        public void ResetGame()
+        private void NextLevel()
         {
-            // Reset();
-            // _ghostsModeTimesIndex = 0;
-            // _switcherModeTimer = 0;
-            // _frightenTimer = 0;
-            // _switcherModeTimerPaused = false;
-            // ghostHouseDoor.SetBool(IsOpen, false);
-            // UpdateGhostsMode();
+            Debug.Log("Next Level");
         }
 
         #endregion

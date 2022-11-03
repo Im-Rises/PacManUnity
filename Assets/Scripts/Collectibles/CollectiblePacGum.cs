@@ -20,6 +20,7 @@ namespace Collectibles
             // if (TryGetComponent(out SpriteRenderer sprite)) sprite.enabled = false;
             // Destroy(gameObject, 1f);
             Destroy(gameObject, 0f);
+            GameHandler.GameHandler.Instance.DecrementPacGumNumber();
         }
     }
 }

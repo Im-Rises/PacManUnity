@@ -8,9 +8,6 @@ namespace Player
     {
         private static readonly int IsDead = Animator.StringToHash(AnimationsConstants.PlayerIsDead);
 
-        // UI elements
-        public TextMeshProUGUI gameOverText;
-
         // Animations and sprites
         public Animator anim;
         public Sprite heartTexture;
@@ -27,14 +24,10 @@ namespace Player
         // Respawn coordinates
         private Vector2 _respawnPoint;
 
-
         private void Start()
         {
             // Set respawn point
             _respawnPoint = transform.position;
-
-            // Disable game over text
-            gameOverText.enabled = false;
 
             // Create hearts UI sprites
             GenerateHearts();
@@ -59,37 +52,22 @@ namespace Player
 
         private void Respawn()
         {
-            // GetComponent<PlayerController>().Destination = _respawnPoint +
-            //                                                GetComponent<PlayerController>().initPositionOffset *
-            //                                                GetComponent<PlayerController>().originalDirection;
-            // anim.SetBool(IsDead, false);
-            // transform.position = _respawnPoint;
-            // GetComponent<PlayerInput>().enabled = true;
-            // _hearts[life].SetActive(false);
         }
 
-        // private void DecreaseLife()
-        // {
-        //     life--;
-        //     anim.SetBool(IsDead, false);
-        //     _hearts[life].SetActive(false);
-        // }
-
-        public void Kill()
+        public bool Kill()
         {
             life--;
-            anim.SetBool(IsDead, false);
             _hearts[life].SetActive(false);
+            GetComponent<PlayerInput>().enabled = false;
+            anim.SetBool(IsDead, true);
+            Invoke(nameof(DisableGameObject), 2f);
+            return life <= 0;
+        }
 
-            if (life <= 0)
-            {
-                gameOverText.enabled = true;
-                // Invoke(nameof(ReloadScene), 4f);
-            }
-            else
-            {
-                // Invoke(nameof(Respawn), 2f);
-            }
+        private void DisableGameObject()
+        {
+            gameObject.SetActive(false);
+            // gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 }

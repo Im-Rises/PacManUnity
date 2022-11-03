@@ -2395,7 +2395,7 @@ PrefabInstance:
       objectReference: {fileID: 505021198}
     - target: {fileID: 504055882933671957, guid: cb4111b42c752d34ebd44ed8fed432f7, type: 3}
       propertyPath: runSpeed
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 504055882933671957, guid: cb4111b42c752d34ebd44ed8fed432f7, type: 3}
       propertyPath: ghostHome
@@ -11685,6 +11685,7 @@ MonoBehaviour:
   frightenedTime: 10
   ghostHouseDoor: {fileID: 901776712}
   currentModeText: {fileID: 717308384}
+  gameOverText: {fileID: 775596107}
 --- !u!114 &690380358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12251,7 +12252,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 775596105}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -23479,7 +23480,7 @@ PrefabInstance:
       objectReference: {fileID: 841970279}
     - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: runSpeed
-      value: 4
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5444758241636014465, guid: 29dc237a5e7d3574f87ef76b2037457a, type: 3}
       propertyPath: m_Enabled

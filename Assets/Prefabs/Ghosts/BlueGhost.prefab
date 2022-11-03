@@ -95,13 +95,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c41abdc5ea8dab040bdd50cf56733e58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 4
-  frightenedSpeed: 1
+  runSpeed: 8
+  frightenedSpeed: 2
   eatenSpeed: 20
   tilemap: {fileID: 0}
   chaseModeTarget: {fileID: 0}
   scatterModeTarget: {fileID: 0}
-  ghostHomeEntry: {fileID: 0}
   eyesSpriteRenderer: {fileID: 688537740304923800}
   eyesSpriteArray:
   - {fileID: 1433141631, guid: 89a8c6a49ed866742b3d3c82d6675ef0, type: 3}
@@ -114,7 +113,10 @@ MonoBehaviour:
   - {fileID: -1710265292, guid: 89a8c6a49ed866742b3d3c82d6675ef0, type: 3}
   - {fileID: -635487689, guid: 89a8c6a49ed866742b3d3c82d6675ef0, type: 3}
   bodyRenderer: {fileID: 688537740057711896}
-  initDirection: {x: -1, y: 0}
+  initDirection: {x: -0.5, y: 0}
+  isInGhostHouse: 1
+  enterHomeWayPoints: []
+  exitHomeWayPoints: []
   redGhost: {fileID: 0}
 --- !u!1 &688537740057711901
 GameObject:
