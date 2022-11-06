@@ -117,6 +117,7 @@ MonoBehaviour:
   isInGhostHouse: 1
   enterHomeWayPoints: []
   exitHomeWayPoints: []
+  bodyAnimator: {fileID: 4648297893019300409}
 --- !u!1 &4648297893019300391
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +211,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4648297893019300391}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b356754e3bd11074e98f296aa201e96d, type: 2}
   m_CullingMode: 0

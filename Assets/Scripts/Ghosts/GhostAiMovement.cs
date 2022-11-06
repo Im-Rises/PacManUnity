@@ -7,11 +7,6 @@ using Random = UnityEngine.Random;
 
 namespace Ghosts
 {
-    /*
-     * TODO:
-     * - Reimplement the reset of the game when player dies
-     */
-
     public enum GhostMode
     {
         Chase,
@@ -62,6 +57,9 @@ namespace Ghosts
         // Ghost spawn
         private Vector3 _spawnPoint;
 
+        // Body animator
+        public Animator bodyAnimator;
+
         private void Start()
         {
             var pos = transform.position;
@@ -78,10 +76,15 @@ namespace Ghosts
 
             // Set initial mode
             if (isInGhostHouse) _ghostMode = GhostMode.LeavingHouse;
+
+            // Body animation
+            bodyAnimator = GetComponent<Animator>();
         }
 
         private void FixedUpdate()
         {
+            // if (GameHandler.GameHandler.Instance.IsPaused) return;
+
             switch (_ghostMode)
             {
                 case GhostMode.Scatter:

@@ -218,6 +218,18 @@ namespace GameHandler
             _player.gameObject.SetActive(true);
         }
 
+        public void ActivateGhostsAndPlayer()
+        {
+            foreach (var ghost in _ghosts)
+            {
+                ghost.enabled = true;
+                ghost.bodyAnimator.enabled = true;
+            }
+
+            _player.enabled = true;
+            _player.animator.enabled = true;
+        }
+
         public void RestartGame()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -232,6 +244,18 @@ namespace GameHandler
         private void NextLevel()
         {
             Debug.Log("Next Level");
+        }
+
+        private void PauseGame()
+        {
+            Time.timeScale = 0;
+            Time.fixedDeltaTime = 0;
+        }
+
+        public void ResumeGame()
+        {
+            Time.timeScale = TimeConstants.TimeScaleNormal;
+            Time.fixedDeltaTime = TimeConstants.FixedDeltaTime;
         }
 
         #endregion

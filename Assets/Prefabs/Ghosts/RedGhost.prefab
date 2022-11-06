@@ -93,7 +93,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4252187140388820773}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 5a3382c88f61b5e46aec45f7ef1bbbd2, type: 2}
   m_CullingMode: 0
@@ -279,7 +279,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4252187140733711170}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e662ec2f6ab210c4199f140a422a9b8a, type: 3}
   m_Name: 
@@ -306,3 +306,4 @@ MonoBehaviour:
   isInGhostHouse: 0
   enterHomeWayPoints: []
   exitHomeWayPoints: []
+  bodyAnimator: {fileID: 4252187140388820771}

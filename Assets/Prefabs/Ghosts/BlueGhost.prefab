@@ -90,7 +90,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688537739956441776}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c41abdc5ea8dab040bdd50cf56733e58, type: 3}
   m_Name: 
@@ -117,6 +117,7 @@ MonoBehaviour:
   isInGhostHouse: 1
   enterHomeWayPoints: []
   exitHomeWayPoints: []
+  bodyAnimator: {fileID: 688537740057711899}
   redGhost: {fileID: 0}
 --- !u!1 &688537740057711901
 GameObject:
@@ -211,7 +212,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688537740057711901}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 6c4c91d076dfd2d40b754aaab0cd718a, type: 2}
   m_CullingMode: 0

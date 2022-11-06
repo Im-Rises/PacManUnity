@@ -107,6 +107,12 @@ namespace Player
                     _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
         }
 
+        // private void OnEscapeButtonPause()
+        // {
+        // Toggle pause
+        // GameHandler.GameHandler.Instance.
+        // }
+
         public void Reset()
         {
             transform.position = _spawnPosition;
