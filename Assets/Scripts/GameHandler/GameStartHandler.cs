@@ -36,14 +36,5 @@ namespace GameHandler
 
             enabled = false;
         }
-
-
-        // public void PlayAudioPacGumClip(AudioClip clip)
-        // {
-        //     // _audioSourcePacGum.clip = clip;
-        //     // if (_audioSourcePacGum.isPlaying)
-        //     // _audioSourcePacGum.loop = true;
-        //     // _audioSourcePacGum.Play();
-        // }
     }
 }

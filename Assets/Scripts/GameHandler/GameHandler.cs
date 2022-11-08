@@ -1,3 +1,4 @@
+using Door;
 using Ghosts;
 using Player;
 using TMPro;
@@ -36,7 +37,9 @@ namespace GameHandler
 
         // Door animator
         public Animator ghostHouseDoor;
-        private static readonly int IsOpen = Animator.StringToHash(AnimationsConstants.DoorIsOpen);
+
+        // private static readonly int IsOpen = Animator.StringToHash(AnimationsConstants.DoorIsOpen);
+        public DoorHandler doorHandler;
 
         // Current Ghost mode text
         public TextMeshProUGUI currentModeText;
@@ -103,7 +106,8 @@ namespace GameHandler
                 {
                     _frightenTimer = 0;
                     _switcherModeTimerPaused = false;
-                    ghostHouseDoor.SetBool(IsOpen, false);
+                    // ghostHouseDoor.SetBool(IsOpen, false);
+                    doorHandler.CloseDoor();
                     UpdateGhostsMode();
                 }
 
@@ -145,7 +149,8 @@ namespace GameHandler
 
             _switcherModeTimerPaused = true;
             foreach (var ghost in _ghosts) ghost.SetGhostMode(GhostMode.Frightened);
-            ghostHouseDoor.SetBool(IsOpen, true);
+            // ghostHouseDoor.SetBool(IsOpen, true);
+            doorHandler.OpenDoor();
         }
 
         #endregion
@@ -222,12 +227,14 @@ namespace GameHandler
         {
             foreach (var ghost in _ghosts)
             {
-                ghost.enabled = true;
                 ghost.bodyAnimator.enabled = true;
+                ghost.enabled = true;
             }
 
             _player.enabled = true;
             _player.animator.enabled = true;
+
+            doorHandler.CloseDoor();
         }
 
         public void RestartGame()

@@ -11,6 +11,8 @@ namespace ScoreHandler
         private int _score;
         public static ScoreHandler Instance { get; private set; }
 
+        private AudioSource _audioSource;
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -21,6 +23,7 @@ namespace ScoreHandler
 
         private void Start()
         {
+            _audioSource = GetComponent<AudioSource>();
             scoreText.SetText("Score: " + _score);
             highScoreText.SetText("High Score: " + PlayerPrefs.GetInt(HighScoreKey));
         }
@@ -43,6 +46,7 @@ namespace ScoreHandler
             if (_score <= PlayerPrefs.GetInt(HighScoreKey)) return;
             PlayerPrefs.SetInt(HighScoreKey, _score);
             highScoreText.SetText("High Score: " + _score);
+            _audioSource.Play();
         }
     }
 }

@@ -60,12 +60,16 @@ namespace Ghosts
         // Body animator
         public Animator bodyAnimator;
 
+        // Audio source
+        private AudioSource _eatenAudioSource;
+
         private void Start()
         {
             var pos = transform.position;
 
             // Get components
             _rigidbody2D = GetComponent<Rigidbody2D>();
+            _eatenAudioSource = GetComponent<AudioSource>();
 
             // Set spawn point
             _spawnPoint = pos;
@@ -135,6 +139,7 @@ namespace Ghosts
                     break;
                 case GhostMode.Eaten:
                     bodyRenderer.enabled = false;
+                    PlayEatenAudio();
                     UpdateNormalMoveEatenAnimation();
                     break;
                 case GhostMode.LeavingHouse:
@@ -412,6 +417,18 @@ namespace Ghosts
                     _ => eyesSpriteRenderer.sprite
                 }
             };
+        }
+
+        #endregion
+
+        #region audio
+
+        private void PlayEatenAudio()
+        {
+            if (_eatenAudioSource.isPlaying)
+                return;
+
+            _eatenAudioSource.Play();
         }
 
         #endregion
