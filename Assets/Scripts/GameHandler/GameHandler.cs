@@ -103,7 +103,6 @@ namespace GameHandler
                 {
                     _frightenTimer = 0;
                     _switcherModeTimerPaused = false;
-                    // ghostHouseDoor.SetBool(IsOpen, false);
                     doorHandler.CloseDoor();
                     UpdateGhostsMode();
                 }
@@ -122,6 +121,13 @@ namespace GameHandler
                 SwitchingChaseMode();
             else
                 SwitchingScatterMode();
+
+            if (!GameStartHandler.Instance.enabled)
+            {
+                MusicHandler.MusicHandler.Instance.StopMusic();
+                MusicHandler.MusicHandler.Instance.PlayGhostChase();
+                Debug.Log("PlayGhostChase");
+            }
         }
 
         private void SwitchingChaseMode()
@@ -146,8 +152,9 @@ namespace GameHandler
 
             _switcherModeTimerPaused = true;
             foreach (var ghost in _ghosts) ghost.SetGhostMode(GhostMode.Frightened);
-            // ghostHouseDoor.SetBool(IsOpen, true);
             doorHandler.OpenDoor();
+
+            MusicHandler.MusicHandler.Instance.StopMusic();
             MusicHandler.MusicHandler.Instance.PlayPacmanChase();
         }
 

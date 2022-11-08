@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameHandler;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
@@ -127,7 +128,7 @@ namespace Ghosts
             // Change mode
             _ghostMode = ghostMode;
 
-            // Update sprite
+            // Update ghost and music
             switch (_ghostMode)
             {
                 case GhostMode.Scatter:
@@ -136,6 +137,7 @@ namespace Ghosts
                     break;
                 case GhostMode.Frightened:
                     UpdateFrightenedAnimation();
+                    MusicHandler.MusicHandler.Instance.PlayPacmanChase();
                     break;
                 case GhostMode.Eaten:
                     bodyRenderer.enabled = false;
@@ -212,7 +214,7 @@ namespace Ghosts
                 if (Vector2.Distance(transform.position, enterHomeWayPoints[0].transform.position) <= 0.5f)
                     _ghostHomeReached = true;
             }
-            else if (FollowPath(enterHomeWayPoints, ref _currentWayPointDestinationIndex, eatenSpeed, true))
+            else if (FollowPath(enterHomeWayPoints, ref _currentWayPointDestinationIndex, eatenSpeed))
             {
                 goHomeAudioSource.Stop();
                 _ghostHomeReached = false;
@@ -222,7 +224,7 @@ namespace Ghosts
 
         private void LeavingHouse()
         {
-            if (FollowPath(exitHomeWayPoints, ref _currentWayPointDestinationIndex, runSpeed, false))
+            if (FollowPath(exitHomeWayPoints, ref _currentWayPointDestinationIndex, runSpeed))
                 SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode, true);
         }
 
@@ -230,7 +232,7 @@ namespace Ghosts
 
         #region Chase target and Folllow Path Functions
 
-        private bool FollowPath(Transform[] waypoints, ref int currentWaypoint, float speed, bool eaten)
+        private bool FollowPath(Transform[] waypoints, ref int currentWaypoint, float speed)
         {
             if (transform.position != waypoints[currentWaypoint].position)
             {

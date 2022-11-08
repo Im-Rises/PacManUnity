@@ -27,6 +27,7 @@ namespace MusicHandler
 
         public void PlayGhostChase()
         {
+            if (_audioSource.isPlaying) return;
             _audioSource.clip = ghostChase;
             _audioSource.Play();
         }

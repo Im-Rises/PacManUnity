@@ -4,9 +4,9 @@ namespace GameHandler
 {
     public class GameStartHandler : MonoBehaviour
     {
-        private static GameStartHandler Instance { get; set; }
+        public static GameStartHandler Instance { get; private set; }
 
-        private AudioSource _startAudioSource;
+        public AudioSource StartAudioSource { get; private set; }
 
         private void Awake()
         {
@@ -18,13 +18,13 @@ namespace GameHandler
 
         private void Start()
         {
-            _startAudioSource = GetComponent<AudioSource>();
-            _startAudioSource.Play();
+            StartAudioSource = GetComponent<AudioSource>();
+            StartAudioSource.Play();
         }
 
         private void Update()
         {
-            if (_startAudioSource.isPlaying)
+            if (StartAudioSource.isPlaying)
                 return;
 
             GameHandler.Instance.ActivateGhostsAndPlayer();
