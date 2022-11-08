@@ -1,3 +1,5 @@
+using System;
+using Ghosts;
 using UnityEngine;
 
 namespace MusicHandler
@@ -6,8 +8,9 @@ namespace MusicHandler
     {
         public static MusicHandler Instance { get; private set; }
 
-        public AudioSource ghostChase;
-        public AudioSource pacmanChase;
+        private AudioSource _audioSource;
+        public AudioClip pacmanChase;
+        public AudioClip ghostChase;
 
         private void Awake()
         {
@@ -17,31 +20,27 @@ namespace MusicHandler
                 Instance = this;
         }
 
+        private void Start()
+        {
+            _audioSource = GetComponent<AudioSource>();
+        }
+
         public void PlayGhostChase()
         {
-            ghostChase.Play();
-            ghostChase.loop = true;
-
-            pacmanChase.Stop();
+            _audioSource.clip = ghostChase;
+            _audioSource.Play();
         }
 
         public void PlayPacmanChase()
         {
-            pacmanChase.Play();
-            pacmanChase.loop = true;
-
-            ghostChase.Stop();
+            if (_audioSource.isPlaying) return;
+            _audioSource.clip = pacmanChase;
+            _audioSource.Play();
         }
 
-
-        // Start is called before the first frame update
-        private void Start()
+        public void StopMusic()
         {
-        }
-
-        // Update is called once per frame
-        private void Update()
-        {
+            _audioSource.Stop();
         }
     }
 }

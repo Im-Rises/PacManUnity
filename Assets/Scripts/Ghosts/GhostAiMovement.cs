@@ -60,8 +60,9 @@ namespace Ghosts
         // Body animator
         public Animator bodyAnimator;
 
-        // Audio source
-        private AudioSource _eatenAudioSource;
+        // Audio
+        public AudioSource goHomeAudioSource;
+        public AudioSource eatenAudioSource;
 
         private void Start()
         {
@@ -69,7 +70,6 @@ namespace Ghosts
 
             // Get components
             _rigidbody2D = GetComponent<Rigidbody2D>();
-            _eatenAudioSource = GetComponent<AudioSource>();
 
             // Set spawn point
             _spawnPoint = pos;
@@ -140,6 +140,7 @@ namespace Ghosts
                 case GhostMode.Eaten:
                     bodyRenderer.enabled = false;
                     PlayEatenAudio();
+                    PlayGoHomeAudio();
                     UpdateNormalMoveEatenAnimation();
                     break;
                 case GhostMode.LeavingHouse:
@@ -213,6 +214,7 @@ namespace Ghosts
             }
             else if (FollowPath(enterHomeWayPoints, ref _currentWayPointDestinationIndex, eatenSpeed, true))
             {
+                goHomeAudioSource.Stop();
                 _ghostHomeReached = false;
                 SetGhostMode(GhostMode.LeavingHouse, true);
             }
@@ -425,10 +427,16 @@ namespace Ghosts
 
         private void PlayEatenAudio()
         {
-            if (_eatenAudioSource.isPlaying)
+            if (eatenAudioSource.isPlaying)
                 return;
+            eatenAudioSource.Play();
+        }
 
-            _eatenAudioSource.Play();
+        private void PlayGoHomeAudio()
+        {
+            if (goHomeAudioSource.isPlaying)
+                return;
+            goHomeAudioSource.PlayScheduled(1f);
         }
 
         #endregion

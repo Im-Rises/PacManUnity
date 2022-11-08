@@ -8,17 +8,12 @@ namespace GameHandler
 
         private AudioSource _startAudioSource;
 
-        // private AudioSource _audioSourcePacGum;
-        // private AudioSource _audioSourcePacDeath;
-
         private void Awake()
         {
             if (Instance != null && Instance != this)
                 Destroy(this);
             else
                 Instance = this;
-
-            // _audioSourcePacGum = GetComponent<AudioSource>();
         }
 
         private void Start()

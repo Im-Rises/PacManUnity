@@ -35,10 +35,7 @@ namespace GameHandler
         private float _frightenTimer;
         private bool _switcherModeTimerPaused;
 
-        // Door animator
-        public Animator ghostHouseDoor;
-
-        // private static readonly int IsOpen = Animator.StringToHash(AnimationsConstants.DoorIsOpen);
+        // Door
         public DoorHandler doorHandler;
 
         // Current Ghost mode text
@@ -151,6 +148,7 @@ namespace GameHandler
             foreach (var ghost in _ghosts) ghost.SetGhostMode(GhostMode.Frightened);
             // ghostHouseDoor.SetBool(IsOpen, true);
             doorHandler.OpenDoor();
+            MusicHandler.MusicHandler.Instance.PlayPacmanChase();
         }
 
         #endregion
@@ -184,6 +182,9 @@ namespace GameHandler
 
         public void KillPlayer()
         {
+            // Stop music
+            MusicHandler.MusicHandler.Instance.StopMusic();
+
             // Reset the player destination
             _player.Immobilize();
 
@@ -221,6 +222,9 @@ namespace GameHandler
             _player.GetComponent<PlayerInput>().enabled = true;
             _player.Reset();
             _player.gameObject.SetActive(true);
+
+            // Play the music
+            MusicHandler.MusicHandler.Instance.PlayGhostChase();
         }
 
         public void ActivateGhostsAndPlayer()
@@ -235,6 +239,8 @@ namespace GameHandler
             _player.animator.enabled = true;
 
             doorHandler.CloseDoor();
+
+            MusicHandler.MusicHandler.Instance.PlayGhostChase();
         }
 
         public void RestartGame()
