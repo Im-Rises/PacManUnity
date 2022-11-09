@@ -107,11 +107,11 @@ namespace Player
                     _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
         }
 
-        // private void OnEscapeButtonPause()
-        // {
-        // Toggle pause
-        // GameHandler.GameHandler.Instance.
-        // }
+        private void OnPause()
+        {
+            GameHandler.GameHandler.Instance.ToglePause();
+            MusicHandler.MusicHandler.Instance.TogglePause();
+        }
 
         public void Reset()
         {

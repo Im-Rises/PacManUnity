@@ -1,4 +1,5 @@
 using System;
+using GameHandler;
 using Ghosts;
 using UnityEngine;
 
@@ -42,6 +43,14 @@ namespace MusicHandler
         public void StopMusic()
         {
             _audioSource.Stop();
+        }
+
+        public void TogglePause()
+        {
+            if (_audioSource.isPlaying)
+                _audioSource.Pause();
+            else
+                _audioSource.UnPause();
         }
     }
 }

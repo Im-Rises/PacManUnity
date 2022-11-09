@@ -44,6 +44,10 @@ namespace GameHandler
         // UI elements
         public TextMeshProUGUI gameOverText;
 
+        // public TextMeshProUGUI winText;
+        public TextMeshProUGUI gamePausedText;
+
+
         #region Awake Singleton
 
         private void Awake()
@@ -62,12 +66,16 @@ namespace GameHandler
         {
             _ghosts = FindObjectsOfType<GhostAiMovement>();
             _player = FindObjectOfType<PlayerController>();
+            gamePausedText.enabled = false;
             _pacGumCount = GameObject.FindGameObjectsWithTag(TagsConstants.PacGumTag).Length;
             UpdateGhostsMode();
         }
 
         private void Update()
         {
+            if (GameStartHandler.Instance.enabled)
+                return;
+
             if (!_switcherModeTimerPaused)
             {
                 // If the index is out of bounds, we are in the last mode, which is chase mode.
@@ -204,6 +212,7 @@ namespace GameHandler
             // Decrease the lives and handle the player death.
             if (FindObjectOfType<PlayerLife>().Kill())
             {
+                ScoreHandler.ScoreHandler.Instance.UpdateHighScore();
                 gameOverText.enabled = true;
                 // Restart the game after 3 seconds.
                 Invoke(nameof(RestartGame), 3);
@@ -265,16 +274,26 @@ namespace GameHandler
             Debug.Log("Next Level");
         }
 
+        public void ToglePause()
+        {
+            if (gamePausedText.enabled)
+                ResumeGame();
+            else
+                PauseGame();
+        }
+
         private void PauseGame()
         {
             Time.timeScale = 0;
             Time.fixedDeltaTime = 0;
+            gamePausedText.enabled = true;
         }
 
         public void ResumeGame()
         {
             Time.timeScale = TimeConstants.TimeScaleNormal;
             Time.fixedDeltaTime = TimeConstants.FixedDeltaTime;
+            gamePausedText.enabled = false;
         }
 
         #endregion

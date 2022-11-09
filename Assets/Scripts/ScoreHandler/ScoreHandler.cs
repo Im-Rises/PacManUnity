@@ -8,6 +8,7 @@ namespace ScoreHandler
         private const string HighScoreKey = "highScore";
         public TextMeshProUGUI scoreText;
         public TextMeshProUGUI highScoreText;
+        private bool _reachHighScore;
         private int _score;
         public static ScoreHandler Instance { get; private set; }
 
@@ -38,15 +39,21 @@ namespace ScoreHandler
         {
             _score += score;
             scoreText.SetText("Score: " + _score);
-            SetHighScore();
+            if (_score > PlayerPrefs.GetInt(HighScoreKey))
+            {
+                PlayerPrefs.SetInt(HighScoreKey, _score);
+                highScoreText.SetText("High Score: " + _score);
+
+                if (!_reachHighScore)
+                    _audioSource.Play();
+                _reachHighScore = true;
+            }
         }
 
-        private void SetHighScore()
+        public void UpdateHighScore()
         {
             if (_score <= PlayerPrefs.GetInt(HighScoreKey)) return;
             PlayerPrefs.SetInt(HighScoreKey, _score);
-            highScoreText.SetText("High Score: " + _score);
-            _audioSource.Play();
         }
     }
 }
