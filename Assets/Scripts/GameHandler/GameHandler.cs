@@ -29,6 +29,7 @@ namespace GameHandler
         public uint[] ghostsModeTimes = { 7, 20, 7, 20, 5, 20, 5 };
         private int _ghostsModeTimesIndex;
         private float _switcherModeTimer;
+        private bool _allTimersPaused;
 
         // Timer for ghost frightened
         public uint frightenedTime = 10;
@@ -79,7 +80,7 @@ namespace GameHandler
 
         private void Update()
         {
-            if (GameStartHandler.Instance.enabled)
+            if (GameStartHandler.Instance.enabled || _allTimersPaused)
                 return;
 
             if (!_switcherModeTimerPaused)
@@ -209,11 +210,14 @@ namespace GameHandler
             _player.Immobilize();
 
             // Reset the ghost mode.
-            _ghostsModeTimesIndex = 0;
-            _switcherModeTimer = 0;
+            _allTimersPaused = true;
 
             // Deactivate the ghosts
-            foreach (var ghost in _ghosts) ghost.gameObject.SetActive(false);
+            foreach (var ghost in _ghosts)
+            {
+                ghost.gameObject.SetActive(false);
+                ghost.bodyRenderer.enabled = true;
+            }
 
             // Decrease the lives and handle the player death.
             if (FindObjectOfType<PlayerLife>().Kill())
@@ -247,6 +251,9 @@ namespace GameHandler
 
             // Play the music
             MusicHandler.MusicHandler.Instance.PlayGhostChase();
+
+            // Reset the ghost mode.
+            _allTimersPaused = false;
         }
 
         public void ActivateGhostsAndPlayer()

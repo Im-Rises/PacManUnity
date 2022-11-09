@@ -16248,8 +16248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2bfd60605fbd854d8758e902ba72132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pacmanChase: {fileID: 8300000, guid: 3406debcdee4314488b7af3f4f9e8b5c, type: 3}
-  ghostChase: {fileID: 8300000, guid: 942ea0cd2d503e746881746bcbedc5d9, type: 3}
+  pacmanChase: {fileID: 8300000, guid: 52e67a3daa03f474898c6a69ec78b7a1, type: 3}
+  ghostChase: {fileID: 8300000, guid: bd295d4b5b9b30947b7c223ff800a9c2, type: 3}
 --- !u!4 &1190328706
 Transform:
   m_ObjectHideFlags: 0
