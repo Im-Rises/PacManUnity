@@ -43,9 +43,12 @@ namespace GameHandler
 
         // UI elements
         public TextMeshProUGUI gameOverText;
-
         public TextMeshProUGUI winText;
         public TextMeshProUGUI gamePausedText;
+
+        public GameObject pauseMenuUi;
+
+        public GamePauseUiHandler gamePauseUiHandler;
 
 
         #region Awake Singleton
@@ -70,6 +73,8 @@ namespace GameHandler
             gamePausedText.enabled = false;
             _pacGumCount = GameObject.FindGameObjectsWithTag(TagsConstants.PacGumTag).Length;
             UpdateGhostsMode();
+            gamePauseUiHandler.Reset();
+            pauseMenuUi.SetActive(false);
         }
 
         private void Update()
@@ -274,8 +279,12 @@ namespace GameHandler
         private void NextLevel()
         {
             winText.enabled = true;
-            Time.timeScale = 0;
-            Time.fixedDeltaTime = 0;
+
+            foreach (var ghost in _ghosts) ghost.gameObject.SetActive(false);
+
+            _player.enabled = false;
+            _player.animator.enabled = false;
+
             Invoke(nameof(RestartGame), 3);
         }
 
@@ -284,9 +293,14 @@ namespace GameHandler
             if (winText.enabled || gameOverText.enabled) return;
 
             if (gamePausedText.enabled)
+            {
                 ResumeGame();
+                gamePauseUiHandler.Reset();
+            }
             else
+            {
                 PauseGame();
+            }
         }
 
         private void PauseGame()
@@ -294,6 +308,7 @@ namespace GameHandler
             Time.timeScale = 0;
             Time.fixedDeltaTime = 0;
             gamePausedText.enabled = true;
+            pauseMenuUi.SetActive(true);
         }
 
         private void ResumeGame()
@@ -301,6 +316,14 @@ namespace GameHandler
             Time.timeScale = TimeConstants.TimeScaleNormal;
             Time.fixedDeltaTime = TimeConstants.FixedDeltaTime;
             gamePausedText.enabled = false;
+            pauseMenuUi.SetActive(false);
+        }
+
+        public void GoToMainMenu()
+        {
+            Time.timeScale = TimeConstants.TimeScaleNormal;
+            Time.fixedDeltaTime = TimeConstants.FixedDeltaTime;
+            SceneManager.LoadScene(SceneNameConstants.TitleScreen);
         }
 
         #endregion

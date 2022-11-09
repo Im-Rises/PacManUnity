@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -26,11 +27,18 @@ namespace SettingsController
             audioMixer.SetFloat(AudioMixerConstants.Sound, Mathf.Log10(soundVolumeSlider.value) * 20);
         }
 
-        private void OnApplicationQuit()
+        private void OnDestroy()
         {
             PlayerPrefs.SetFloat(AudioMixerConstants.Master, mainVolumeSlider.value);
             PlayerPrefs.SetFloat(AudioMixerConstants.Music, musicVolumeSlider.value);
             PlayerPrefs.SetFloat(AudioMixerConstants.Sound, soundVolumeSlider.value);
         }
+
+        // private void OnApplicationQuit()
+        // {
+        //     PlayerPrefs.SetFloat(AudioMixerConstants.Master, mainVolumeSlider.value);
+        //     PlayerPrefs.SetFloat(AudioMixerConstants.Music, musicVolumeSlider.value);
+        //     PlayerPrefs.SetFloat(AudioMixerConstants.Sound, soundVolumeSlider.value);
+        // }
     }
 }
