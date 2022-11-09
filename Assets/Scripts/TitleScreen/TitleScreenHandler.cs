@@ -30,7 +30,7 @@ namespace TitleScreen
 
         private void StartNewGame()
         {
-            SceneManager.LoadScene(SceneNameConstants.Level1);
+            SceneManager.LoadScene(SceneNameConstants.LevelSelector);
         }
 
         private void ExitGame()
