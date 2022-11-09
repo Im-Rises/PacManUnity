@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using GameHandler;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
@@ -109,7 +110,9 @@ namespace Player
 
         private void OnPause()
         {
-            GameHandler.GameHandler.Instance.ToglePause();
+            if (GameStartHandler.Instance.enabled)
+                GameStartHandler.Instance.TogglePause();
+            GameHandler.GameHandler.Instance.TogglePause();
             MusicHandler.MusicHandler.Instance.TogglePause();
         }
 

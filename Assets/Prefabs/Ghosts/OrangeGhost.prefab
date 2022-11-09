@@ -122,6 +122,7 @@ MonoBehaviour:
   bodyAnimator: {fileID: 4648297893019300409}
   goHomeAudioSource: {fileID: 6440809892409100000}
   eatenAudioSource: {fileID: 165342404386133307}
+  scoreValue: 200
 --- !u!82 &165342404386133307
 AudioSource:
   m_ObjectHideFlags: 0
@@ -444,7 +445,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4648297893094173341}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1.6, y: 1.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

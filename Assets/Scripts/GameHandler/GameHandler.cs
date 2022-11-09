@@ -44,7 +44,7 @@ namespace GameHandler
         // UI elements
         public TextMeshProUGUI gameOverText;
 
-        // public TextMeshProUGUI winText;
+        public TextMeshProUGUI winText;
         public TextMeshProUGUI gamePausedText;
 
 
@@ -66,6 +66,7 @@ namespace GameHandler
         {
             _ghosts = FindObjectsOfType<GhostAiMovement>();
             _player = FindObjectOfType<PlayerController>();
+            winText.enabled = false;
             gamePausedText.enabled = false;
             _pacGumCount = GameObject.FindGameObjectsWithTag(TagsConstants.PacGumTag).Length;
             UpdateGhostsMode();
@@ -214,6 +215,7 @@ namespace GameHandler
             {
                 ScoreHandler.ScoreHandler.Instance.UpdateHighScore();
                 gameOverText.enabled = true;
+
                 // Restart the game after 3 seconds.
                 Invoke(nameof(RestartGame), 3);
             }
@@ -271,11 +273,16 @@ namespace GameHandler
 
         private void NextLevel()
         {
-            Debug.Log("Next Level");
+            winText.enabled = true;
+            Time.timeScale = 0;
+            Time.fixedDeltaTime = 0;
+            Invoke(nameof(RestartGame), 3);
         }
 
-        public void ToglePause()
+        public void TogglePause()
         {
+            if (winText.enabled || gameOverText.enabled) return;
+
             if (gamePausedText.enabled)
                 ResumeGame();
             else
@@ -289,7 +296,7 @@ namespace GameHandler
             gamePausedText.enabled = true;
         }
 
-        public void ResumeGame()
+        private void ResumeGame()
         {
             Time.timeScale = TimeConstants.TimeScaleNormal;
             Time.fixedDeltaTime = TimeConstants.FixedDeltaTime;

@@ -65,6 +65,9 @@ namespace Ghosts
         public AudioSource goHomeAudioSource;
         public AudioSource eatenAudioSource;
 
+        // Score
+        public int scoreValue = 200;
+
         private void Start()
         {
             var pos = transform.position;
@@ -449,9 +452,14 @@ namespace Ghosts
         {
             if (other.CompareTag(TagsConstants.PlayerTag))
                 if (_ghostMode is GhostMode.Frightened or GhostMode.Eaten)
+                {
                     SetGhostMode(GhostMode.Eaten);
+                    ScoreHandler.ScoreHandler.Instance.AddScore(scoreValue);
+                }
                 else
+                {
                     GameHandler.GameHandler.Instance.KillPlayer();
+                }
         }
 
         #endregion

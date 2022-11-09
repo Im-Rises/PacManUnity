@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7080298397070983699}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1.6, y: 1.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -311,6 +311,7 @@ MonoBehaviour:
   bodyAnimator: {fileID: 7080298397467318018}
   goHomeAudioSource: {fileID: 6896892048030828667}
   eatenAudioSource: {fileID: 3476719325771242027}
+  scoreValue: 200
 --- !u!82 &3476719325771242027
 AudioSource:
   m_ObjectHideFlags: 0
