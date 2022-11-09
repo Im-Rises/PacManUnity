@@ -126,7 +126,6 @@ namespace GameHandler
             {
                 MusicHandler.MusicHandler.Instance.StopMusic();
                 MusicHandler.MusicHandler.Instance.PlayGhostChase();
-                Debug.Log("PlayGhostChase");
             }
         }
 
