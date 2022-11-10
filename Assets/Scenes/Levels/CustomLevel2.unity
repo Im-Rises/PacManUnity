@@ -79683,7 +79683,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2499925629320323284, guid: 6d602010fe49fb741ba68d4df928954e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2499925629320323286, guid: 6d602010fe49fb741ba68d4df928954e, type: 3}
       propertyPath: m_RootOrder
@@ -79699,11 +79699,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2499925629320323286, guid: 6d602010fe49fb741ba68d4df928954e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.25
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 2499925629320323286, guid: 6d602010fe49fb741ba68d4df928954e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -41.25
+      value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 2499925629320323286, guid: 6d602010fe49fb741ba68d4df928954e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -90013,7 +90013,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7340687eb38684a85b7f40d5cfc910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ghostsModeTimes: 0a00000007000000140000000700000014000000050000001400000005000000
+  ghostsModeTimes: 07000000140000000700000014000000050000001400000005000000
   frightenedTime: 10
   doorHandler: {fileID: 730635646}
   currentModeText: {fileID: 1886084342}
@@ -99723,6 +99723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9efbd5615c76e24796517bf99013252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highScoreKey: CustomLevel2HighScore
   scoreText: {fileID: 726095370}
   highScoreText: {fileID: 542376954}
 --- !u!114 &2132135425

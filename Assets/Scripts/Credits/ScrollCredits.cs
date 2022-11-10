@@ -10,8 +10,10 @@ namespace Credits
         public Button exitButton;
         public TextMeshProUGUI text;
         private Vector2 _initialPosition;
-        public float scrollSpeed = 10f;
-        public float scrollDistance = 1000f;
+        public GameObject scrollEnd;
+
+        public float scrollSpeed = 30f;
+        // public float scrollDistance = 1000f;
 
         private void Start()
         {
@@ -23,8 +25,12 @@ namespace Credits
         {
             text.transform.position += Vector3.up * (Time.deltaTime * scrollSpeed);
 
-            if (Vector2.Distance(text.transform.position, _initialPosition) > scrollDistance)
-                Exit();
+            if (Vector2.Distance(text.transform.position, _initialPosition) >= scrollEnd.transform.position.y)
+                enabled = false;
+
+
+            // if (Vector2.Distance(text.transform.position, _initialPosition) > scrollDistance)
+            //     enabled = false;
         }
 
         private void Exit()

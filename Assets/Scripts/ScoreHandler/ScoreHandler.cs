@@ -5,7 +5,7 @@ namespace ScoreHandler
 {
     public class ScoreHandler : MonoBehaviour
     {
-        private const string HighScoreKey = "highScore";
+        public string highScoreKey = "HighScore";
         public TextMeshProUGUI scoreText;
         public TextMeshProUGUI highScoreText;
         private bool _reachHighScore;
@@ -26,7 +26,7 @@ namespace ScoreHandler
         {
             _audioSource = GetComponent<AudioSource>();
             scoreText.SetText("Score: " + _score);
-            highScoreText.SetText("High Score: " + PlayerPrefs.GetInt(HighScoreKey));
+            highScoreText.SetText("High Score: " + PlayerPrefs.GetInt(highScoreKey));
         }
 
         public void ResetScore()
@@ -39,9 +39,9 @@ namespace ScoreHandler
         {
             _score += score;
             scoreText.SetText("Score: " + _score);
-            if (_score > PlayerPrefs.GetInt(HighScoreKey))
+            if (_score > PlayerPrefs.GetInt(highScoreKey))
             {
-                PlayerPrefs.SetInt(HighScoreKey, _score);
+                PlayerPrefs.SetInt(highScoreKey, _score);
                 highScoreText.SetText("High Score: " + _score);
 
                 if (!_reachHighScore)
@@ -52,8 +52,8 @@ namespace ScoreHandler
 
         public void UpdateHighScore()
         {
-            if (_score <= PlayerPrefs.GetInt(HighScoreKey)) return;
-            PlayerPrefs.SetInt(HighScoreKey, _score);
+            if (_score <= PlayerPrefs.GetInt(highScoreKey)) return;
+            PlayerPrefs.SetInt(highScoreKey, _score);
         }
     }
 }

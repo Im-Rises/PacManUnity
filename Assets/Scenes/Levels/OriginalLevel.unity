@@ -12367,7 +12367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7340687eb38684a85b7f40d5cfc910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ghostsModeTimes: 0a00000007000000140000000700000014000000050000001400000005000000
+  ghostsModeTimes: 07000000140000000700000014000000050000001400000005000000
   frightenedTime: 10
   doorHandler: {fileID: 6075904250321623030}
   currentModeText: {fileID: 717308384}
@@ -18288,6 +18288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9efbd5615c76e24796517bf99013252, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highScoreKey: OriginalLevelHighScore
   scoreText: {fileID: 510598129}
   highScoreText: {fileID: 1669721889}
 --- !u!82 &1371290033
