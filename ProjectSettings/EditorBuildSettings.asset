@@ -12,11 +12,14 @@ EditorBuildSettings:
     path: Assets/Scenes/LevelSelector.unity
     guid: a5cdd457c758d854ab43a7d8f26e1407
   - enabled: 1
-    path: Assets/Scenes/LevelS/CustomLevel1.unity
+    path: Assets/Scenes/Levels/CustomLevel1.unity
     guid: 13a9030f3ef5f6b4eb9a421027db2fa4
   - enabled: 1
-    path: Assets/Scenes/LevelS/OriginalLevel.unity
+    path: Assets/Scenes/Levels/OriginalLevel.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Levels/CustomLevel2.unity
+    guid: e6f9ac97c9980434183daec9bfd414fe
   - enabled: 1
     path: Assets/Scenes/Credits.unity
     guid: 98c45e96fcf5d1b40b55c2070e4bea19

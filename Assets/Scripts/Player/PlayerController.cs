@@ -32,6 +32,9 @@ namespace Player
         private Vector2 _lastInputDirection;
         private Vector2 _lastDirection;
 
+        // Sprite
+        public SpriteRenderer spriteRenderer;
+
 
         public Vector2 NextDestination { get; set; }
 
@@ -41,12 +44,7 @@ namespace Player
             var position = transform.position;
             _spawnPosition = position;
             _lastDirection = initDirection.normalized;
-
-            // if (transform.position.x % 1 != 0 || transform.position.y % 1 != 0)
-            //     NextDestination = (Vector2)position + originalDirection * 0.5f;
-            // else
-            //     NextDestination = (Vector2)position + originalDirection;
-
+            NextDestination = (Vector2)position + _lastDirection / 2;
             RotateRenderer();
         }
 
@@ -84,7 +82,8 @@ namespace Player
         private void RotateRenderer()
         {
             var angle = Vector2.SignedAngle(Vector2.right, _lastDirection);
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, angle);
+            // transform.rotation = Quaternion.Euler(0, 0, angle);
         }
 
         private bool DetectWallBorder(Vector2 dir)
