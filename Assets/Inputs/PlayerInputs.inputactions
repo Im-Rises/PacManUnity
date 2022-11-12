@@ -362,6 +362,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1f3ce44d-7841-48d7-a54d-c9cfed316a5c",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "be5e7ec8-93ee-4edc-b574-248044cdb122",
                     "path": "<Gamepad>/start",
                     "interactions": "",
@@ -374,7 +385,7 @@
                 {
                     "name": "",
                     "id": "68cdb533-51c0-46ec-bba2-7162e6a52703",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
