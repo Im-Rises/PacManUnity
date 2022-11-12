@@ -9,6 +9,7 @@ namespace LevelInputHandler
     {
         public PlayerController playerController;
         public GamePauseUiHandler gamePauseUiHandler;
+        public SettingsController.SettingsController settingsController;
 
         private void OnCancel()
         {
@@ -30,6 +31,8 @@ namespace LevelInputHandler
 
             if (gamePauseUiHandler.gameObject.activeSelf)
                 gamePauseUiHandler.MoveSelection(inputDirection);
+            else if (settingsController.gameObject.activeSelf)
+                settingsController.SetInputDirection(inputDirection);
             else
                 playerController.LastInputDirection = playerController.LastInputDirection;
         }

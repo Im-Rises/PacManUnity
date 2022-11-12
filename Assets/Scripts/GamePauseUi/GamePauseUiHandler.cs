@@ -20,7 +20,6 @@ public class GamePauseUiHandler : MonoBehaviour
     private Vector2 _inputDirection;
 
     private Vector2 _lastDirection;
-    // private Button[] _buttons;
 
     private void Start()
     {
@@ -30,9 +29,6 @@ public class GamePauseUiHandler : MonoBehaviour
         restartButton.onClick.AddListener(RestartGame);
         backSettingsButton.onClick.AddListener(BackSettingsGame);
 
-        // _buttons = GetComponentsInChildren<Button>();
-
-        // SelectButton(_buttons[_curentButtonIndex]);
         settingsPanel.SetActive(false);
 
         SelectButton(resumeButton);
@@ -45,9 +41,7 @@ public class GamePauseUiHandler : MonoBehaviour
 
     public void MoveSelection(Vector2 direction)
     {
-        if (_lastDirection == direction || !gameObject.activeSelf)
-            // _settingsController.SetInputDirection(direction);
-            return;
+        if (_lastDirection == direction || !gameObject.activeSelf) return;
 
         if (direction.y > 0.5f)
         {
@@ -79,20 +73,6 @@ public class GamePauseUiHandler : MonoBehaviour
                 SelectButton(quitButton);
                 break;
         }
-
-        /*if (direction.y > 0.5f)
-        {
-            DeselectButton(_buttons[_curentButtonIndex]);
-            _curentButtonIndex--;
-            if (_curentButtonIndex < 0) _curentButtonIndex = _buttons.Length - 1;
-            SelectButton(_buttons[_curentButtonIndex]);
-        }
-        else if (direction.y < -0.5f)
-        {
-            DeselectButton(_buttons[_curentButtonIndex]);
-            _curentButtonIndex = (_curentButtonIndex + 1) % _buttons.Length;
-            SelectButton(_buttons[_curentButtonIndex]);
-        }*/
 
         _lastDirection = direction;
     }

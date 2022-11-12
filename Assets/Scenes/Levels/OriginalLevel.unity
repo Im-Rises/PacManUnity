@@ -10803,6 +10803,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3523571155085217848, guid: a23a3340b7445174184c46f89d6cf6a5, type: 3}
   m_PrefabInstance: {fileID: 568965580}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &568965583 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3523571155085217862, guid: a23a3340b7445174184c46f89d6cf6a5, type: 3}
+  m_PrefabInstance: {fileID: 568965580}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568965582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c02c67b030e674aba6c9e932c6a211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &574835531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14126,6 +14137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 3059046656563892185}
   gamePauseUiHandler: {fileID: 1624532367}
+  settingsController: {fileID: 568965583}
 --- !u!114 &930442777
 MonoBehaviour:
   m_ObjectHideFlags: 0
