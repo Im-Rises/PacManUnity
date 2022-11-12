@@ -22,6 +22,9 @@ namespace TitleScreen
         private Button[] _mainMenuButton;
         private int _currentMainMenuButtonIndex;
 
+        private Vector2 _inputDirection;
+        private Vector2 _lastDirection;
+
         private void Start()
         {
             newGameButton.onClick.AddListener(StartNewGame);
@@ -34,6 +37,31 @@ namespace TitleScreen
 
             _mainMenuButton = mainMenuPanel.GetComponentsInChildren<Button>();
             SelectButton(_mainMenuButton[0]);
+        }
+
+        private void Update()
+        {
+            var direction = _inputDirection;
+
+            if (_lastDirection == direction) return;
+
+            if (direction.y > 0.5f)
+            {
+                // DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
+                DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
+                _currentMainMenuButtonIndex--;
+                if (_currentMainMenuButtonIndex < 0) _currentMainMenuButtonIndex = _mainMenuButton.Length - 1;
+                SelectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
+            }
+            else if (direction.y < -0.5f)
+            {
+                // DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
+                DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
+                _currentMainMenuButtonIndex = (_currentMainMenuButtonIndex + 1) % _mainMenuButton.Length;
+                SelectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
+            }
+
+            _lastDirection = direction;
         }
 
         private void StartNewGame()
@@ -65,22 +93,12 @@ namespace TitleScreen
 
         private void OnMove(InputValue value)
         {
-            var direction = value.Get<Vector2>();
-            if (direction.y > 0.5f)
-            {
-                // DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
-                DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
-                _currentMainMenuButtonIndex--;
-                if (_currentMainMenuButtonIndex < 0) _currentMainMenuButtonIndex = _mainMenuButton.Length - 1;
-                SelectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
-            }
-            else if (direction.y < -0.5f)
-            {
-                // DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
-                DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
-                _currentMainMenuButtonIndex = (_currentMainMenuButtonIndex + 1) % _mainMenuButton.Length;
-                SelectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
-            }
+            _inputDirection = value.Get<Vector2>();
+
+            if (_inputDirection.y != 0) _inputDirection.x = 0; // Create a priority for y movement
+
+            if (_inputDirection != Vector2.zero)
+                _inputDirection = _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
         }
 
         private void SelectButton(Button button)
