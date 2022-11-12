@@ -28,8 +28,7 @@ namespace Player
         private Vector2 _spawnPosition;
 
         // Player direction
-        private Vector2 _inputDirection;
-        private Vector2 _lastInputDirection;
+        public Vector2 LastInputDirection { get; set; }
         private Vector2 _lastDirection;
 
         // Sprite
@@ -60,10 +59,10 @@ namespace Player
             if (!isCentered) return;
 
             // if is at the middle of a tile, has input and there is no wall in the direction of the input
-            if (_lastInputDirection != Vector2.zero && !DetectWallBorder(_lastInputDirection))
+            if (LastInputDirection != Vector2.zero && !DetectWallBorder(LastInputDirection))
             {
-                NextDestination = position + _lastInputDirection;
-                _lastDirection = _lastInputDirection;
+                NextDestination = position + LastInputDirection;
+                _lastDirection = LastInputDirection;
                 animator.SetBool(IsMoving, true);
                 RotateRenderer();
             }
@@ -96,16 +95,6 @@ namespace Player
             return linecast.Any(t => t.collider.CompareTag(tilemap.tag)) || tilemap.HasTile(cellPosition);
         }
 
-        private void OnMove(InputValue value)
-        {
-            _inputDirection = value.Get<Vector2>();
-
-            if (_inputDirection.x != 0) _inputDirection.y = 0; // Create a priority for x movement
-
-            if (_inputDirection != Vector2.zero)
-                _lastInputDirection =
-                    _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
-        }
 
         private void OnCancel()
         {
@@ -119,14 +108,14 @@ namespace Player
         {
             transform.position = _spawnPosition;
             NextDestination = _spawnPosition + initDirection;
-            _lastInputDirection = initDirection.normalized;
+            LastInputDirection = initDirection.normalized;
             _lastDirection = initDirection.normalized;
             RotateRenderer();
         }
 
         public void Immobilize()
         {
-            _lastInputDirection = Vector2.zero;
+            LastInputDirection = Vector2.zero;
             _lastDirection = Vector2.zero;
             NextDestination = transform.position;
         }
