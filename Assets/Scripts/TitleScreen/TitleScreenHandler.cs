@@ -101,7 +101,6 @@ namespace TitleScreen
 
         private void OnMove(InputValue value)
         {
-            Debug.Log("OnMove");
             _inputDirection = value.Get<Vector2>();
 
             if (_inputDirection.y != 0) _inputDirection.x = 0; // Create a priority for y movement

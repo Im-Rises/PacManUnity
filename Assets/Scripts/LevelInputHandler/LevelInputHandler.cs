@@ -1,4 +1,5 @@
 using GameHandler;
+using GamePauseUi;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,11 +18,13 @@ namespace LevelInputHandler
                 GameStartHandler.Instance.TogglePause();
             GameHandler.GameHandler.Instance.TogglePause();
             MusicHandler.MusicHandler.Instance.TogglePause();
+
+            gamePauseUiHandler.ResetInitialButton();
+            settingsController.ResetSliderSelection();
         }
 
         private void OnMove(InputValue value)
         {
-            Debug.Log("Move");
             var inputDirection = value.Get<Vector2>();
 
             if (inputDirection.x != 0) inputDirection.y = 0; // Create a priority for x movement

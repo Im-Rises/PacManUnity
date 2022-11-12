@@ -1,127 +1,130 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using GameHandler;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GamePauseUiHandler : MonoBehaviour
+namespace GamePauseUi
 {
-    public Button resumeButton;
-    public Button quitButton;
-    public Button settingsButton;
-    public Button restartButton;
-
-    public Button backSettingsButton;
-
-    public GameObject settingsPanel;
-
-    private int _curentButtonIndex = 0;
-    private Vector2 _inputDirection;
-
-    private Vector2 _lastDirection;
-
-    private void Start()
+    public class GamePauseUiHandler : MonoBehaviour
     {
-        resumeButton.onClick.AddListener(ResumeGame);
-        quitButton.onClick.AddListener(QuitGame);
-        settingsButton.onClick.AddListener(SettingsGame);
-        restartButton.onClick.AddListener(RestartGame);
-        backSettingsButton.onClick.AddListener(BackSettingsGame);
+        public Button resumeButton;
+        public Button quitButton;
+        public Button settingsButton;
+        public Button restartButton;
 
-        settingsPanel.SetActive(false);
+        public Button backSettingsButton;
 
-        SelectButton(resumeButton);
-    }
+        public GameObject settingsPanel;
 
-    public void Reset()
-    {
-        settingsPanel.SetActive(false);
-    }
+        private int _curentButtonIndex = 0;
+        private Vector2 _inputDirection;
 
-    public void MoveSelection(Vector2 direction)
-    {
-        if (_lastDirection == direction || !gameObject.activeSelf) return;
+        private Vector2 _lastDirection;
 
-        if (direction.y > 0.5f)
+        private void Start()
         {
-            _curentButtonIndex--;
-            if (_curentButtonIndex < 0) _curentButtonIndex = 4 - 1;
-        }
-        else if (direction.y < -0.5f)
-        {
-            _curentButtonIndex = (_curentButtonIndex + 1) % 4;
+            resumeButton.onClick.AddListener(ResumeGame);
+            quitButton.onClick.AddListener(QuitGame);
+            settingsButton.onClick.AddListener(SettingsGame);
+            restartButton.onClick.AddListener(RestartGame);
+            backSettingsButton.onClick.AddListener(BackSettingsGame);
+
+            settingsPanel.SetActive(false);
+
+            ResetInitialButton();
         }
 
-        DeselectButton(resumeButton);
-        DeselectButton(restartButton);
-        DeselectButton(settingsButton);
-        DeselectButton(quitButton);
-
-        switch (_curentButtonIndex)
+        public void ResetInitialButton()
         {
-            case 0:
-                SelectButton(resumeButton);
-                break;
-            case 1:
-                SelectButton(restartButton);
-                break;
-            case 2:
-                SelectButton(settingsButton);
-                break;
-            case 3:
-                SelectButton(quitButton);
-                break;
+            _curentButtonIndex = 0;
+            SelectButton(resumeButton);
+            DeselectButton(restartButton);
+            DeselectButton(settingsButton);
+            DeselectButton(quitButton);
         }
 
-        _lastDirection = direction;
-    }
+        public void Reset()
+        {
+            settingsPanel.SetActive(false);
+        }
 
-    private void SelectButton(Button button)
-    {
-        button.Select();
-        button.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
-    }
+        public void MoveSelection(Vector2 direction)
+        {
+            if (_lastDirection == direction || !gameObject.activeSelf) return;
 
-    private void DeselectButton(Button button)
-    {
-        button.transform.localScale = new Vector3(1f, 1f, 1f);
-    }
+            if (direction.y > 0.5f)
+            {
+                _curentButtonIndex--;
+                if (_curentButtonIndex < 0) _curentButtonIndex = 4 - 1;
+            }
+            else if (direction.y < -0.5f)
+            {
+                _curentButtonIndex = (_curentButtonIndex + 1) % 4;
+            }
 
-    private void ResumeGame()
-    {
-        Debug.Log("Resume");
-        if (GameStartHandler.Instance.enabled)
-            GameStartHandler.Instance.TogglePause();
-        GameHandler.GameHandler.Instance.TogglePause();
-        MusicHandler.MusicHandler.Instance.TogglePause();
-    }
+            DeselectButton(resumeButton);
+            DeselectButton(restartButton);
+            DeselectButton(settingsButton);
+            DeselectButton(quitButton);
 
-    private void QuitGame()
-    {
-        Debug.Log("Quit");
-        GameHandler.GameHandler.Instance.GoToMainMenu();
-        Debug.Log("Go to main menu");
-    }
+            switch (_curentButtonIndex)
+            {
+                case 0:
+                    SelectButton(resumeButton);
+                    break;
+                case 1:
+                    SelectButton(restartButton);
+                    break;
+                case 2:
+                    SelectButton(settingsButton);
+                    break;
+                case 3:
+                    SelectButton(quitButton);
+                    break;
+            }
 
-    private void SettingsGame()
-    {
-        Debug.Log("Settings");
-        settingsPanel.SetActive(true);
-        gameObject.SetActive(false);
-    }
+            _lastDirection = direction;
+        }
 
-    private void BackSettingsGame()
-    {
-        Debug.Log("Back");
-        settingsPanel.SetActive(false);
-        gameObject.SetActive(true);
-    }
+        private void SelectButton(Button button)
+        {
+            button.Select();
+            button.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+        }
 
-    private void RestartGame()
-    {
-        Debug.Log("Restart");
-        GameHandler.GameHandler.Instance.RestartGame();
-        // Reset();
+        private void DeselectButton(Button button)
+        {
+            button.transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+
+        private void ResumeGame()
+        {
+            if (GameStartHandler.Instance.enabled)
+                GameStartHandler.Instance.TogglePause();
+            GameHandler.GameHandler.Instance.TogglePause();
+            MusicHandler.MusicHandler.Instance.TogglePause();
+        }
+
+        private void QuitGame()
+        {
+            GameHandler.GameHandler.Instance.GoToMainMenu();
+        }
+
+        private void SettingsGame()
+        {
+            settingsPanel.SetActive(true);
+            gameObject.SetActive(false);
+        }
+
+        private void BackSettingsGame()
+        {
+            settingsPanel.SetActive(false);
+            gameObject.SetActive(true);
+        }
+
+        private void RestartGame()
+        {
+            GameHandler.GameHandler.Instance.RestartGame();
+            // Reset();
+        }
     }
 }

@@ -1,4 +1,5 @@
 using Door;
+using GamePauseUi;
 using Ghosts;
 using Player;
 using TMPro;

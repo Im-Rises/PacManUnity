@@ -16,7 +16,7 @@ namespace SettingsController
 
         private Vector2 _lastDirection;
 
-        private int _currentSlider = 0;
+        private int _currentSlider;
 
         private void Start()
         {
@@ -24,7 +24,15 @@ namespace SettingsController
             musicVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Music, 0.5f);
             soundVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Sound, 0.5f);
 
+            ResetSliderSelection();
+        }
+
+        public void ResetSliderSelection()
+        {
+            _currentSlider = 0;
             SelectSlider(mainVolumeSlider);
+            DeselectSlider(musicVolumeSlider);
+            DeselectSlider(soundVolumeSlider);
         }
 
         public void SetInputDirection(Vector2 direction)
