@@ -22,8 +22,6 @@ namespace TitleScreen
         private Button[] _mainMenuButton;
         private int _currentMainMenuButtonIndex;
 
-        private int _lastInputY;
-
         private void Start()
         {
             newGameButton.onClick.AddListener(StartNewGame);
@@ -35,13 +33,8 @@ namespace TitleScreen
             settingsPanel.SetActive(false);
 
             _mainMenuButton = mainMenuPanel.GetComponentsInChildren<Button>();
-            SelectButton(_mainMenuButton[0].gameObject);
+            SelectButton(_mainMenuButton[0]);
         }
-
-        // private void Update()
-        // {
-        //
-        // }
 
         private void StartNewGame()
         {
@@ -75,26 +68,29 @@ namespace TitleScreen
             var direction = value.Get<Vector2>();
             if (direction.y > 0.5f)
             {
-                DeselectButton(EventSystem.current.currentSelectedGameObject);
+                // DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
+                DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
                 _currentMainMenuButtonIndex--;
                 if (_currentMainMenuButtonIndex < 0) _currentMainMenuButtonIndex = _mainMenuButton.Length - 1;
+                SelectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
             }
             else if (direction.y < -0.5f)
             {
-                DeselectButton(EventSystem.current.currentSelectedGameObject);
+                // DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
+                DeselectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
                 _currentMainMenuButtonIndex = (_currentMainMenuButtonIndex + 1) % _mainMenuButton.Length;
+                SelectButton(_mainMenuButton[_currentMainMenuButtonIndex]);
             }
-
-            SelectButton(_mainMenuButton[_currentMainMenuButtonIndex].gameObject);
         }
 
-        private void SelectButton(GameObject button)
+        private void SelectButton(Button button)
         {
-            EventSystem.current.SetSelectedGameObject(button);
+            button.Select();
+            // EventSystem.current.SetSelectedGameObject(button.gameObject);
             button.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
         }
 
-        private void DeselectButton(GameObject button)
+        private void DeselectButton(Button button)
         {
             button.transform.localScale = new Vector3(1f, 1f, 1f);
         }
