@@ -33,6 +33,11 @@ namespace Credits
             //     enabled = false;
         }
 
+        private void OnCancel()
+        {
+            Exit();
+        }
+
         private void Exit()
         {
             SceneManager.LoadScene(SceneNameConstants.TitleScreen);
