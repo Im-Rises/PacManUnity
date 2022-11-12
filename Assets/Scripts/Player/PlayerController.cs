@@ -107,7 +107,7 @@ namespace Player
                     _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
         }
 
-        private void OnPause()
+        private void OnCancel()
         {
             if (GameStartHandler.Instance.enabled)
                 GameStartHandler.Instance.TogglePause();

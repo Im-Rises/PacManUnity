@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -8,66 +11,94 @@ namespace LevelSelector
 {
     public class LevelSelectorHandler : MonoBehaviour
     {
-        public Button originalLevelButton;
-        public Button customLevel1Button;
-        public Button customLevel2Button;
+        // Buttons
+        public Button backButton;
 
         public Button leftArrow;
         public Button rightArrow;
 
-        public GameObject[] levelImages;
-        public GameObject pivot;
 
-        private float _imageAngleOffset = 0f;
+        // TextMeshPro
+        public TextMeshProUGUI levelNameText;
+
+        // Level settings
+        public Level[] levels;
+
+        [Serializable]
+        public struct Level
+        {
+            public string name;
+            public string sceneName;
+            public GameObject levelImage;
+        }
+
+
+        // View settings
+        public GameObject pivot;
         public float imageDistance = 100f;
+
+        // Move settings
+        private float _imageAngleOffset;
+        private int _currentLevelIndex;
 
         private void Start()
         {
-            originalLevelButton.onClick.AddListener(() => LoadLevel(SceneNameConstants.OriginalLevel));
-            customLevel1Button.onClick.AddListener(() => LoadLevel(SceneNameConstants.CustomLevel1));
-            customLevel2Button.onClick.AddListener(() => LoadLevel(SceneNameConstants.CustomLevel2));
+            backButton.onClick.AddListener(BackButtonPressed);
 
             leftArrow.onClick.AddListener(() => RotateLeft());
             rightArrow.onClick.AddListener(() => RotateRight());
 
-            _imageAngleOffset = 360f / levelImages.Length;
+            _imageAngleOffset = 360f / levels.Length;
             var pivotPosition = pivot.transform.position;
 
-            for (var i = 0; i < levelImages.Length; i++)
+            for (var i = 0; i < levels.Length; i++)
             {
                 // Set initial position and rotation
-                levelImages[i].transform.position = pivotPosition + new Vector3(0, 0, -imageDistance);
-                levelImages[i].transform.RotateAround(pivotPosition, Vector3.up, _imageAngleOffset * i);
+                levels[i].levelImage.transform.position = pivotPosition + new Vector3(0, 0, -imageDistance);
+                levels[i].levelImage.transform.RotateAround(pivotPosition, Vector3.up, _imageAngleOffset * i);
             }
+
+            levelNameText.text = levels[_currentLevelIndex].name;
         }
 
-        // private void Update()
-        // {
-        //     if (Input.GetMouseButtonDown(0))
-        //     {
-        //         ClickLeft();
-        //         Debug.Log("Left");
-        //     }
-        //     else if (Input.GetMouseButtonDown(1))
-        //     {
-        //         ClickRight();
-        //     }
-        // }
+        private void BackButtonPressed()
+        {
+            SceneManager.LoadScene(SceneNameConstants.TitleScreen);
+        }
 
         private void RotateLeft()
         {
             // get input
             pivot.transform.Rotate(0, _imageAngleOffset, 0);
+            _currentLevelIndex--;
+            if (_currentLevelIndex < 0) _currentLevelIndex = levels.Length - 1;
+            levelNameText.text = levels[_currentLevelIndex].name;
         }
 
         private void RotateRight()
         {
             pivot.transform.Rotate(0, -_imageAngleOffset, 0);
-            // or
-            // for (var i = 0; i < levelImages.Length; i++)
-            // {
-            //     levelImages[i].transform.RotateAround(pivot.transform.position, Vector3.up, _imageAngleOffset);
-            // }
+            var target = levels[0].levelImage.transform.position;
+            _currentLevelIndex = (_currentLevelIndex + 1) % levels.Length;
+            levelNameText.text = levels[_currentLevelIndex].name;
+        }
+
+        private void OnMove(InputValue value)
+        {
+            var input = value.Get<Vector2>();
+            if (input.x < 0)
+                RotateLeft();
+            else if (input.x > 0) RotateRight();
+        }
+
+        private void OnCancel()
+        {
+            BackButtonPressed();
+        }
+
+        private void OnSelect()
+        {
+            LoadLevel(levels[_currentLevelIndex].sceneName);
         }
 
         private void LoadLevel(string sceneName)
