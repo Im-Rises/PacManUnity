@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
@@ -21,6 +22,8 @@ namespace TitleScreen
         private Button[] _mainMenuButton;
         private int _currentMainMenuButtonIndex;
 
+        private int _lastInputY;
+
         private void Start()
         {
             newGameButton.onClick.AddListener(StartNewGame);
@@ -34,6 +37,11 @@ namespace TitleScreen
             _mainMenuButton = mainMenuPanel.GetComponentsInChildren<Button>();
             SelectButton(_mainMenuButton[0].gameObject);
         }
+
+        // private void Update()
+        // {
+        //
+        // }
 
         private void StartNewGame()
         {
