@@ -66,21 +66,13 @@ Or follow the direct link below:
 
 ## Play on your computer
 
-[//]: # (The game is also downloadable as a desktop application for Windows, Linux and macOS by clicking on your operating system below:)
-The game is also downloadable as a desktop application for Windows:
+The game is also downloadable as a desktop application for Windows, Linux and macOS by clicking on the link below (click on the image of ):
 
-[![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Im-Rises/PacManUnity/releases/latest)
+[![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Im-Rises/PacManUnity/releases/download/1.0/build-windows-1.0.zip)
 
-Or follow the direct link below:
+Or click the direct link belwo to access the release page.
 
 <https://github.com/Im-Rises/PacManUnity/releases/latest>
-
-<!--
-Direct link:
-- ![Windows](https://github.com/Im-Rises/PacManUnity/releases/latest)
-- Linux
-- macOS
--->
 
 ## Controls
 
