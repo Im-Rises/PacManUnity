@@ -27,7 +27,9 @@ namespace SettingsController
             soundVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Sound,
                 PlayerPrefs.GetFloat(AudioMixerConstants.Sound));
 
+            UpdateAudioMixer();
             ResetSliderSelection();
+            Debug.Log("SettingsController started");
         }
 
         public void ResetSliderSelection()
@@ -70,6 +72,11 @@ namespace SettingsController
         }
 
         private void Update()
+        {
+            UpdateAudioMixer();
+        }
+
+        private void UpdateAudioMixer()
         {
             audioMixer.SetFloat(AudioMixerConstants.Master, Mathf.Log10(mainVolumeSlider.value) * 20);
             audioMixer.SetFloat(AudioMixerConstants.Music, Mathf.Log10(musicVolumeSlider.value) * 20);

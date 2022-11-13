@@ -253,7 +253,7 @@ namespace GameHandler
             // Play the music
             MusicHandler.MusicHandler.Instance.PlayGhostChase();
 
-            // Reset the ghost mode.
+            // // Reset the ghost mode.
             _allTimersPaused = false;
         }
 
@@ -276,6 +276,7 @@ namespace GameHandler
         public void RestartGame()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            _allTimersPaused = false;
             TogglePause();
         }
 
@@ -287,6 +288,8 @@ namespace GameHandler
 
         private void NextLevel()
         {
+            _allTimersPaused = true;
+
             winText.enabled = true;
 
             foreach (var ghost in _ghosts) ghost.gameObject.SetActive(false);
