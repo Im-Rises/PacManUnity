@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace SettingsController
@@ -15,21 +13,16 @@ namespace SettingsController
         public AudioMixer audioMixer;
 
         private Vector2 _lastDirection;
-
         private int _currentSlider;
 
         private void Start()
         {
-            mainVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Master,
-                PlayerPrefs.GetFloat(AudioMixerConstants.Master));
-            musicVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Music,
-                PlayerPrefs.GetFloat(AudioMixerConstants.Music));
-            soundVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Sound,
-                PlayerPrefs.GetFloat(AudioMixerConstants.Sound));
+            mainVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Master, 0.5f);
+            musicVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Music, 0.5f);
+            soundVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Sound, 0.5f);
 
-            UpdateAudioMixer();
             ResetSliderSelection();
-            Debug.Log("SettingsController started");
+            UpdateAudioMixer();
         }
 
         public void ResetSliderSelection()
@@ -67,7 +60,6 @@ namespace SettingsController
                     break;
             }
 
-
             _lastDirection = direction;
         }
 
@@ -101,11 +93,11 @@ namespace SettingsController
             PlayerPrefs.SetFloat(AudioMixerConstants.Sound, soundVolumeSlider.value);
         }
 
-        // private void OnApplicationQuit()
-        // {
-        //     PlayerPrefs.SetFloat(AudioMixerConstants.Master, mainVolumeSlider.value);
-        //     PlayerPrefs.SetFloat(AudioMixerConstants.Music, musicVolumeSlider.value);
-        //     PlayerPrefs.SetFloat(AudioMixerConstants.Sound, soundVolumeSlider.value);
-        // }
+        private void OnApplicationQuit()
+        {
+            PlayerPrefs.SetFloat(AudioMixerConstants.Master, mainVolumeSlider.value);
+            PlayerPrefs.SetFloat(AudioMixerConstants.Music, musicVolumeSlider.value);
+            PlayerPrefs.SetFloat(AudioMixerConstants.Sound, soundVolumeSlider.value);
+        }
     }
 }

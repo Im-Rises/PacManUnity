@@ -5,9 +5,7 @@ namespace GameHandler
     public class GameStartHandler : MonoBehaviour
     {
         public static GameStartHandler Instance { get; private set; }
-
         public AudioSource StartAudioSource { get; private set; }
-
         public bool IsStarterPaused { get; private set; }
 
         private void Awake()
