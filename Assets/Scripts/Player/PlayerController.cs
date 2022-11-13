@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using GameHandler;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
@@ -22,14 +23,15 @@ namespace Player
         public Tilemap tilemap;
 
         // Init spawn position and direction
-        // public Vector2 originalDirection = new(-1, 0);
         public Vector2 initDirection = Vector2.left / 2;
         private Vector2 _spawnPosition;
 
         // Player direction
-        private Vector2 _inputDirection;
         private Vector2 _lastInputDirection;
         private Vector2 _lastDirection;
+
+        // Sprite
+        public SpriteRenderer spriteRenderer;
 
 
         public Vector2 NextDestination { get; set; }
@@ -40,17 +42,14 @@ namespace Player
             var position = transform.position;
             _spawnPosition = position;
             _lastDirection = initDirection.normalized;
-
-            // if (transform.position.x % 1 != 0 || transform.position.y % 1 != 0)
-            //     NextDestination = (Vector2)position + originalDirection * 0.5f;
-            // else
-            //     NextDestination = (Vector2)position + originalDirection;
-
+            NextDestination = (Vector2)position + _lastDirection / 2;
             RotateRenderer();
         }
 
         private void FixedUpdate()
         {
+            // Debug.Log("FixedUpdate " + _lastInputDirection);
+
             // Move the player
             var position = (Vector2)transform.position;
             var positionVector = Vector2.MoveTowards(position, NextDestination, speed * Time.deltaTime);
@@ -83,7 +82,8 @@ namespace Player
         private void RotateRenderer()
         {
             var angle = Vector2.SignedAngle(Vector2.right, _lastDirection);
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+            spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, angle);
+            // transform.rotation = Quaternion.Euler(0, 0, angle);
         }
 
         private bool DetectWallBorder(Vector2 dir)
@@ -94,17 +94,6 @@ namespace Player
             // Detect a door in the direction of the dir vector parameter using linecast
             var linecast = Physics2D.LinecastAll(pos + dir, pos);
             return linecast.Any(t => t.collider.CompareTag(tilemap.tag)) || tilemap.HasTile(cellPosition);
-        }
-
-        private void OnMove(InputValue value)
-        {
-            _inputDirection = value.Get<Vector2>();
-
-            if (_inputDirection.x != 0) _inputDirection.y = 0; // Create a priority for x movement
-
-            if (_inputDirection != Vector2.zero)
-                _lastInputDirection =
-                    _inputDirection.normalized; // Normalize the output to be 1 or -1 not floating values
         }
 
         public void Reset()
@@ -121,6 +110,11 @@ namespace Player
             _lastInputDirection = Vector2.zero;
             _lastDirection = Vector2.zero;
             NextDestination = transform.position;
+        }
+
+        public void SetInputDirection(Vector2 direction)
+        {
+            if (direction != Vector2.zero) _lastInputDirection = direction;
         }
     }
 }

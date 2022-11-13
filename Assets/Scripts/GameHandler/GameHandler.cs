@@ -1,3 +1,5 @@
+using Door;
+using GamePauseUi;
 using Ghosts;
 using Player;
 using TMPro;
@@ -28,21 +30,28 @@ namespace GameHandler
         public uint[] ghostsModeTimes = { 7, 20, 7, 20, 5, 20, 5 };
         private int _ghostsModeTimesIndex;
         private float _switcherModeTimer;
+        private bool _allTimersPaused;
 
         // Timer for ghost frightened
         public uint frightenedTime = 10;
         private float _frightenTimer;
         private bool _switcherModeTimerPaused;
 
-        // Door animator
-        public Animator ghostHouseDoor;
-        private static readonly int IsOpen = Animator.StringToHash(AnimationsConstants.DoorIsOpen);
+        // Door
+        public DoorHandler doorHandler;
 
         // Current Ghost mode text
         public TextMeshProUGUI currentModeText;
 
         // UI elements
         public TextMeshProUGUI gameOverText;
+        public TextMeshProUGUI winText;
+        public TextMeshProUGUI gamePausedText;
+
+        public GameObject pauseMenuUi;
+
+        public GamePauseUiHandler gamePauseUiHandler;
+
 
         #region Awake Singleton
 
@@ -62,12 +71,19 @@ namespace GameHandler
         {
             _ghosts = FindObjectsOfType<GhostAiMovement>();
             _player = FindObjectOfType<PlayerController>();
+            winText.enabled = false;
+            gamePausedText.enabled = false;
             _pacGumCount = GameObject.FindGameObjectsWithTag(TagsConstants.PacGumTag).Length;
             UpdateGhostsMode();
+            gamePauseUiHandler.Reset();
+            pauseMenuUi.SetActive(false);
         }
 
         private void Update()
         {
+            if (GameStartHandler.Instance.enabled || _allTimersPaused)
+                return;
+
             if (!_switcherModeTimerPaused)
             {
                 // If the index is out of bounds, we are in the last mode, which is chase mode.
@@ -103,7 +119,7 @@ namespace GameHandler
                 {
                     _frightenTimer = 0;
                     _switcherModeTimerPaused = false;
-                    ghostHouseDoor.SetBool(IsOpen, false);
+                    doorHandler.CloseDoor();
                     UpdateGhostsMode();
                 }
 
@@ -121,6 +137,12 @@ namespace GameHandler
                 SwitchingChaseMode();
             else
                 SwitchingScatterMode();
+
+            if (!GameStartHandler.Instance.enabled)
+            {
+                MusicHandler.MusicHandler.Instance.StopMusic();
+                MusicHandler.MusicHandler.Instance.PlayGhostChase();
+            }
         }
 
         private void SwitchingChaseMode()
@@ -145,7 +167,10 @@ namespace GameHandler
 
             _switcherModeTimerPaused = true;
             foreach (var ghost in _ghosts) ghost.SetGhostMode(GhostMode.Frightened);
-            ghostHouseDoor.SetBool(IsOpen, true);
+            doorHandler.OpenDoor();
+
+            MusicHandler.MusicHandler.Instance.StopMusic();
+            MusicHandler.MusicHandler.Instance.PlayPacmanChase();
         }
 
         #endregion
@@ -179,20 +204,28 @@ namespace GameHandler
 
         public void KillPlayer()
         {
+            // Stop music
+            MusicHandler.MusicHandler.Instance.StopMusic();
+
             // Reset the player destination
             _player.Immobilize();
 
             // Reset the ghost mode.
-            _ghostsModeTimesIndex = 0;
-            _switcherModeTimer = 0;
+            _allTimersPaused = true;
 
             // Deactivate the ghosts
-            foreach (var ghost in _ghosts) ghost.gameObject.SetActive(false);
+            foreach (var ghost in _ghosts)
+            {
+                ghost.gameObject.SetActive(false);
+                ghost.bodyRenderer.enabled = true;
+            }
 
             // Decrease the lives and handle the player death.
             if (FindObjectOfType<PlayerLife>().Kill())
             {
+                ScoreHandler.ScoreHandler.Instance.UpdateHighScore();
                 gameOverText.enabled = true;
+
                 // Restart the game after 3 seconds.
                 Invoke(nameof(RestartGame), 3);
             }
@@ -213,14 +246,37 @@ namespace GameHandler
 
             // Reset the player
             _player.enabled = true;
-            _player.GetComponent<PlayerInput>().enabled = true;
+            _player.GetComponent<PlayerController>().enabled = true;
             _player.Reset();
             _player.gameObject.SetActive(true);
+
+            // Play the music
+            MusicHandler.MusicHandler.Instance.PlayGhostChase();
+
+            // Reset the ghost mode.
+            _allTimersPaused = false;
+        }
+
+        public void ActivateGhostsAndPlayer()
+        {
+            foreach (var ghost in _ghosts)
+            {
+                ghost.bodyAnimator.enabled = true;
+                ghost.enabled = true;
+            }
+
+            _player.enabled = true;
+            _player.animator.enabled = true;
+
+            doorHandler.CloseDoor();
+
+            MusicHandler.MusicHandler.Instance.PlayGhostChase();
         }
 
         public void RestartGame()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            TogglePause();
         }
 
         public void DecrementPacGumNumber()
@@ -231,7 +287,55 @@ namespace GameHandler
 
         private void NextLevel()
         {
-            Debug.Log("Next Level");
+            winText.enabled = true;
+
+            foreach (var ghost in _ghosts) ghost.gameObject.SetActive(false);
+
+            _player.enabled = false;
+            _player.animator.enabled = false;
+
+            MusicHandler.MusicHandler.Instance.StopMusic();
+            MusicHandler.MusicHandler.Instance.PlayIntermission();
+
+            Invoke(nameof(RestartGame), 6);
+        }
+
+        public void TogglePause()
+        {
+            if (winText.enabled || gameOverText.enabled) return;
+
+            if (gamePausedText.enabled)
+            {
+                ResumeGame();
+                gamePauseUiHandler.Reset();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
+
+        private void PauseGame()
+        {
+            Time.timeScale = 0;
+            Time.fixedDeltaTime = 0;
+            gamePausedText.enabled = true;
+            pauseMenuUi.SetActive(true);
+        }
+
+        private void ResumeGame()
+        {
+            Time.timeScale = TimeConstants.TimeScaleNormal;
+            Time.fixedDeltaTime = TimeConstants.FixedDeltaTime;
+            gamePausedText.enabled = false;
+            pauseMenuUi.SetActive(false);
+        }
+
+        public void GoToMainMenu()
+        {
+            Time.timeScale = TimeConstants.TimeScaleNormal;
+            Time.fixedDeltaTime = TimeConstants.FixedDeltaTime;
+            SceneManager.LoadScene(SceneNameConstants.TitleScreen);
         }
 
         #endregion

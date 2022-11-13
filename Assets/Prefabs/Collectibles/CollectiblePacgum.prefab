@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -6872788153573799375}
   - component: {fileID: 7012683213393820896}
   - component: {fileID: -5939653336752054576}
-  - component: {fileID: 309785153550593809}
+  - component: {fileID: 1269289493720537036}
   m_Layer: 0
   m_Name: CollectiblePacgum
   m_TagString: PacGum
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points: 10
---- !u!82 &309785153550593809
+--- !u!82 &1269289493720537036
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,7 +148,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 5855917842387782663, guid: 20891005dbb77ce46a18f4d98d9a1f0a, type: 2}
-  m_audioClip: {fileID: 8300000, guid: eb1e07ae20146ad4198e4bb0f944822b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: fcb0a63f37ff118499e7817d072882ee, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

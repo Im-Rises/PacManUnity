@@ -24,6 +24,9 @@ namespace Player
         // Respawn coordinates
         private Vector2 _respawnPoint;
 
+        // Death audio
+        private AudioSource _deathAudio;
+
         private void Start()
         {
             // Set respawn point
@@ -31,6 +34,9 @@ namespace Player
 
             // Create hearts UI sprites
             GenerateHearts();
+
+            // Get death audio
+            _deathAudio = GetComponent<AudioSource>();
         }
 
         private void GenerateHearts()
@@ -49,16 +55,12 @@ namespace Player
             }
         }
 
-
-        private void Respawn()
-        {
-        }
-
         public bool Kill()
         {
+            _deathAudio.Play();
             life--;
             _hearts[life].SetActive(false);
-            GetComponent<PlayerInput>().enabled = false;
+            GetComponent<PlayerController>().enabled = false;
             anim.SetBool(IsDead, true);
             Invoke(nameof(DisableGameObject), 2f);
             return life <= 0;
@@ -67,7 +69,6 @@ namespace Player
         private void DisableGameObject()
         {
             gameObject.SetActive(false);
-            // gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 }

@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameHandler;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 namespace Ghosts
 {
-    /*
-     * TODO:
-     * - Reimplement the reset of the game when player dies
-     */
-
     public enum GhostMode
     {
         Chase,
@@ -62,6 +58,16 @@ namespace Ghosts
         // Ghost spawn
         private Vector3 _spawnPoint;
 
+        // Body animator
+        public Animator bodyAnimator;
+
+        // Audio
+        public AudioSource goHomeAudioSource;
+        public AudioSource eatenAudioSource;
+
+        // Score
+        public int scoreValue = 200;
+
         private void Start()
         {
             var pos = transform.position;
@@ -78,10 +84,15 @@ namespace Ghosts
 
             // Set initial mode
             if (isInGhostHouse) _ghostMode = GhostMode.LeavingHouse;
+
+            // Body animation
+            bodyAnimator = GetComponent<Animator>();
         }
 
         private void FixedUpdate()
         {
+            // if (GameHandler.GameHandler.Instance.IsPaused) return;
+
             switch (_ghostMode)
             {
                 case GhostMode.Scatter:
@@ -120,7 +131,7 @@ namespace Ghosts
             // Change mode
             _ghostMode = ghostMode;
 
-            // Update sprite
+            // Update ghost and music
             switch (_ghostMode)
             {
                 case GhostMode.Scatter:
@@ -129,9 +140,12 @@ namespace Ghosts
                     break;
                 case GhostMode.Frightened:
                     UpdateFrightenedAnimation();
+                    MusicHandler.MusicHandler.Instance.PlayPacmanChase();
                     break;
                 case GhostMode.Eaten:
                     bodyRenderer.enabled = false;
+                    PlayEatenAudio();
+                    PlayGoHomeAudio();
                     UpdateNormalMoveEatenAnimation();
                     break;
                 case GhostMode.LeavingHouse:
@@ -203,8 +217,9 @@ namespace Ghosts
                 if (Vector2.Distance(transform.position, enterHomeWayPoints[0].transform.position) <= 0.5f)
                     _ghostHomeReached = true;
             }
-            else if (FollowPath(enterHomeWayPoints, ref _currentWayPointDestinationIndex, eatenSpeed, true))
+            else if (FollowPath(enterHomeWayPoints, ref _currentWayPointDestinationIndex, eatenSpeed))
             {
+                goHomeAudioSource.Stop();
                 _ghostHomeReached = false;
                 SetGhostMode(GhostMode.LeavingHouse, true);
             }
@@ -212,15 +227,16 @@ namespace Ghosts
 
         private void LeavingHouse()
         {
-            if (FollowPath(exitHomeWayPoints, ref _currentWayPointDestinationIndex, runSpeed, false))
-                SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode, true);
+            if (FollowPath(exitHomeWayPoints, ref _currentWayPointDestinationIndex, runSpeed))
+                SetGhostMode(GhostMode.Scatter, true);
+                // SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode, true);
         }
 
         #endregion
 
         #region Chase target and Folllow Path Functions
 
-        private bool FollowPath(Transform[] waypoints, ref int currentWaypoint, float speed, bool eaten)
+        private bool FollowPath(Transform[] waypoints, ref int currentWaypoint, float speed)
         {
             if (transform.position != waypoints[currentWaypoint].position)
             {
@@ -413,15 +429,38 @@ namespace Ghosts
 
         #endregion
 
+        #region audio
+
+        private void PlayEatenAudio()
+        {
+            if (eatenAudioSource.isPlaying)
+                return;
+            eatenAudioSource.Play();
+        }
+
+        private void PlayGoHomeAudio()
+        {
+            if (goHomeAudioSource.isPlaying)
+                return;
+            goHomeAudioSource.PlayScheduled(1f);
+        }
+
+        #endregion
+
         #region On trigger functions
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag(TagsConstants.PlayerTag))
                 if (_ghostMode is GhostMode.Frightened or GhostMode.Eaten)
+                {
                     SetGhostMode(GhostMode.Eaten);
+                    ScoreHandler.ScoreHandler.Instance.AddScore(scoreValue);
+                }
                 else
+                {
                     GameHandler.GameHandler.Instance.KillPlayer();
+                }
         }
 
         #endregion
