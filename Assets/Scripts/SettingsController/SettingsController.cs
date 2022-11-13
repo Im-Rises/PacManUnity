@@ -20,9 +20,12 @@ namespace SettingsController
 
         private void Start()
         {
-            mainVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Master, 0.5f);
-            musicVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Music, 0.5f);
-            soundVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Sound, 0.5f);
+            mainVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Master,
+                PlayerPrefs.GetFloat(AudioMixerConstants.Master));
+            musicVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Music,
+                PlayerPrefs.GetFloat(AudioMixerConstants.Music));
+            soundVolumeSlider.value = PlayerPrefs.GetFloat(AudioMixerConstants.Sound,
+                PlayerPrefs.GetFloat(AudioMixerConstants.Sound));
 
             ResetSliderSelection();
         }
