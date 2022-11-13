@@ -68,9 +68,9 @@ Or follow the direct link below:
 
 The game is also downloadable as a desktop application for Windows, Linux and macOS by clicking on the link below (click on the image of your operating system):
 
-[![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Im-Rises/PacManUnity/releases/download/1.0/build-windows-1.0.zip)
-[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/Im-Rises/PacManUnity/releases/download/1.0/build-linux-1.0.zip)
-[![macOs](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/Im-Rises/PacManUnity/releases/download/1.0/build-macos-1.0.zip)
+[![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Im-Rises/PacManUnity/releases/download/1.0/pacman-unity-windows-1.0.zip)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://github.com/Im-Rises/PacManUnity/releases/download/1.0/pacman-unity-linux-1.0.zip)
+[![macOs](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/Im-Rises/PacManUnity/releases/download/1.0/pacman-unity-macos-1.0.zip)
 
 Or click the direct link belwo to access the release page.
 
