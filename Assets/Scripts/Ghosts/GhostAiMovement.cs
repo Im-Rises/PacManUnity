@@ -228,7 +228,8 @@ namespace Ghosts
         private void LeavingHouse()
         {
             if (FollowPath(exitHomeWayPoints, ref _currentWayPointDestinationIndex, runSpeed))
-                SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode, true);
+                SetGhostMode(GhostMode.Scatter, true);
+                // SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode, true);
         }
 
         #endregion
