@@ -23,12 +23,11 @@ namespace Player
         public Tilemap tilemap;
 
         // Init spawn position and direction
-        // public Vector2 originalDirection = new(-1, 0);
         public Vector2 initDirection = Vector2.left / 2;
         private Vector2 _spawnPosition;
 
         // Player direction
-        public Vector2 LastInputDirection { get; set; }
+        private Vector2 _lastInputDirection;
         private Vector2 _lastDirection;
 
         // Sprite
@@ -49,7 +48,7 @@ namespace Player
 
         private void FixedUpdate()
         {
-            Debug.Log("FixedUpdate " + LastInputDirection);
+            // Debug.Log("FixedUpdate " + _lastInputDirection);
 
             // Move the player
             var position = (Vector2)transform.position;
@@ -61,10 +60,10 @@ namespace Player
             if (!isCentered) return;
 
             // if is at the middle of a tile, has input and there is no wall in the direction of the input
-            if (LastInputDirection != Vector2.zero && !DetectWallBorder(LastInputDirection))
+            if (_lastInputDirection != Vector2.zero && !DetectWallBorder(_lastInputDirection))
             {
-                NextDestination = position + LastInputDirection;
-                _lastDirection = LastInputDirection;
+                NextDestination = position + _lastInputDirection;
+                _lastDirection = _lastInputDirection;
                 animator.SetBool(IsMoving, true);
                 RotateRenderer();
             }
@@ -101,16 +100,21 @@ namespace Player
         {
             transform.position = _spawnPosition;
             NextDestination = _spawnPosition + initDirection;
-            LastInputDirection = initDirection.normalized;
+            _lastInputDirection = initDirection.normalized;
             _lastDirection = initDirection.normalized;
             RotateRenderer();
         }
 
         public void Immobilize()
         {
-            LastInputDirection = Vector2.zero;
+            _lastInputDirection = Vector2.zero;
             _lastDirection = Vector2.zero;
             NextDestination = transform.position;
+        }
+
+        public void SetInputDirection(Vector2 direction)
+        {
+            if (direction != Vector2.zero) _lastInputDirection = direction;
         }
     }
 }

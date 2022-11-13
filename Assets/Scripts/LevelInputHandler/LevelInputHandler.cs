@@ -25,6 +25,7 @@ namespace LevelInputHandler
 
         private void OnMove(InputValue value)
         {
+            Debug.Log("Move");
             var inputDirection = value.Get<Vector2>();
 
             if (inputDirection.x != 0) inputDirection.y = 0; // Create a priority for x movement
@@ -37,7 +38,7 @@ namespace LevelInputHandler
             else if (settingsController.gameObject.activeSelf)
                 settingsController.SetInputDirection(inputDirection);
             else
-                playerController.LastInputDirection = inputDirection;
+                playerController.SetInputDirection(inputDirection);
         }
     }
 }
