@@ -20,6 +20,16 @@ The game is available with three different levels:
 > **Note**
 > The project is made using Unity 2020.3.9f1.
 
+## Features
+
+- Sound and musics
+- Original map
+- Two Custom maps
+- Original Pac-Man ghost AI
+- High-score system with saving
+- Sound/music settings
+- Keyboard and controller support
+
 ## Images
 
 | Title Screen                                                                                                           |

@@ -12,6 +12,7 @@ namespace MusicHandler
         private AudioSource _audioSource;
         public AudioClip pacmanChase;
         public AudioClip ghostChase;
+        public AudioClip intermissionClip;
 
         private void Awake()
         {
@@ -51,6 +52,12 @@ namespace MusicHandler
                 _audioSource.Pause();
             else
                 _audioSource.UnPause();
+        }
+
+        public void PlayIntermission()
+        {
+            _audioSource.clip = intermissionClip;
+            _audioSource.Play();
         }
     }
 }

@@ -18,6 +18,7 @@ namespace LevelSelector
         public Button leftArrow;
         public Button rightArrow;
 
+        public Button validateButton;
 
         // TextMeshPro
         public TextMeshProUGUI levelNameText;
@@ -44,6 +45,7 @@ namespace LevelSelector
 
         private void Start()
         {
+            validateButton.onClick.AddListener(OnSelect);
             backButton.onClick.AddListener(BackButtonPressed);
 
             leftArrow.onClick.AddListener(() => RotateLeft());

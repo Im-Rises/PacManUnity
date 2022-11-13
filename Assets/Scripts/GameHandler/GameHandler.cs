@@ -294,7 +294,10 @@ namespace GameHandler
             _player.enabled = false;
             _player.animator.enabled = false;
 
-            Invoke(nameof(RestartGame), 3);
+            MusicHandler.MusicHandler.Instance.StopMusic();
+            MusicHandler.MusicHandler.Instance.PlayIntermission();
+
+            Invoke(nameof(RestartGame), 6);
         }
 
         public void TogglePause()
