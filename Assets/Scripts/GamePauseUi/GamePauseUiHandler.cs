@@ -124,7 +124,6 @@ namespace GamePauseUi
         private void RestartGame()
         {
             GameHandler.GameHandler.Instance.RestartGame();
-            // Reset();
         }
     }
 }

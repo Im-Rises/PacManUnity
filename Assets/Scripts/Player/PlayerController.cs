@@ -49,6 +49,8 @@ namespace Player
 
         private void FixedUpdate()
         {
+            Debug.Log("FixedUpdate " + LastInputDirection);
+
             // Move the player
             var position = (Vector2)transform.position;
             var positionVector = Vector2.MoveTowards(position, NextDestination, speed * Time.deltaTime);
@@ -93,15 +95,6 @@ namespace Player
             // Detect a door in the direction of the dir vector parameter using linecast
             var linecast = Physics2D.LinecastAll(pos + dir, pos);
             return linecast.Any(t => t.collider.CompareTag(tilemap.tag)) || tilemap.HasTile(cellPosition);
-        }
-
-
-        private void OnCancel()
-        {
-            if (GameStartHandler.Instance.enabled)
-                GameStartHandler.Instance.TogglePause();
-            GameHandler.GameHandler.Instance.TogglePause();
-            MusicHandler.MusicHandler.Instance.TogglePause();
         }
 
         public void Reset()

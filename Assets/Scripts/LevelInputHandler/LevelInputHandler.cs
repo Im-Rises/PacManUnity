@@ -37,7 +37,7 @@ namespace LevelInputHandler
             else if (settingsController.gameObject.activeSelf)
                 settingsController.SetInputDirection(inputDirection);
             else
-                playerController.LastInputDirection = playerController.LastInputDirection;
+                playerController.LastInputDirection = inputDirection;
         }
     }
 }

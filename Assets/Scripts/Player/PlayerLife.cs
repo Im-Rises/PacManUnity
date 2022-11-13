@@ -60,7 +60,7 @@ namespace Player
             _deathAudio.Play();
             life--;
             _hearts[life].SetActive(false);
-            GetComponent<PlayerInput>().enabled = false;
+            GetComponent<PlayerController>().enabled = false;
             anim.SetBool(IsDead, true);
             Invoke(nameof(DisableGameObject), 2f);
             return life <= 0;
@@ -69,7 +69,6 @@ namespace Player
         private void DisableGameObject()
         {
             gameObject.SetActive(false);
-            // gameObject.GetComponent<SpriteRenderer>().enabled = false;
         }
     }
 }

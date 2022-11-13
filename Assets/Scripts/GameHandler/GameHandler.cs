@@ -246,7 +246,7 @@ namespace GameHandler
 
             // Reset the player
             _player.enabled = true;
-            _player.GetComponent<PlayerInput>().enabled = true;
+            _player.GetComponent<PlayerController>().enabled = true;
             _player.Reset();
             _player.gameObject.SetActive(true);
 
@@ -276,6 +276,7 @@ namespace GameHandler
         public void RestartGame()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            TogglePause();
         }
 
         public void DecrementPacGumNumber()
