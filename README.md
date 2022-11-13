@@ -3,75 +3,122 @@
 <div align="center">
     <img src="https://img.shields.io/badge/Unity-100000?style=for-the-badge&logo=unity&logoColor=white" alt="UnityLogo" style="height: 50px"/>
     <img src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white" alt="CsharpLogo" style="height: 50px"/>
+<img src="https://user-images.githubusercontent.com/59691442/201502753-3eb47182-da10-4900-b566-6c360a5ede74.png" alt="webGlLogo" style="height: 50px">
 </div>
 
 ## Description
 
-Pac-Man 3D game made in Unity.
+Pac-Man 3D game made in Unity with C#, using Krita for the game assets.
+
+The original map is playable as well as two other custom maps.
+
+The game is available with three different levels:
+- Original Pac-Man map
+- Custom map 1 (custom maze)
+- Custom map 2 (huge custom maze with camera movement)
 
 > **Note**
-> This project is a work in progress.
+> The project is made using Unity 2020.3.9f1.
 
 ## Images
 
-Placeholder
+| Title Screen                                                                                                           |
+|------------------------------------------------------------------------------------------------------------------------|
+| ![title_screen](https://user-images.githubusercontent.com/59691442/201502391-7c8a733c-fef2-45cc-bf5b-1b9f8809d171.png) |
+
+| Original level |
+|----------------|
+|![original_level](https://user-images.githubusercontent.com/59691442/201502390-3773523b-03ef-4025-bf51-e3b7a6ef3a93.png)|
+
+| Custom level 1                                                                                                            |
+|---------------------------------------------------------------------------------------------------------------------------|
+| ![custom_level1](https://user-images.githubusercontent.com/59691442/201502388-f1f495ce-eba5-4662-b758-b0394b254d04.png)   |
+
+| Custom level 2                                                                                                           |
+|--------------------------------------------------------------------------------------------------------------------------|
+| ![Custom level 2](https://user-images.githubusercontent.com/59691442/201503022-16f7018a-a41e-4488-8d01-348f0334f120.png) |
 
 ## Videos
 
-Placeholder
+
 
 ## Quickstart
 
 ### Play online
 
-Placeholder
+The game is playable online at the following link:
 
-### Download the game
+<a href="https://im-rises.github.io/PacManUnity/"><img src="https://user-images.githubusercontent.com/59691442/201502753-3eb47182-da10-4900-b566-6c360a5ede74.png" alt="webGlLogo" style="height: 50px"></a>
 
-Placeholder
+Or follow the direct link below:
+
+<https://im-rises.github.io/PacManUnity/>
+
+## Play on your computer
+
+[//]: # (The game is also downloadable as a desktop application for Windows, Linux and macOS by clicking on your operating system below:)
+The game is also downloadable as a desktop application for Windows:
+
+[![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Im-Rises/PacManUnity/releases/latest)
+
+Or follow the direct link below:
+
+<https://github.com/Im-Rises/PacManUnity/releases/latest>
+
+<!--
+Direct link:
+- ![Windows](https://github.com/Im-Rises/PacManUnity/releases/latest)
+- Linux
+- macOS
+-->
+
+## Controls
+
+The game is fully playable with a keyboard and a mouse or a gamepad.
+
+### Game controls
+
+| Action | Key    | Xbox/Playstation controller   |
+|--------|--------|-------------------------------|
+| ↑      | ↑ or W | arrow/joystick	arrow/joystick |
+| ←      | ← or A | arrow/joystick	arrow/joystick |
+| →      | → or S | arrow/joystick	arrow/joystick |
+| ↓      | ↓ or D | arrow/joystick	arrow/joystick |
+
+### User interface
+
+| Action   | Key | Xbox controller | Playstation controller  |
+|----------|-----|-----------------|-------------------------|
+| Back     | ESC | B               |     O                   |
+| Validate | ESC | A               | X                       |
+| ↑      | ↑ or W | arrow/joystick	arrow/joystick |
+| ←      | ← or A | arrow/joystick	arrow/joystick |
+| →      | → or S | arrow/joystick	arrow/joystick |
+| ↓      | ↓ or D | arrow/joystick	arrow/joystick |
 
 ## Project Architecture
-
-### Dependencies
-
-- [Unity](https://unity.com/)
-
-### Project Structure
 
 ~~~
 PhysicalEngine
 ├── .github
-|  ├── labeler.yml
-|  ├── release.yml
 │  ├── workflows
 │  │   |── greetings.yml
 │  │   |── label.yml
 │  │   |── stale.yml
 │  │   |── super-linter.yml
+│  ├── labeler.yml
+│  ├── release.yml
 ├── Assets
-|  ├── Assets
-│  │   |── *
+│  ├── *
 ├── Krita
-|  ├── Assets
-│  │   |── *
+│  ├── *
 ├── ProjectSettings
-|  ├── Assets
-│  │   |── *
+|  ├── *
 ├── .editorconfig
 ├── .gitattributes
 ├── .gitignore
 ├── README.md
 ~~~
-
-## How to build
-
-### PC version
-
-Placeholder
-
-### WebGl version
-
-Placeholder
 
 ## GitHub Actions
 
@@ -84,19 +131,28 @@ Placeholder
 ## Documentations
 
 Unity:
+
 <https://unity.com/>
 
+Krita:
+
+<https://krita.org/en/>
+
 Super Linter action:
+
 <https://github.com/github/super-linter>
 
 PacMan movement:
+
 <https://gameinternals.com/understanding-pac-man-ghost-behavior>
 
 Audio files:
+
 <https://www.classicgaming.cc/classics/pac-man/sounds>
 <https://www.voicy.network/clips/cHeHx76RLUGh1xsxwb5Xog>
 
 Pac-Man switch mode times:
+
 <https://www.gamedeveloper.com/design/the-pac-man-dossier>
 
 ## Authors

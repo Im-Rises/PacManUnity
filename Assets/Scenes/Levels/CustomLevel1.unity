@@ -18522,7 +18522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7340687eb38684a85b7f40d5cfc910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ghostsModeTimes: 07000000140000000700000014000000050000001400000005000000
+  ghostsModeTimes: 0a0000000c00000007000000140000000700000014000000050000001400000005000000
   frightenedTime: 10
   doorHandler: {fileID: 1564634270}
   currentModeText: {fileID: 1512837682}
