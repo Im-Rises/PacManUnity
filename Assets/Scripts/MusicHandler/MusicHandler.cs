@@ -57,6 +57,7 @@ namespace MusicHandler
         public void PlayIntermission()
         {
             _audioSource.clip = intermissionClip;
+            _audioSource.loop = false;
             _audioSource.Play();
         }
     }

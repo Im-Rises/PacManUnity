@@ -48462,6 +48462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pacmanChase: {fileID: 8300000, guid: 52e67a3daa03f474898c6a69ec78b7a1, type: 3}
   ghostChase: {fileID: 8300000, guid: bd295d4b5b9b30947b7c223ff800a9c2, type: 3}
+  intermissionClip: {fileID: 8300000, guid: 36f6c1b165305df4d8ae29d8f71fc045, type: 3}
 --- !u!4 &729810870
 Transform:
   m_ObjectHideFlags: 0
