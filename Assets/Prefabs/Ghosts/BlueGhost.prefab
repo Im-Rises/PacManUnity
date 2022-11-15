@@ -123,7 +123,7 @@ MonoBehaviour:
   bodyAnimator: {fileID: 688537740057711899}
   goHomeAudioSource: {fileID: 1653001944888357790}
   eatenAudioSource: {fileID: 6009977533861424025}
-  scoreValue: 200
+  scoreValues: c8000000900100002003000040060000
   ghostScoreDisplayer: {fileID: 4883601541392870801}
   redGhost: {fileID: 0}
 --- !u!82 &6009977533861424025
@@ -532,7 +532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6780638924397073222, guid: 04008ad02e195db41b94c279204120e9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6780638924397073222, guid: 04008ad02e195db41b94c279204120e9, type: 3}
       propertyPath: m_LocalRotation.w

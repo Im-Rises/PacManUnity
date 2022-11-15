@@ -225,6 +225,9 @@ namespace GameHandler
                 ghost.bodyRenderer.enabled = true;
             }
 
+            // Exit frighten timer
+            _switcherModeTimerPaused = false;
+
             // Decrease the lives and handle the player death.
             if (FindObjectOfType<PlayerLife>().Kill())
             {
