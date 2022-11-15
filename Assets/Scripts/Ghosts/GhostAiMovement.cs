@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GameHandler;
@@ -65,8 +66,16 @@ namespace Ghosts
         public AudioSource goHomeAudioSource;
         public AudioSource eatenAudioSource;
 
-        // Score
-        public int scoreValue = 200;
+        // Scores
+        public int[] scoreValues =
+        {
+            200, 400, 800, 1600
+        };
+
+        // Ghosts eaten variables
+        private const float GhostPauseEatenTime = 0.6f;
+        public GhostScoreDisplayer ghostScoreDisplayer;
+
 
         private void Start()
         {
@@ -91,8 +100,6 @@ namespace Ghosts
 
         private void FixedUpdate()
         {
-            // if (GameHandler.GameHandler.Instance.IsPaused) return;
-
             switch (_ghostMode)
             {
                 case GhostMode.Scatter:
@@ -143,10 +150,7 @@ namespace Ghosts
                     MusicHandler.MusicHandler.Instance.PlayPacmanChase();
                     break;
                 case GhostMode.Eaten:
-                    bodyRenderer.enabled = false;
-                    PlayEatenAudio();
-                    PlayGoHomeAudio();
-                    UpdateNormalMoveEatenAnimation();
+                    StartCoroutine(GhostEatenPause());
                     break;
                 case GhostMode.LeavingHouse:
                     bodyRenderer.enabled = true;
@@ -229,7 +233,6 @@ namespace Ghosts
         {
             if (FollowPath(exitHomeWayPoints, ref _currentWayPointDestinationIndex, runSpeed))
                 SetGhostMode(GhostMode.Scatter, true);
-                // SetGhostMode(GameHandler.GameHandler.Instance.GameGhostsMode, true);
         }
 
         #endregion
@@ -447,20 +450,35 @@ namespace Ghosts
 
         #endregion
 
+
         #region On trigger functions
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag(TagsConstants.PlayerTag))
                 if (_ghostMode is GhostMode.Frightened or GhostMode.Eaten)
-                {
                     SetGhostMode(GhostMode.Eaten);
-                    ScoreHandler.ScoreHandler.Instance.AddScore(scoreValue);
-                }
                 else
-                {
                     GameHandler.GameHandler.Instance.KillPlayer();
-                }
+        }
+
+        private IEnumerator GhostEatenPause()
+        {
+            eyesSpriteRenderer.enabled = false;
+            bodyRenderer.enabled = false;
+            ghostScoreDisplayer.DisplayGhostScore();
+            ScoreHandler.ScoreHandler.Instance.AddScore(scoreValues[
+                GameHandler.GameHandler.Instance.GhostCountEaten++]);
+            PlayEatenAudio();
+            Time.timeScale = 0;
+            Time.fixedDeltaTime = 0;
+            yield return new WaitForSecondsRealtime(GhostPauseEatenTime);
+            Time.timeScale = TimeConstants.TimeScaleNormal;
+            Time.fixedDeltaTime = TimeConstants.FixedDeltaTime;
+            ghostScoreDisplayer.HideGhostScore();
+            UpdateNormalMoveEatenAnimation();
+            eyesSpriteRenderer.enabled = true;
+            PlayGoHomeAudio();
         }
 
         #endregion

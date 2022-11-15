@@ -1,3 +1,4 @@
+using System.Collections;
 using Door;
 using GamePauseUi;
 using Ghosts;
@@ -51,6 +52,8 @@ namespace GameHandler
         public GameObject pauseMenuUi;
 
         public GamePauseUiHandler gamePauseUiHandler;
+
+        public int GhostCountEaten { get; set; }
 
 
         #region Awake Singleton
@@ -161,6 +164,8 @@ namespace GameHandler
 
         public void SwitchingFrightenedMode()
         {
+            GhostCountEaten = 0;
+
             // Not changing the game mode for eaten ghosts to be able to switch back to the normal current mode.
             if (_switcherModeTimerPaused)
                 _frightenTimer = 0; // Reset the timer if the ghosts are already in frightened mode.
@@ -317,6 +322,7 @@ namespace GameHandler
                 PauseGame();
             }
         }
+
 
         private void PauseGame()
         {

@@ -89054,7 +89054,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6032beaabd290534ea9df9e4cfacc83c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: 20891005dbb77ce46a18f4d98d9a1f0a, type: 2}
 --- !u!114 &1862396595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91395,7 +91394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4252187140666899498, guid: cb4111b42c752d34ebd44ed8fed432f7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.1
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4252187140733711169, guid: cb4111b42c752d34ebd44ed8fed432f7, type: 3}
       propertyPath: m_RootOrder
